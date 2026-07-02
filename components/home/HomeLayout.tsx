@@ -30,7 +30,7 @@ export default function HomeLayout({ route, experiences, intro, posts, photos }:
         <div className="flex flex-col items-center text-center xl:col-span-1">
           {meta.avatar && (
             <Image
-              src={meta.avatar }
+              src={meta.avatar}
               alt="avatar"
               width={192}
               height={192}
@@ -44,7 +44,11 @@ export default function HomeLayout({ route, experiences, intro, posts, photos }:
           {company && <div className="text-gray-500 dark:text-gray-400">{company}</div>}
           <div className="flex space-x-3 pt-4">
             {socials.map((social) => (
-              <SocialIcon key={`${social.kind}-${social.href}`} kind={social.kind} href={social.href} />
+              <SocialIcon
+                key={`${social.kind}-${social.href}`}
+                kind={social.kind}
+                href={social.href}
+              />
             ))}
           </div>
         </div>
