@@ -64,6 +64,7 @@ const unoptimized = process.env.UNOPTIMIZED ? true : undefined
 module.exports = () => {
   const plugins = [withContentlayer, withBundleAnalyzer]
   return plugins.reduce((acc, next) => next(acc), {
+    outputFileTracingRoot: __dirname,
     output,
     basePath,
     reactStrictMode: true,

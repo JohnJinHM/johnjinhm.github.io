@@ -1,3 +1,5 @@
+import type { SocialIconKind } from '@/components/social-icons'
+
 export const routes = ['official', 'casual'] as const
 
 export type Route = (typeof routes)[number]
@@ -17,34 +19,56 @@ export function routeFromPathname(pathname: string): Route {
   return isRoute(segment) ? segment : defaultRoute
 }
 
+export type SocialLink = {
+  kind: SocialIconKind
+  href: string
+}
+
 export const routeMeta: Record<
   Route,
   {
+    name: string
     label: string
-    description: string
     blogTitle: string
     photosTitle: string
     homeIntro: string
     avatar: string
+    occupation: string
+    company: string
+    socials: SocialLink[]
   }
 > = {
   official: {
+    name: 'John Jin',
     label: 'Official',
-    description: 'Writing, projects, and work worth keeping on the record.',
     blogTitle: 'Articles',
     photosTitle: 'Photos',
     homeIntro:
-      'I build software and write about the projects and ideas worth keeping on the record. Here is a short account of the work and roles that shaped me.',
+      'Undergraduate in UW-Seattle. Abundant experience in Software Engineering and Designs. Major in Computer Science and Informatics.',
     avatar: '/static/images/avatar-official.jpg',
+    occupation: 'Software Developer',
+    company: 'UW Allen School \'27',
+    socials: [
+      { kind: 'mail', href: 'mailto:jinhaomin874@gmail.com' },
+      { kind: 'github', href: 'https://github.com/JohnJinHM/Blog' },
+      { kind: 'linkedin', href: 'https://linkedin.com/in/johnjinhm/' },
+    ],
   },
   casual: {
+    name: 'Starfall',
     label: 'Casual',
-    description: 'Off-the-cuff notes, snapshots, and everything in between.',
     blogTitle: 'Notes',
     photosTitle: 'Snapshots',
     homeIntro:
       'Off the clock, this is where I keep the half-formed notes, snapshots, and side projects. A more relaxed look at what I get up to for fun.',
     avatar: '/static/images/avatar.png',
+    occupation: 'Content Creator',
+    company: 'Placeholder Company',
+    socials: [
+      { kind: 'mail', href: 'mailto:jinhaomin874@gmail.com' },
+      { kind: 'instagram', href: 'https://instagram.com/' },
+      { kind: 'bluesky', href: 'https://bsky.app/' },
+    ],
   },
 }
 

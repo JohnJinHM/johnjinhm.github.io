@@ -1,5 +1,5 @@
 import { CoreContent } from 'pliny/utils/contentlayer'
-import type { Authors, Blog, Photo } from 'contentlayer/generated'
+import type { Blog, Photo } from 'contentlayer/generated'
 import { formatDate } from 'pliny/utils/formatDate'
 import siteMetadata from '@/data/siteMetadata'
 import { routeMeta, Route } from '@/data/routes'
@@ -14,24 +14,23 @@ const MAX_PHOTOS = 4
 
 interface Props {
   route: Route
-  author: CoreContent<Authors>
   experiences: Experience[]
   intro: string
   posts: CoreContent<Blog>[]
   photos: CoreContent<Photo>[]
 }
 
-export default function HomeLayout({ route, author, experiences, intro, posts, photos }: Props) {
-  const { name, avatar, occupation, company, email, linkedin, github } = author
+export default function HomeLayout({ route, experiences, intro, posts, photos }: Props) {
   const meta = routeMeta[route]
+  const { occupation, company, socials } = meta
 
   return (
     <div className="divide-y divide-gray-200 dark:divide-gray-700">
       <div className="items-start space-y-8 py-8 xl:grid xl:grid-cols-3 xl:space-y-0 xl:gap-x-8">
         <div className="flex flex-col items-center text-center xl:col-span-1">
-          {avatar && (
+          {meta.avatar && (
             <Image
-              src={avatar}
+              src={meta.avatar }
               alt="avatar"
               width={192}
               height={192}
@@ -39,14 +38,14 @@ export default function HomeLayout({ route, author, experiences, intro, posts, p
             />
           )}
           <h1 className="pt-4 pb-1 text-2xl leading-8 font-bold tracking-tight text-gray-900 dark:text-gray-100">
-            {name}
+            {meta.name}
           </h1>
           {occupation && <div className="text-gray-500 dark:text-gray-400">{occupation}</div>}
           {company && <div className="text-gray-500 dark:text-gray-400">{company}</div>}
           <div className="flex space-x-3 pt-4">
-            <SocialIcon kind="mail" href={`mailto:${email}`} />
-            <SocialIcon kind="github" href={github} />
-            <SocialIcon kind="linkedin" href={linkedin} />
+            {socials.map((social) => (
+              <SocialIcon key={`${social.kind}-${social.href}`} kind={social.kind} href={social.href} />
+            ))}
           </div>
         </div>
         <div className="xl:col-span-2">

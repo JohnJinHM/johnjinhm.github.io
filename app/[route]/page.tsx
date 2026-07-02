@@ -1,6 +1,5 @@
-import { sortPosts, allCoreContent, coreContent } from 'pliny/utils/contentlayer'
-import { allBlogs, allPhotos, allAuthors } from 'contentlayer/generated'
-import type { Authors } from 'contentlayer/generated'
+import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
+import { allBlogs, allPhotos } from 'contentlayer/generated'
 import { notFound } from 'next/navigation'
 import { isRoute, postsForRoute, routeMeta, Route } from '@/data/routes'
 import { experiences } from '@/data/experiences'
@@ -13,13 +12,10 @@ export default async function Page(props: { params: Promise<{ route: string }> }
   }
   const posts = allCoreContent(sortPosts(postsForRoute(allBlogs, route as Route)))
   const photos = allCoreContent(sortPosts(postsForRoute(allPhotos, route as Route)))
-  const base = coreContent(allAuthors.find((a) => a.slug === 'default') as Authors)
-  const author = { ...base, avatar: routeMeta[route as Route].avatar }
 
   return (
     <HomeLayout
       route={route as Route}
-      author={author}
       experiences={experiences[route as Route]}
       intro={routeMeta[route as Route].homeIntro}
       posts={posts}

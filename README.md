@@ -142,11 +142,16 @@ the active route from the pathname and applies a `data-route="official|casual"` 
 
 Both routes share one index layout, `components/home/HomeLayout.tsx`: an author panel up top
 (narrow left column = avatar / name / occupation / socials; wider right column = a route-specific
-intro plus an experiences list), then recent posts and photos below. Name / occupation / socials
-come from `data/authors/default.mdx`, but the **avatar is per route** — each route picks its own
-image via `routeMeta[route].avatar` (`data/routes.ts`), so the two homes don't share one avatar.
-Route-specific copy lives in `routeMeta[route].homeIntro` (`data/routes.ts`) and
-`experiences[route]` (`data/experiences.ts`) — both ship with placeholders to replace.
+intro plus an experiences list), then recent posts and photos below. The two homes are fully
+decoupled: name / avatar / occupation / company are all **per route**, edited in
+`routeMeta[route]` (`data/routes.ts`) — nothing on the home panel is shared or pulled from
+`data/authors/default.mdx` anymore. Social links are a per-route list, `routeMeta[route].socials`:
+each entry is `{ kind, href }` where `kind` is any icon supported by `components/social-icons`
+(`mail`, `github`, `linkedin`, `instagram`, `bluesky`, `x`, `mastodon`, `threads`, `youtube`,
+`facebook`, `twitter`, `medium`). Add, remove, or reorder links per route by editing that array —
+e.g. the casual route drops github/linkedin and shows instagram/bluesky instead. Route-specific
+intro copy lives in `routeMeta[route].homeIntro` and the experiences list in `experiences[route]`
+(`data/experiences.ts`) — both ship with placeholders to replace.
 
 ## Key files
 

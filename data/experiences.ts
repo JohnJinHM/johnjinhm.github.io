@@ -10,19 +10,28 @@ export type Experience = {
 export const experiences: Record<Route, Experience[]> = {
   official: [
     {
-      role: 'Placeholder Role',
-      org: 'Placeholder Company',
-      period: '2024 — Present',
+      role: 'Software Engineer',
+      org: 'Blaze Edu LLC',
+      period: '2026 - ',
       highlights: [
-        'Replace this with a real accomplishment or responsibility.',
-        'Add a second highlight describing the impact you had.',
+        'Full-stack developer',
+        'TypeScript, PostgresSQL',
       ],
     },
     {
-      role: 'Placeholder Role',
-      org: 'Placeholder Organization',
-      period: '2022 — 2024',
-      highlights: ['Replace this with what you did and why it mattered.'],
+      role: 'Software Engineer',
+      org: 'Hedracam',
+      period: '2024 — 2025',
+      highlights: [
+        'Cross-platform integration, graphics interface',
+        'C++, C#',
+      ],
+    },
+    {
+      role: 'Leadership Member',
+      org: 'Interactive Intelligence @ UW',
+      period: '2025 — 2026',
+      highlights: ["I2 Fellows TA, Research Room member"],
     },
   ],
   casual: [
