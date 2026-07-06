@@ -153,6 +153,20 @@ e.g. the casual route drops github/linkedin and shows instagram/bluesky instead.
 intro copy lives in `routeMeta[route].homeIntro` and the experiences list in `experiences[route]`
 (`data/experiences.ts`) — both ship with placeholders to replace.
 
+## i18n (homepages + nav bar only)
+
+The UI language (`en` / `zh`) is a **client-side setting**, independent of the route. It defaults
+to the browser language, persists in `localStorage`, and is toggled by the `中`/`EN` button in the
+header (next to the theme switch). It applies **only** to the nav bar (nav links, route-switch
+label) and the two homepages (headings, intro, occupation/company, experiences, "Read more"/"All …"
+labels, date formatting). Posts, tags, and list pages are intentionally untranslated.
+
+- `data/i18n.ts` — locale list, UI string dictionaries, per-locale/per-route home text
+  (`routeText`) and experiences (`localizedExperiences`). English is sourced from
+  `data/routes.ts` / `data/experiences.ts`; edit the `zh` entries here to change translations.
+- `components/LocaleProvider.tsx` — context + `useLocale()`; reads/writes `localStorage.locale`.
+- `components/LocaleSwitch.tsx` — the header toggle button.
+
 ## Key files
 
 - `data/routes.ts` — route list, labels/descriptions, `postsForRoute`, `otherRoute`, `routeFromPathname`.

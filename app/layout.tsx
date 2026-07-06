@@ -10,6 +10,7 @@ import SectionContainer from '@/components/SectionContainer'
 import Footer from '@/components/Footer'
 import RouteAccent from '@/components/RouteAccent'
 import RouteTransitionProvider from '@/components/RouteTransitionProvider'
+import { LocaleProvider } from '@/components/LocaleProvider'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
@@ -100,15 +101,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <RouteAccent>
-            <RouteTransitionProvider>
-              <SectionContainer>
-                <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-                  <Header />
-                  <main className="mb-auto">{children}</main>
-                </SearchProvider>
-                <Footer />
-              </SectionContainer>
-            </RouteTransitionProvider>
+            <LocaleProvider>
+              <RouteTransitionProvider>
+                <SectionContainer>
+                  <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+                    <Header />
+                    <main className="mb-auto">{children}</main>
+                  </SearchProvider>
+                  <Footer />
+                </SectionContainer>
+              </RouteTransitionProvider>
+            </LocaleProvider>
           </RouteAccent>
         </ThemeProviders>
       </body>

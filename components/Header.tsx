@@ -3,18 +3,23 @@
 import { usePathname } from 'next/navigation'
 import siteMetadata from '@/data/siteMetadata'
 import navLinks from '@/data/headerNavLinks'
-import { otherRoute, routeFromPathname, routeMeta } from '@/data/routes'
+import { otherRoute, routeFromPathname } from '@/data/routes'
+import { routeText, ui } from '@/data/i18n'
 import Logo from '@/data/logo.svg'
 import Link from './Link'
 import RouteSwitchLink from './RouteSwitchLink'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
+import LocaleSwitch from './LocaleSwitch'
 import SearchButton from './SearchButton'
+import { useLocale } from './LocaleProvider'
 
 const Header = () => {
   const pathname = usePathname()
   const route = routeFromPathname(pathname)
   const next = otherRoute(route)
+  const { locale } = useLocale()
+  const t = ui[locale]
 
   let headerClass = 'flex items-center w-full bg-white dark:bg-gray-950 justify-between py-10'
   if (siteMetadata.stickyNav) {
@@ -43,22 +48,23 @@ const Header = () => {
             .filter((link) => link.href !== `/${route}`)
             .map((link) => (
               <Link
-                key={link.title}
+                key={link.key}
                 href={link.href}
                 className="hover:text-primary-500 dark:hover:text-primary-400 m-1 font-medium text-gray-900 dark:text-gray-100"
               >
-                {link.title}
+                {t.nav[link.key]}
               </Link>
             ))}
         </div>
         <RouteSwitchLink
           href={`/${next}`}
           className="border-primary-500 text-primary-500 hover:bg-primary-500 hidden rounded-full border px-3 py-1 text-sm font-medium hover:text-white sm:block"
-          aria-label={`Switch to ${routeMeta[next].label}`}
+          aria-label={t.switchTo(routeText[locale][next].label)}
         >
-          {routeMeta[next].label}
+          {routeText[locale][next].label}
         </RouteSwitchLink>
         <SearchButton />
+        <LocaleSwitch />
         <ThemeSwitch />
         <MobileNav />
       </div>

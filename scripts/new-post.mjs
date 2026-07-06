@@ -187,7 +187,14 @@ async function run() {
     lines.push(`image: ${yamlString(relImagePath(folder, postSlug))}`)
     lines.push(`imageWidth: ${meta.width}`, `imageHeight: ${meta.height}`)
     lines.push(`imageWidths: ${yamlNumberList(meta.widths)}`, `imageBlur: ${yamlString(meta.blur)}`)
-    lines.push(`tags: ${yamlList(tags)}`, `draft: ${draft}`, `summary: ${yamlString(summary)}`, `route: ${route}`, '---', '')
+    lines.push(
+      `tags: ${yamlList(tags)}`,
+      `draft: ${draft}`,
+      `summary: ${yamlString(summary)}`,
+      `route: ${route}`,
+      '---',
+      ''
+    )
     body = 'Write the post message here.\n'
   } else {
     const folder = await askFolder(postSlug)
@@ -210,15 +217,25 @@ async function run() {
         continue
       }
       const out = await compressToCanonical(src, dest)
-      console.log(`  → ${path.relative(ROOT, dest)} (${out.width}×${out.height}, ${Math.round(out.size / 1024)} KB)`)
+      console.log(
+        `  → ${path.relative(ROOT, dest)} (${out.width}×${out.height}, ${Math.round(out.size / 1024)} KB)`
+      )
       const alt = (await askText('Alt text', title)) || title
       embeds.push({ src: relImagePath(folder, name), alt, width: out.width, height: out.height })
     }
-    lines.push(`tags: ${yamlList(tags)}`, `draft: ${draft}`, `summary: ${yamlString(summary)}`, `route: ${route}`)
+    lines.push(
+      `tags: ${yamlList(tags)}`,
+      `draft: ${draft}`,
+      `summary: ${yamlString(summary)}`,
+      `route: ${route}`
+    )
     if (embeds.length > 0) lines.push(`images: ${yamlList(embeds.map((e) => e.src))}`)
     lines.push('---', '')
     const imageTags = embeds
-      .map((e) => `<Image src="${e.src}" alt="${e.alt.replace(/"/g, '&quot;')}" width={${e.width}} height={${e.height}} />`)
+      .map(
+        (e) =>
+          `<Image src="${e.src}" alt="${e.alt.replace(/"/g, '&quot;')}" width={${e.width}} height={${e.height}} />`
+      )
       .join('\n\n')
     body = (imageTags ? `${imageTags}\n\n` : '') + 'Write your post here.\n'
   }

@@ -7,12 +7,16 @@ import { usePathname } from 'next/navigation'
 import Link from './Link'
 import RouteSwitchLink from './RouteSwitchLink'
 import navLinks from '@/data/headerNavLinks'
-import { otherRoute, routeFromPathname, routeMeta } from '@/data/routes'
+import { otherRoute, routeFromPathname } from '@/data/routes'
+import { routeText, ui } from '@/data/i18n'
+import { useLocale } from './LocaleProvider'
 
 const MobileNav = () => {
   const pathname = usePathname()
   const route = routeFromPathname(pathname)
   const next = otherRoute(route)
+  const { locale } = useLocale()
+  const t = ui[locale]
   const [navShow, setNavShow] = useState(false)
   const [mounted, setMounted] = useState(false)
   const navRef = useRef(null)
@@ -83,12 +87,12 @@ const MobileNav = () => {
                 >
                   {navLinks(route).map((link) => (
                     <Link
-                      key={link.title}
+                      key={link.key}
                       href={link.href}
                       className="hover:text-primary-500 dark:hover:text-primary-400 mb-4 py-2 pr-4 text-2xl font-bold tracking-widest text-gray-900 outline outline-0 dark:text-gray-100"
                       onClick={onToggleNav}
                     >
-                      {link.title}
+                      {t.nav[link.key]}
                     </Link>
                   ))}
                   <RouteSwitchLink
@@ -96,7 +100,7 @@ const MobileNav = () => {
                     className="hover:text-primary-500 dark:hover:text-primary-400 mb-4 py-2 pr-4 text-2xl font-bold tracking-widest text-gray-900 outline outline-0 dark:text-gray-100"
                     onClick={onToggleNav}
                   >
-                    {`Switch to ${routeMeta[next].label}`}
+                    {t.switchTo(routeText[locale][next].label)}
                   </RouteSwitchLink>
                 </nav>
 

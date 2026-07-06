@@ -1,28 +1,33 @@
+'use client'
+
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog, Photo } from 'contentlayer/generated'
 import { formatDate } from 'pliny/utils/formatDate'
-import siteMetadata from '@/data/siteMetadata'
 import { routeMeta, Route } from '@/data/routes'
-import type { Experience } from '@/data/experiences'
+import { dateLocale, localizedExperiences, routeText, ui } from '@/data/i18n'
 import Link from '@/components/Link'
 import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import SocialIcon from '@/components/social-icons'
+import { useLocale } from '@/components/LocaleProvider'
 
 const MAX_POSTS = 5
 const MAX_PHOTOS = 4
 
 interface Props {
   route: Route
-  experiences: Experience[]
-  intro: string
   posts: CoreContent<Blog>[]
   photos: CoreContent<Photo>[]
 }
 
-export default function HomeLayout({ route, experiences, intro, posts, photos }: Props) {
+export default function HomeLayout({ route, posts, photos }: Props) {
+  const { locale } = useLocale()
+  const t = ui[locale]
   const meta = routeMeta[route]
-  const { occupation, company, socials } = meta
+  const text = routeText[locale][route]
+  const experiences = localizedExperiences[locale][route]
+  const { occupation, company } = text
+  const { socials } = meta
 
   return (
     <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -38,7 +43,7 @@ export default function HomeLayout({ route, experiences, intro, posts, photos }:
             />
           )}
           <h1 className="pt-4 pb-1 text-2xl leading-8 font-bold tracking-tight text-gray-900 dark:text-gray-100">
-            {meta.name}
+            {text.name}
           </h1>
           {occupation && <div className="text-gray-500 dark:text-gray-400">{occupation}</div>}
           {company && <div className="text-gray-500 dark:text-gray-400">{company}</div>}
@@ -54,9 +59,11 @@ export default function HomeLayout({ route, experiences, intro, posts, photos }:
         </div>
         <div className="xl:col-span-2">
           <h2 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-gray-100">
-            {meta.label}
+            {text.label}
           </h2>
-          <p className="mt-4 text-lg leading-7 text-gray-500 dark:text-gray-400">{intro}</p>
+          <p className="mt-4 text-lg leading-7 text-gray-500 dark:text-gray-400">
+            {text.homeIntro}
+          </p>
           <ul className="mt-8 space-y-6">
             {experiences.map((exp) => (
               <li key={`${exp.role}-${exp.org}-${exp.period}`}>
@@ -83,19 +90,19 @@ export default function HomeLayout({ route, experiences, intro, posts, photos }:
 
       <div className="py-8">
         <h2 className="text-2xl leading-8 font-bold tracking-tight text-gray-900 dark:text-gray-100">
-          {meta.blogTitle}
+          {text.blogTitle}
         </h2>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {!posts.length && 'No posts found.'}
+          {!posts.length && t.noPosts}
           {posts.slice(0, MAX_POSTS).map((post) => {
             const { slug, date, title, summary, tags } = post
             return (
               <li key={slug} className="py-6">
                 <article className="space-y-3">
                   <dl>
-                    <dt className="sr-only">Published on</dt>
+                    <dt className="sr-only">{t.publishedOn}</dt>
                     <dd className="text-sm leading-6 font-medium text-gray-500 dark:text-gray-400">
-                      <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                      <time dateTime={date}>{formatDate(date, dateLocale[locale])}</time>
                     </dd>
                   </dl>
                   <h3 className="text-xl leading-8 font-bold tracking-tight">
@@ -113,9 +120,9 @@ export default function HomeLayout({ route, experiences, intro, posts, photos }:
                     <Link
                       href={`/blog/${slug}`}
                       className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                      aria-label={`Read more: "${title}"`}
+                      aria-label={`${t.readMore}: "${title}"`}
                     >
-                      Read more &rarr;
+                      {t.readMore} &rarr;
                     </Link>
                   </div>
                 </article>
@@ -128,9 +135,9 @@ export default function HomeLayout({ route, experiences, intro, posts, photos }:
             <Link
               href={`/${route}/blog`}
               className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-              aria-label={`All ${meta.blogTitle}`}
+              aria-label={t.allOf(text.blogTitle)}
             >
-              All {meta.blogTitle} &rarr;
+              {t.allOf(text.blogTitle)} &rarr;
             </Link>
           </div>
         )}
@@ -140,13 +147,13 @@ export default function HomeLayout({ route, experiences, intro, posts, photos }:
         <div className="py-8">
           <div className="flex items-baseline justify-between">
             <h2 className="text-2xl leading-8 font-bold tracking-tight text-gray-900 dark:text-gray-100">
-              {meta.photosTitle}
+              {text.photosTitle}
             </h2>
             <Link
               href={`/${route}/photos`}
               className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 text-base font-medium"
             >
-              All {meta.photosTitle} &rarr;
+              {t.allOf(text.photosTitle)} &rarr;
             </Link>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">

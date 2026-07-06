@@ -10,7 +10,8 @@ export function stripExt(p) {
   return p.replace(/\.(jpe?g|png|webp|avif)$/i, '')
 }
 
-const encode = (pipeline) => pipeline.jpeg({ quality: JPEG_QUALITY, progressive: true, mozjpeg: true })
+const encode = (pipeline) =>
+  pipeline.jpeg({ quality: JPEG_QUALITY, progressive: true, mozjpeg: true })
 
 // Sharp drops EXIF/GPS by default (we never call .withMetadata()); .rotate() bakes in
 // orientation first so stripping the tag doesn't visually flip the image.
@@ -47,7 +48,11 @@ export async function generateDerivatives(canonicalAbs, canonicalWidth) {
 }
 
 export async function computeBlurDataURL(canonicalAbs) {
-  const buf = await sharp(canonicalAbs).resize({ width: 20 }).blur().jpeg({ quality: 40 }).toBuffer()
+  const buf = await sharp(canonicalAbs)
+    .resize({ width: 20 })
+    .blur()
+    .jpeg({ quality: 40 })
+    .toBuffer()
   return `data:image/jpeg;base64,${buf.toString('base64')}`
 }
 
