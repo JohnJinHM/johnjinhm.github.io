@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Horizon floor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&family=Red+Hat+Text:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --ground: #0b0c16; --line: #1a1c2e; --d2: #7a7d96; --d1: #f1f0f7; --accent: #ffb23e; --head: 'Red Hat Display', system-ui, sans-serif; --text: 'Red Hat Text', system-ui, sans-serif; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; background: var(--ground); color: var(--d1); font-family: var(--text); }
+  .stars { position: absolute; inset: 0 0 340px 0; background-image: radial-gradient(#5b5e78 1px, transparent 1.5px), radial-gradient(#a9abc2 1.2px, transparent 1.8px); background-size: 89px 77px, 251px 211px; background-position: 0 0, 60px 30px; opacity: .8; }
+  .floor { position: absolute; left: -400px; right: -400px; bottom: -40px; height: 380px; perspective: 360px; perspective-origin: 50% 0; overflow: hidden; }
+  .floor div { position: absolute; inset: 0 0 -400px 0; transform: rotateX(62deg); transform-origin: 50% 0;
+    background: linear-gradient(var(--line) 1.5px, transparent 1.5px) 0 0 / 80px 80px, linear-gradient(90deg, var(--line) 1.5px, transparent 1.5px) 0 0 / 80px 80px;
+    -webkit-mask: linear-gradient(#000, transparent 70%); mask: linear-gradient(#000, transparent 70%); }
+  .horizon { position: absolute; left: 0; right: 0; top: 560px; height: 1px; background: #33364f; }
+  .front { position: relative; padding: 0 96px; }
+  header { height: 80px; display: flex; align-items: center; justify-content: space-between; font-family: var(--head); font-size: 15px; }
+  header b { font-weight: 900; letter-spacing: .04em; }
+  header nav { display: flex; gap: 32px; color: var(--d2); align-items: center; }
+  header .cur { color: var(--d1); }
+  .rt { display: flex; gap: 16px; } .rt .on { color: var(--accent); }
+  h1 { font-family: var(--head); font-weight: 900; font-size: 112px; letter-spacing: -.035em; line-height: .9; margin-top: 64px; }
+  .role { font-family: var(--head); font-size: 22px; margin-top: 16px; }
+  p { font-size: 19px; line-height: 1.6; max-width: 60ch; margin-top: 24px; }
+  .links { display: flex; gap: 32px; margin-top: 22px; font-family: var(--head); font-weight: 700; }
+  .links span { border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+  .tl { position: absolute; left: 96px; right: 96px; top: 560px; }
+  .pt { position: absolute; top: -5px; width: 9px; height: 9px; border-radius: 50%; background: var(--ground); border: 2px solid var(--d2); }
+  .pt.now { background: var(--accent); border-color: var(--accent); width: 13px; height: 13px; top: -7px; }
+  .lab { position: absolute; bottom: 14px; font-size: 15px; white-space: nowrap; color: var(--d2); }
+  .lab b { display: block; color: var(--d1); font-weight: 500; font-family: var(--head); }
+  .lab.now b { font-weight: 700; }
+  .yr { position: absolute; top: 14px; font-size: 13px; color: var(--d2); font-family: var(--head); letter-spacing: .08em; }
+  .span { position: absolute; top: -1px; height: 3px; background: var(--d2); opacity: .5; }
+  .span.now { background: var(--accent); opacity: 1; }
+</style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="floor"><div></div></div>
+  <div class="horizon"></div>
+  <div class="front">
+    <header><b>JOHN JIN</b><nav><span class="cur">Home</span><span>Articles</span><span>Photos</span><span>Tags</span><span>⌘K</span><span>中</span><span class="rt"><span class="on">Official</span><span>Casual</span></span></nav></header>
+    <h1>John Jin</h1>
+    <div class="role">Software Developer · UW Allen School ’27</div>
+    <p>Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</p>
+    <div class="links"><span>Email</span><span>GitHub ↗</span><span>LinkedIn ↗</span></div>
+  </div>
+  <div class="tl">
+    <span class="yr" style="left:0">2024</span><span class="yr" style="left:33%">2025</span><span class="yr" style="left:66%">2026</span><span class="yr" style="right:0">2027</span>
+    <div class="span" style="left:0;width:40%"></div><div class="span" style="left:40%;width:28%"></div><div class="span now" style="left:66%;width:34%"></div>
+    <div class="pt" style="left:0"></div><div class="lab" style="left:0"><b>Software Engineer · Hedracam</b>C++, C#, graphics</div>
+    <div class="pt" style="left:40%"></div><div class="lab" style="left:40%"><b>Leadership Member · I2 @ UW</b>Fellows TA</div>
+    <div class="pt now" style="left:66%"></div><div class="lab now" style="left:66%"><b>Software Engineer · Blaze Edu LLC</b>Full-stack, TypeScript</div>
+  </div>
+</body>
+</html>

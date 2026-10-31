@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Grid planes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --ground: #0e1422; --d2: #8792a8; --d1: #eef1f6; --accent: #ffb23e; --sans: 'Schibsted Grotesk', system-ui, sans-serif; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; background: var(--ground); color: var(--d1); font-family: var(--sans); font-variant-numeric: tabular-nums; }
+  .g { position: absolute; inset: -200px; }
+  .g3 { background: linear-gradient(rgba(135,146,168,.07) 1px, transparent 1px) 0 0 / 240px 240px, linear-gradient(90deg, rgba(135,146,168,.07) 1px, transparent 1px) 0 0 / 240px 240px; transform: translate(70px, 40px); }
+  .g2 { background: linear-gradient(rgba(135,146,168,.08) 1px, transparent 1px) 0 0 / 96px 96px, linear-gradient(90deg, rgba(135,146,168,.08) 1px, transparent 1px) 0 0 / 96px 96px; transform: translate(30px, 18px); }
+  .g1 { background: linear-gradient(rgba(135,146,168,.11) 1px, transparent 1px) 0 0 / 32px 32px, linear-gradient(90deg, rgba(135,146,168,.11) 1px, transparent 1px) 0 0 / 32px 32px; transform: translate(200px, 200px); -webkit-mask: radial-gradient(900px 500px at 50% 75%, #000 30%, transparent 75%); mask: radial-gradient(900px 500px at 50% 75%, #000 30%, transparent 75%); }
+  .front { position: relative; padding: 0 96px; }
+  header { height: 96px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; }
+  header b { font-weight: 900; font-size: 17px; }
+  nav { display: flex; gap: 32px; color: var(--d2); align-items: center; }
+  nav .cur { color: var(--d1); }
+  .rt .on { color: var(--accent); } .rt { display: flex; gap: 16px; }
+  h1 { font-weight: 900; font-size: 128px; letter-spacing: -.045em; line-height: .88; margin-top: 32px; }
+  .role { font-size: 22px; margin-top: 16px; font-weight: 500; }
+  p { font-size: 19px; line-height: 1.6; max-width: 60ch; margin-top: 24px; }
+  .links { display: flex; gap: 32px; margin-top: 22px; font-weight: 700; }
+  .links span { border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+  .chart { position: absolute; left: 96px; right: 96px; top: 608px; height: 224px; }
+  .axis { position: absolute; left: 0; right: 0; bottom: 32px; height: 1px; background: var(--d2); opacity: .5; }
+  .yr { position: absolute; bottom: 8px; font-size: 13px; color: var(--d2); }
+  .bar { position: absolute; height: 32px; display: flex; align-items: center; padding: 0 12px; font-size: 14px; white-space: nowrap; background: rgba(135,146,168,.14); color: var(--d1); }
+  .bar span { color: var(--d2); margin-left: 8px; }
+  .bar.now { background: var(--accent); color: #1c1203; font-weight: 700; }
+  .bar.now span { color: #4a3510; font-weight: 500; }
+</style>
+</head>
+<body>
+  <div class="g g3"></div><div class="g g2"></div><div class="g g1"></div>
+  <div class="front">
+    <header><b>John Jin</b><nav><span class="cur">Home</span><span>Articles</span><span>Photos</span><span>Tags</span><span>⌘K</span><span>中</span><span class="rt"><span class="on">Official</span><span>Casual</span></span></nav></header>
+    <h1>John Jin</h1>
+    <div class="role">Software Developer · UW Allen School ’27</div>
+    <p>Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</p>
+    <div class="links"><span>Email</span><span>GitHub ↗</span><span>LinkedIn ↗</span></div>
+  </div>
+  <div class="chart">
+    <div class="bar" style="left:0;width:40%;top:0">Software Engineer · Hedracam<span>C++, C#</span></div>
+    <div class="bar" style="left:40%;width:28%;top:48px">Leadership Member · I2 @ UW<span>Fellows TA</span></div>
+    <div class="bar now" style="left:66%;width:34%;top:96px">Software Engineer · Blaze Edu LLC<span>TypeScript</span></div>
+    <div class="axis"></div>
+    <span class="yr" style="left:0">2024</span><span class="yr" style="left:33%">2025</span><span class="yr" style="left:66%">2026</span><span class="yr" style="right:0">2027</span>
+  </div>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en" data-route="official">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Horizon Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Red+Hat+Mono:wght@400;500&family=Red+Hat+Text:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/scene.css">
+<style>
+  /* Preview chrome and component specimens. Tokens come from ../css/tokens.css. */
+  * { box-sizing: border-box; }
+  html { background: var(--ground); color: var(--ink); color-scheme: dark; }
+  body { margin: 0; font-family: var(--font-text); font-size: var(--text-base); line-height: var(--leading-body); background: var(--ground); -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--accent-soft); color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius); }
+  a { color: inherit; }
+  h1, h2, h3, h4 { font-family: var(--font-headline); line-height: var(--leading-heading); margin: 0; }
+  p { margin: 0; }
+  * { scrollbar-color: var(--rule) var(--ground); }
+
+  .layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); min-height: 100vh; }
+
+  /* ---- knob panel ---- */
+  .panel { position: sticky; top: 0; height: 100vh; overflow-y: auto; border-right: 1px solid var(--rule); background: var(--ground); padding: var(--space-3) var(--space-3) var(--space-8); font-size: var(--text-ui); z-index: 10; }
+  .panel h1 { font-size: var(--text-lg); font-weight: 900; letter-spacing: -0.02em; }
+  .panel > p { color: var(--ink-3); font-size: var(--text-xs); margin-top: 4px; }
+  .panel details { border-top: 1px solid var(--rule); margin-top: var(--space-2); padding-top: var(--space-2); }
+  .panel summary { font-family: var(--font-headline); font-weight: 700; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
+  .panel summary::-webkit-details-marker { display: none; }
+  .panel summary::after { content: '+'; color: var(--ink-3); }
+  .panel details[open] summary::after { content: '−'; }
+  .knob { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; margin-top: 12px; }
+  .knob label { color: var(--ink-2); font-size: var(--text-xs); }
+  .knob output { font-family: var(--font-code); font-size: var(--text-xs); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .knob input { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); margin: 0; }
+  .route-pick { display: grid; grid-template-columns: 1fr 1fr; margin-top: var(--space-2); border: 1px solid var(--rule); border-radius: var(--radius); }
+  .route-pick button { font: inherit; font-weight: 500; padding: 8px; background: none; border: 0; color: var(--ink-3); cursor: pointer; border-radius: var(--radius); }
+  .route-pick button[aria-pressed='true'] { color: var(--accent-ink); background: var(--accent); }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: var(--space-3); }
+  .export { width: 100%; height: 220px; margin-top: 8px; font-family: var(--font-code); font-size: 12px; line-height: 1.5; background: var(--surface); color: var(--ink-2); border: 1px solid var(--rule); border-radius: var(--radius); padding: 10px; resize: vertical; }
+  .copied { color: var(--accent); font-size: var(--text-xs); min-height: 1.5em; margin-top: 4px; }
+
+  /* ---- specimen pages ---- */
+  main { min-width: 0; }
+  .sheet { padding: var(--space-12) var(--space-8); border-bottom: 1px solid var(--rule); }
+  .sheet > h2 { font-size: var(--text-2xl); font-weight: 900; letter-spacing: -0.02em; }
+  .sheet > .lede { color: var(--ink-2); max-width: var(--measure); margin-top: var(--space-1); }
+  .sheet-body { margin-top: var(--space-6); }
+
+  /* ---- site header (component) ---- */
+  .site-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); height: 80px; font-size: var(--text-ui); }
+  .site-name { font-family: var(--font-headline); font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; }
+  .site-nav { display: flex; align-items: center; gap: var(--space-4); }
+  .nav-link { color: var(--ink-2); text-decoration: none; padding: 4px 0; transition: color var(--dur-fast) var(--ease-out); }
+  .nav-link:hover { color: var(--ink); }
+  .nav-link[aria-current='page'] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--accent); }
+  .icon-btn { font: inherit; display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; color: var(--ink-2); cursor: pointer; padding: 4px; }
+  .icon-btn:hover { color: var(--ink); }
+  .icon-btn svg { width: 18px; height: 18px; }
+  kbd { font-family: var(--font-code); font-size: 11px; color: var(--ink-3); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1px 5px; }
+  .route-switch { display: flex; gap: var(--space-2); font-family: var(--font-headline); font-weight: 700; letter-spacing: 0.02em; }
+  .route-switch a { text-decoration: none; color: var(--ink-3); transition: color var(--dur-fast) var(--ease-out); }
+  .route-switch a:hover { color: var(--ink); }
+  .route-switch a[aria-current='true'] { color: var(--accent); }
+  .menu-btn { display: none; }
+
+  /* ---- home first viewport ---- */
+  .home { min-height: 860px; padding: 0 var(--space-12); display: flex; flex-direction: column; }
+  .home .front { padding-top: var(--space-8); }
+  .display-name { font-size: var(--text-display); font-weight: 900; letter-spacing: -0.035em; line-height: var(--leading-tight); }
+  .role { font-family: var(--font-headline); font-size: var(--text-lg); font-weight: 500; margin-top: var(--space-2); }
+  .intro { font-size: var(--text-base); max-width: var(--measure); margin-top: var(--space-3); }
+  .links { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-3); font-family: var(--font-headline); font-weight: 700; }
+
+  .link-underline { text-decoration: none; background: linear-gradient(var(--accent), var(--accent)) 0 100% / 100% 2px no-repeat; padding-bottom: 2px; transition: background-size var(--dur-base) var(--ease-out), color var(--dur-fast); }
+  .link-underline:hover { background-size: 100% 100%; color: var(--accent-ink); }
+
+  /* ---- timeline (component) ---- */
+  .timeline { position: relative; margin-top: auto; padding: 200px 0 var(--space-8); }
+  .timeline-axis { position: relative; height: 1px; background: var(--horizon); }
+  .tl-span { position: absolute; top: -1px; height: 3px; left: var(--start); width: calc(var(--end) - var(--start)); background: var(--ink-3); opacity: 0.55; }
+  .tl-span[data-now] { background: var(--accent); opacity: 1; }
+  .tl-point { position: absolute; top: -5px; left: var(--start); width: 11px; height: 11px; margin-left: -5px; background: var(--ground); border: 2px solid var(--ink-3); border-radius: 50%; }
+  .tl-point[data-now] { background: var(--accent); border-color: var(--accent); width: 15px; height: 15px; top: -7px; margin-left: -7px; }
+  .tl-label { position: absolute; left: var(--start); bottom: calc(14px + var(--row, 0) * 52px); padding-left: 12px; border-left: 1px solid var(--rule); font-size: var(--text-xs); color: var(--ink-3); white-space: nowrap; line-height: 1.4; }
+  .tl-label::before { content: ''; position: absolute; left: -1px; bottom: calc(-14px - var(--row, 0) * 52px); height: calc(14px + var(--row, 0) * 52px); border-left: 1px solid var(--rule); }
+  .tl-label b { display: block; font-family: var(--font-headline); font-size: var(--text-ui); color: var(--ink); font-weight: 500; }
+  .tl-label[data-now] { border-color: var(--accent); }
+  .tl-label[data-now]::before { border-color: var(--accent); }
+  .tl-label[data-now] b { font-weight: 700; }
+  .tl-years { position: relative; height: 28px; font-family: var(--font-headline); font-size: var(--text-xs); color: var(--ink-3); letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
+  .tl-years span { position: absolute; top: 10px; transform: translateX(-50%); }
+  .tl-years span:first-child { transform: none; }
+  .tl-years span:last-child { transform: translateX(-100%); }
+
+  /* ---- color ---- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-2); }
+  .swatch { border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+  .swatch .chip { height: 72px; display: flex; align-items: flex-end; padding: 8px 10px; font-family: var(--font-headline); font-weight: 700; font-size: var(--text-lg); }
+  .swatch .meta { padding: 8px 10px; font-size: var(--text-xs); line-height: 1.5; }
+  .swatch .meta code { font-family: var(--font-code); color: var(--ink-2); }
+  .swatch .meta span { display: block; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .pass { color: var(--ink-2); } .fail { color: var(--accent); font-weight: 700; }
+
+  /* ---- type ---- */
+  .type-row { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: var(--space-3); align-items: baseline; padding: var(--space-2) 0; border-top: 1px solid var(--rule); }
+  .type-row .spec { font-family: var(--font-code); font-size: var(--text-xs); color: var(--ink-3); line-height: 1.5; }
+  .type-row .spec b { display: block; color: var(--ink-2); font-weight: 500; font-family: var(--font-text); }
+  .type-row > div:last-child { overflow-wrap: anywhere; }
+
+  /* ---- space ---- */
+  .space-row { display: grid; grid-template-columns: 90px 70px 1fr; gap: var(--space-2); align-items: center; font-family: var(--font-code); font-size: var(--text-xs); color: var(--ink-3); padding: 6px 0; }
+  .space-row i { display: block; height: 12px; background: var(--surface-2); border-left: 2px solid var(--accent); }
+
+  /* ---- components ---- */
+  .comp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-6) var(--space-8); }
+  .comp h3 { font-size: var(--text-ui); font-weight: 700; color: var(--ink-2); margin-bottom: var(--space-2); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+  .btn { font: inherit; font-family: var(--font-headline); font-weight: 700; font-size: var(--text-ui); height: 40px; padding: 0 var(--space-2); display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius); border: 1px solid var(--rule); background: none; color: var(--ink); cursor: pointer; text-decoration: none; transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast), color var(--dur-fast); }
+  .btn:hover { border-color: var(--ink-3); background: var(--surface); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { background: oklch(from var(--accent) calc(l + 0.06) c h); border-color: transparent; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .tag { font-size: var(--text-xs); color: var(--ink-2); text-decoration: none; border: 1px solid var(--rule); border-radius: var(--radius); padding: 2px 8px; transition: border-color var(--dur-fast), color var(--dur-fast); }
+  .tag:hover { border-color: var(--accent); color: var(--ink); }
+  .tag[aria-current='page'] { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+  .tag small { color: var(--ink-3); margin-left: 4px; font-variant-numeric: tabular-nums; font-size: inherit; }
+  .field { font: inherit; font-size: var(--text-ui); width: 100%; height: 44px; padding: 0 var(--space-2); background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); color: var(--ink); }
+  .field::placeholder { color: var(--ink-3); }
+  .field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  .post-list { list-style: none; padding: 0; margin: 0; }
+  .post-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: var(--space-3); padding: var(--space-3) 0; border-top: 1px solid var(--rule); }
+  .post-row time { font-family: var(--font-headline); font-size: var(--text-xs); color: var(--ink-3); letter-spacing: 0.06em; padding-top: 6px; font-variant-numeric: tabular-nums; }
+  .post-row h4 { font-size: var(--text-xl); font-weight: 700; letter-spacing: -0.01em; }
+  .post-row h4 a { text-decoration: none; }
+  .post-row h4 a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .post-row p { color: var(--ink-2); margin-top: 6px; max-width: var(--measure); }
+  .post-row .row { margin-top: var(--space-1); }
+  .pager { display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-3); border-top: 1px solid var(--rule); font-family: var(--font-headline); font-size: var(--text-ui); }
+  .pager span { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .pager a { text-decoration: none; }
+  .pager [aria-disabled='true'] { color: var(--ink-3); opacity: 0.5; }
+
+  .plate { margin: 0; }
+  .plate img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); background: var(--surface); }
+  .plate figcaption { display: flex; justify-content: space-between; gap: var(--space-2); margin-top: 8px; font-size: var(--text-xs); color: var(--ink-3); }
+  .plate figcaption b { font-family: var(--font-headline); color: var(--ink); font-weight: 700; font-size: var(--text-ui); }
+
+  /* ---- article column ---- */
+  .article { max-width: var(--measure); }
+  .article .meta { font-family: var(--font-headline); font-size: var(--text-xs); color: var(--ink-3); letter-spacing: 0.06em; }
+  .article h1 { font-size: var(--text-3xl); font-weight: 900; letter-spacing: -0.03em; margin-top: var(--space-1); }
+  .article .summary { color: var(--ink-2); font-size: var(--text-lg); margin-top: var(--space-2); line-height: 1.45; }
+  .prose > * + * { margin-top: var(--space-3); }
+  .prose h2 { font-size: var(--text-xl); font-weight: 700; margin-top: var(--space-8); }
+  .prose h3 { font-size: var(--text-lg); font-weight: 700; margin-top: var(--space-6); }
+  .prose a { text-decoration-color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .prose a:hover { text-decoration-thickness: 2px; }
+  .prose :not(pre) > code { font-family: var(--font-code); font-size: 0.88em; background: var(--surface-2); border-radius: var(--radius); padding: 0.1em 0.35em; }
+  .prose ul { padding-left: 1.2em; } .prose li::marker { color: var(--ink-3); }
+  .prose blockquote { margin: var(--space-3) 0 0; padding-left: var(--space-3); border-left: 1px solid var(--horizon); color: var(--ink-2); }
+  .code { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+  .code-head { display: flex; justify-content: space-between; padding: 6px var(--space-2); border-bottom: 1px solid var(--rule); font-family: var(--font-code); font-size: var(--text-xs); color: var(--ink-3); }
+  .code pre { margin: 0; padding: var(--space-2); overflow-x: auto; font-family: var(--font-code); font-size: 0.875rem; line-height: 1.7; color: var(--ink); }
+  .t-c { color: var(--syntax-comment); font-style: italic; } .t-k { color: var(--syntax-keyword); } .t-s { color: var(--syntax-string); } .t-f { color: var(--syntax-function); font-weight: 500; } .t-p { color: var(--syntax-punctuation); }
+  .callout { border: 1px solid var(--rule); background: var(--surface); border-radius: var(--radius); padding: var(--space-2) var(--space-3); }
+  .callout b { font-family: var(--font-headline); color: var(--accent); display: block; font-size: var(--text-ui); }
+  table { border-collapse: collapse; width: 100%; font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+  th { text-align: left; font-family: var(--font-headline); font-weight: 700; font-size: var(--text-xs); color: var(--ink-3); letter-spacing: 0.04em; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--horizon); }
+  td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  td code { font-family: var(--font-code); font-size: 0.9em; }
+
+  /* ---- responsive ---- */
+  @media (max-width: 1000px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .panel { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); padding: var(--space-3) 16px; }
+    .sheet { padding: var(--space-8) 16px; }
+    .home { padding: 0 16px; min-height: auto; }
+    .site-nav .nav-link, .site-nav .route-switch, .site-nav kbd { display: none; }
+    .menu-btn { display: inline-flex; }
+    .timeline { padding: var(--space-6) 0 var(--space-4); }
+    .timeline-axis, .tl-years { display: none; }
+    .tl-mobile { display: grid !important; }
+    .type-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .post-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .post-row time { padding-top: 0; }
+  }
+  .tl-mobile { display: none; list-style: none; margin: 0; padding: 0 0 0 var(--space-3); border-left: 1px solid var(--horizon); gap: var(--space-3); }
+  .tl-mobile li { position: relative; font-size: var(--text-xs); color: var(--ink-3); }
+  .tl-mobile li::before { content: ''; position: absolute; left: calc(var(--space-3) * -1 - 5px); top: 5px; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--ink-3); background: var(--ground); }
+  .tl-mobile li[data-now]::before { background: var(--accent); border-color: var(--accent); }
+  .tl-mobile b { display: block; font-family: var(--font-headline); color: var(--ink); font-size: var(--text-ui); font-weight: 500; }
+  .tl-mobile li[data-now] b { font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="panel" aria-label="Design tokens">
+    <h1>Horizon</h1>
+    <p>Knobs override tokens live. Copy the result over the PRIMITIVES block in css/tokens.css.</p>
+
+    <div class="route-pick" role="group" aria-label="Route">
+      <button type="button" data-route-btn="official" aria-pressed="true">Official</button>
+      <button type="button" data-route-btn="casual" aria-pressed="false">Casual</button>
+    </div>
+
+    <details open><summary>Ground</summary><div data-group="ground"></div></details>
+    <details open><summary>Accents</summary><div data-group="accent"></div></details>
+    <details><summary>Type</summary><div data-group="type"></div></details>
+    <details><summary>Space and shape</summary><div data-group="space"></div></details>
+    <details open><summary>Grid planes</summary><div data-group="scene"></div></details>
+    <details><summary>Motion</summary><div data-group="motion"></div></details>
+
+    <div class="actions">
+      <button type="button" class="btn btn-primary" id="copy">Copy tokens</button>
+      <button type="button" class="btn" id="reset">Reset</button>
+    </div>
+    <div class="copied" id="copied" aria-live="polite"></div>
+    <textarea class="export" id="export" readonly aria-label="Exported primitives"></textarea>
+  </aside>
+
+  <main>
+    <!-- Home, first viewport -->
+    <section class="scene home" id="scene" aria-label="Home page specimen">
+      <div class="scene-grid scene-grid-far" aria-hidden="true"></div>
+      <div class="scene-grid scene-grid-near" aria-hidden="true"></div>
+      <header class="site-header">
+        <a class="site-name" href="#scene">John Jin</a>
+        <nav class="site-nav" aria-label="Main">
+          <a class="nav-link" href="#scene" aria-current="page">Home</a>
+          <a class="nav-link" href="#components">Articles</a>
+          <a class="nav-link" href="#components">Photos</a>
+          <a class="nav-link" href="#components">Tags</a>
+          <button class="icon-btn" type="button" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><kbd>⌘K</kbd></button>
+          <button class="icon-btn" type="button" aria-label="Switch language">中</button>
+          <span class="route-switch"><a href="#" data-route-link="official">Official</a><a href="#" data-route-link="casual">Casual</a></span>
+          <button class="icon-btn menu-btn" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        </nav>
+      </header>
+      <div class="front">
+        <h2 class="display-name">John Jin</h2>
+        <p class="role" data-text="role">Software Developer · UW Allen School ’27</p>
+        <p class="intro" data-text="intro">Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</p>
+        <div class="links"><a class="link-underline" href="#">Email</a><a class="link-underline" href="#">GitHub</a><a class="link-underline" href="#">LinkedIn</a></div>
+      </div>
+      <div class="timeline" aria-label="Experience timeline">
+        <div class="timeline-axis">
+          <div class="tl-span" style="--start:0%;--end:40%"></div>
+          <div class="tl-span" style="--start:40%;--end:68%"></div>
+          <div class="tl-span" data-now style="--start:66%;--end:100%"></div>
+          <div class="tl-point" style="--start:0%"></div>
+          <div class="tl-point" style="--start:40%"></div>
+          <div class="tl-point" data-now style="--start:66%"></div>
+          <div class="tl-label" style="--start:0%;--row:0"><b>Software Engineer · Hedracam</b>2024 – 2025 · C++, C#</div>
+          <div class="tl-label" style="--start:40%;--row:1"><b>Leadership Member · I2 @ UW</b>2025 – 2026 · Fellows TA</div>
+          <div class="tl-label" data-now style="--start:66%;--row:2"><b>Software Engineer · Blaze Edu LLC</b>2026 – now · TypeScript, PostgreSQL</div>
+        </div>
+        <div class="tl-years"><span style="left:0">2024</span><span style="left:33%">2025</span><span style="left:66%">2026</span><span style="left:100%">2027</span></div>
+        <ol class="tl-mobile" reversed>
+          <li data-now><b>Software Engineer · Blaze Edu LLC</b>2026 – now · TypeScript, PostgreSQL</li>
+          <li><b>Leadership Member · I2 @ UW</b>2025 – 2026 · Fellows TA</li>
+          <li><b>Software Engineer · Hedracam</b>2024 – 2025 · C++, C#</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sheet" id="color">
+      <h2>Color</h2>
+      <p class="lede">Every neutral is the ground hue at a different lightness. The accent changes with the route; the other route's accent appears only in code strings. Contrast is measured against the ground.</p>
+      <div class="sheet-body swatches" id="swatches"></div>
+    </section>
+
+    <section class="sheet" id="type">
+      <h2>Type</h2>
+      <p class="lede">Red Hat Display for the name and headings, Red Hat Text for reading, Red Hat Mono for code. Content sizes step by the type ratio from the reading size.</p>
+      <div class="sheet-body" id="type-rows"></div>
+    </section>
+
+    <section class="sheet" id="space">
+      <h2>Space and shape</h2>
+      <p class="lede">One unit sets every gap. Headings get more space above than below.</p>
+      <div class="sheet-body" id="space-rows"></div>
+    </section>
+
+    <section class="sheet" id="components">
+      <h2>Components</h2>
+      <p class="lede">Hover and tab through them to see states.</p>
+      <div class="sheet-body comp-grid">
+        <div class="comp">
+          <h3>Buttons</h3>
+          <div class="row"><button class="btn btn-primary" type="button">Email me</button><button class="btn" type="button">View all articles</button><button class="btn" type="button" disabled>Disabled</button></div>
+        </div>
+        <div class="comp">
+          <h3>Tags</h3>
+          <div class="row"><a class="tag" href="#">nextjs<small>2</small></a><a class="tag" aria-current="page" href="#">project<small>1</small></a><a class="tag" href="#">writing<small>2</small></a><a class="tag" href="#">photography<small>1</small></a></div>
+        </div>
+        <div class="comp">
+          <h3>Search</h3>
+          <input class="field" type="search" placeholder="Search articles and photos" aria-label="Search articles and photos">
+        </div>
+        <div class="comp">
+          <h3>Photo plate</h3>
+          <figure class="plate"><img src="../public/static/images/canada/mountains-800w.jpg" alt="Mountain ridge in morning light"><figcaption><b>Mountain morning</b><span>Jun 26, 2026</span></figcaption></figure>
+        </div>
+      </div>
+      <div class="sheet-body">
+        <div class="comp">
+          <h3>Article list</h3>
+          <ul class="post-list">
+            <li class="post-row"><time datetime="2026-06-28">JUN 28, 2026</time><div><h4><a href="#">How I take photos</a></h4><p>A few habits that improved my photos more than any gear upgrade. Shared across both sides of the site.</p><div class="row"><a class="tag" href="#">photography</a><a class="tag" href="#">writing</a></div></div></li>
+            <li class="post-row"><time datetime="2026-06-25">JUN 25, 2026</time><div><h4><a href="#">Building a dual-route blog</a></h4><p>How this site serves two independent sections — official and casual — from one Next.js app.</p><div class="row"><a class="tag" href="#">nextjs</a><a class="tag" href="#">project</a></div></div></li>
+            <li class="post-row"><time datetime="2026-06-20">JUN 20, 2026</time><div><h4><a href="#">Welcome to the official blog</a></h4><p>The first post on the official side of the site — what I plan to write here and how things are organized.</p><div class="row"><a class="tag" href="#">writing</a><a class="tag" href="#">meta</a></div></div></li>
+          </ul>
+          <nav class="pager" aria-label="Pagination"><span aria-disabled="true">← Newer</span><span>Page 1 of 2</span><a class="link-underline" href="#">Older →</a></nav>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet" id="article">
+      <h2>Article column</h2>
+      <p class="lede">The reading column stays calm: no scenery behind it, a real measure, the accent only on links and keywords.</p>
+      <article class="sheet-body article">
+        <div class="meta">JUN 25, 2026 · 2 MIN READ</div>
+        <h1>Building a dual-route blog</h1>
+        <p class="summary">How this site serves two independent sections — official and casual — from one Next.js app.</p>
+        <div class="prose" style="margin-top: var(--space-6)">
+          <p>The site has two top-level routes, <code>official</code> and <code>casual</code>, each with its own home, blog, photos, and tags. A single frontmatter field decides where a post appears, and <a href="#">posts marked shared</a> appear under both.</p>
+          <h2>Filtering by route</h2>
+          <p>Every list goes through one helper, so the rule lives in one place:</p>
+          <div class="code"><div class="code-head"><span>data/routes.ts</span><span>ts</span></div><pre><span class="t-c">// Keep posts for this route, plus anything shared</span>
+<span class="t-k">export function</span> <span class="t-f">postsForRoute</span><span class="t-p">&lt;</span>T <span class="t-k">extends</span> <span class="t-p">{</span> route<span class="t-p">?:</span> string <span class="t-p">}&gt;(</span>items<span class="t-p">:</span> T<span class="t-p">[],</span> route<span class="t-p">:</span> Route<span class="t-p">) {</span>
+  <span class="t-k">return</span> items<span class="t-p">.</span><span class="t-f">filter</span><span class="t-p">((</span>item<span class="t-p">) =&gt;</span> item<span class="t-p">.</span>route <span class="t-p">===</span> route <span class="t-p">||</span> item<span class="t-p">.</span>route <span class="t-p">===</span> <span class="t-s">'shared'</span><span class="t-p">)</span>
+<span class="t-p">}</span></pre></div>
+          <div class="callout"><b>Note</b>Tags are counted per route, while search stays global across everything.</div>
+          <h3>Frontmatter</h3>
+          <table><thead><tr><th>Field</th><th>Values</th><th>Effect</th></tr></thead><tbody>
+            <tr><td><code>route</code></td><td>official · casual · shared</td><td>Which lists the post appears in</td></tr>
+            <tr><td><code>draft</code></td><td>true · false</td><td>Hidden in production builds</td></tr>
+          </tbody></table>
+          <blockquote>Shared posts count toward tags in both routes.</blockquote>
+        </div>
+      </article>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  const root = document.documentElement
+  const css = getComputedStyle(root)
+  const read = (v) => css.getPropertyValue(v).trim()
+  const num = (s) => parseFloat(s)
+  const store = {
+    get() { try { return JSON.parse(localStorage.getItem('horizon-knobs') || 'null') } catch { return null } },
+    set(v) { try { localStorage.setItem('horizon-knobs', JSON.stringify(v)) } catch {} },
+    clear() { try { localStorage.removeItem('horizon-knobs') } catch {} },
+  }
+
+  // [group, key, label, min, max, step, read(), write(value) -> [var, css]]
+  const accent = (route, i) => () => num(read(`--accent-${route}`).replace(/oklch\(|\)/g, '').split(/\s+/)[i])
+  const knobs = [
+    ['ground', 'ground-hue', 'Hue', 0, 360, 1, () => num(read('--ground-hue')), (v) => ['--ground-hue', `${v}`]],
+    ['ground', 'ground-chroma', 'Tint', 0, 0.08, 0.005, () => num(read('--ground-chroma')), (v) => ['--ground-chroma', `${v}`]],
+    ['ground', 'ground-lightness', 'Lightness', 0.1, 0.3, 0.005, () => num(read('--ground-lightness')), (v) => ['--ground-lightness', `${v}`]],
+    ['accent', 'off-l', 'Official lightness', 0.55, 0.92, 0.01, accent('official', 0), null],
+    ['accent', 'off-c', 'Official chroma', 0, 0.25, 0.005, accent('official', 1), null],
+    ['accent', 'off-h', 'Official hue', 0, 360, 1, accent('official', 2), null],
+    ['accent', 'cas-l', 'Casual lightness', 0.55, 0.92, 0.01, accent('casual', 0), null],
+    ['accent', 'cas-c', 'Casual chroma', 0, 0.25, 0.005, accent('casual', 1), null],
+    ['accent', 'cas-h', 'Casual hue', 0, 360, 1, accent('casual', 2), null],
+    ['type', 'type-base', 'Reading size (px)', 15, 21, 0.5, () => num(read('--type-base')) * 16, (v) => ['--type-base', `${v / 16}rem`]],
+    ['type', 'type-ratio', 'Scale ratio', 1.125, 1.414, 0.005, () => num(read('--type-ratio')), (v) => ['--type-ratio', `${v}`]],
+    ['type', 'display-max', 'Name max size (rem)', 4, 9, 0.25, () => num(read('--display-max')), (v) => ['--display-max', `${v}rem`]],
+    ['type', 'measure', 'Measure (ch)', 52, 80, 1, () => num(read('--measure')), (v) => ['--measure', `${v}ch`]],
+    ['space', 'space-unit', 'Space unit (px)', 6, 10, 0.5, () => num(read('--space-unit')) * 16, (v) => ['--space-unit', `${v / 16}rem`]],
+    ['space', 'radius', 'Corner radius (px)', 0, 12, 1, () => num(read('--radius')), (v) => ['--radius', `${v}px`]],
+    ['scene', 'grid-near-cell', 'Near cell (px)', 48, 240, 4, () => num(read('--grid-near-cell')), (v) => ['--grid-near-cell', `${v}px`]],
+    ['scene', 'grid-far-cell', 'Far cell (px)', 12, 64, 2, () => num(read('--grid-far-cell')), (v) => ['--grid-far-cell', `${v}px`]],
+    ['scene', 'grid-near-opacity', 'Near opacity', 0, 1, 0.05, () => num(read('--grid-near-opacity')), (v) => ['--grid-near-opacity', `${v}`]],
+    ['scene', 'grid-far-opacity', 'Far opacity', 0, 1, 0.05, () => num(read('--grid-far-opacity')), (v) => ['--grid-far-opacity', `${v}`]],
+    ['scene', 'grid-parallax', 'Pointer parallax (px)', 0, 64, 1, () => num(read('--grid-parallax')), (v) => ['--grid-parallax', `${v}px`]],
+    ['scene', 'grid-scroll-rate', 'Scroll rate', 0, 1, 0.05, () => num(read('--grid-scroll-rate')), (v) => ['--grid-scroll-rate', `${v}`]],
+    ['scene', 'scene-drift', 'Drift per cell (s)', 10, 120, 1, () => num(read('--scene-drift')), (v) => ['--scene-drift', `${v}s`]],
+    ['motion', 'motion-scale', 'Motion scale', 0, 1.5, 0.05, () => num(read('--motion-scale')), (v) => ['--motion-scale', `${v}`]],
+  ]
+
+  const defaults = Object.fromEntries(knobs.map((k) => [k[1], k[6]()]))
+  const state = Object.assign({}, defaults, store.get() || {})
+  const fmt = (v, step) => (step < 1 ? Number(v).toFixed(String(step).split('.')[1].length) : String(v))
+
+  function cssFor(k, v) {
+    if (k[7]) return [k[7](v)]
+    return []
+  }
+
+  function apply() {
+    for (const k of knobs) for (const [name, value] of cssFor(k, state[k[1]])) root.style.setProperty(name, value)
+    root.style.setProperty('--accent-official', `oklch(${state['off-l']} ${state['off-c']} ${state['off-h']})`)
+    root.style.setProperty('--accent-casual', `oklch(${state['cas-l']} ${state['cas-c']} ${state['cas-h']})`)
+    store.set(state)
+    renderExport()
+    requestAnimationFrame(renderMeasures)
+  }
+
+  for (const k of knobs) {
+    const [group, key, label, min, max, step] = k
+    const wrap = document.createElement('div')
+    wrap.className = 'knob'
+    wrap.innerHTML = `<label for="k-${key}">${label}</label><output id="o-${key}"></output><input type="range" id="k-${key}" min="${min}" max="${max}" step="${step}">`
+    document.querySelector(`[data-group="${group}"]`).append(wrap)
+    const input = wrap.querySelector('input'), out = wrap.querySelector('output')
+    input.value = state[key]; out.textContent = fmt(state[key], step)
+    input.addEventListener('input', () => { state[key] = Number(input.value); out.textContent = fmt(input.value, step); apply() })
+  }
+
+  function renderExport() {
+    const s = state
+    document.getElementById('export').value = `  /* ---- PRIMITIVES (adjustable) ---------------------------------------- */
+
+  /* Ground: every neutral is tinted from this hue. Lightness sets how dark the site is. */
+  --ground-hue: ${s['ground-hue']};
+  --ground-chroma: ${s['ground-chroma']};
+  --ground-lightness: ${s['ground-lightness']};
+
+  /* One accent per route. */
+  --accent-official: oklch(${s['off-l']} ${s['off-c']} ${s['off-h']});
+  --accent-casual: oklch(${s['cas-l']} ${s['cas-c']} ${s['cas-h']});
+
+  /* Type: reading size and the ratio between steps. */
+  --type-base: ${+(s['type-base'] / 16).toFixed(4)}rem;
+  --type-ratio: ${s['type-ratio']};
+  --display-max: ${s['display-max']}rem;
+  --measure: ${s['measure']}ch;
+
+  /* Space and shape. */
+  --space-unit: ${+(s['space-unit'] / 16).toFixed(4)}rem;
+  --radius: ${s['radius']}px;
+
+  /* Scene: two flat line-grid planes behind the front plane. The near plane has
+     larger cells and moves more (scroll, pointer, drift); the far plane moves less. */
+  --grid-near-cell: ${s['grid-near-cell']}px;
+  --grid-far-cell: ${s['grid-far-cell']}px;
+  --grid-near-opacity: ${s['grid-near-opacity']};
+  --grid-far-opacity: ${s['grid-far-opacity']};
+  --grid-parallax: ${s['grid-parallax']}px; /* max pointer offset of the near plane */
+  --grid-scroll-rate: ${s['grid-scroll-rate']}; /* near-plane scroll speed relative to content */
+  --scene-drift: ${s['scene-drift']}s; /* time for the near plane to drift one cell */
+
+  /* Motion: 1 = normal, 0 = off. Forced to 0 under prefers-reduced-motion. */
+  --motion-scale: ${s['motion-scale']};`
+  }
+
+  document.getElementById('copy').addEventListener('click', async () => {
+    const el = document.getElementById('export'), msg = document.getElementById('copied')
+    try { await navigator.clipboard.writeText(el.value); msg.textContent = 'Copied. Paste over PRIMITIVES in css/tokens.css.' }
+    catch { el.select(); msg.textContent = 'Select-all is on; press Ctrl+C to copy.' }
+  })
+  document.getElementById('reset').addEventListener('click', () => {
+    store.clear(); root.removeAttribute('style'); location.reload()
+  })
+
+  // Route switching, with the grid "warp" on change.
+  const scene = document.getElementById('scene')
+  function setRoute(route) {
+    root.dataset.route = route
+    document.querySelectorAll('[data-route-btn]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.routeBtn === route)))
+    document.querySelectorAll('[data-route-link]').forEach((a) => a.setAttribute('aria-current', String(a.dataset.routeLink === route)))
+    const role = document.querySelector('[data-text="role"]'), intro = document.querySelector('[data-text="intro"]')
+    if (route === 'casual') { role.textContent = 'Starfall · off the clock'; intro.textContent = 'Off the clock, this is where I keep the half-formed notes, snapshots, and side projects. A more relaxed look at what I get up to for fun.' }
+    else { role.textContent = 'Software Developer · UW Allen School ’27'; intro.textContent = 'Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.' }
+    scene.setAttribute('data-warp', ''); setTimeout(() => scene.removeAttribute('data-warp'), 600)
+    requestAnimationFrame(renderMeasures)
+  }
+  document.querySelectorAll('[data-route-btn]').forEach((b) => b.addEventListener('click', () => setRoute(b.dataset.routeBtn)))
+  document.querySelectorAll('[data-route-link]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); setRoute(a.dataset.routeLink) }))
+  setRoute('official')
+
+  // Grid motion inputs: pointer and scroll, written as CSS variables.
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)')
+  let frame = 0, px = 0, py = 0
+  const flush = () => { frame = 0; scene.style.setProperty('--scene-px', px.toFixed(3)); scene.style.setProperty('--scene-py', py.toFixed(3)); scene.style.setProperty('--scene-scroll', String(Math.round(window.scrollY))) }
+  const queue = () => { if (!frame && !reduce.matches) frame = requestAnimationFrame(flush) }
+  window.addEventListener('pointermove', (e) => { px = (e.clientX / innerWidth) * 2 - 1; py = (e.clientY / innerHeight) * 2 - 1; queue() }, { passive: true })
+  window.addEventListener('scroll', queue, { passive: true })
+
+  // Measurements: resolved colors, contrast, computed sizes.
+  const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1
+  const ctx = canvas.getContext('2d', { willReadFrequently: true })
+  const probe = document.createElement('i'); probe.style.display = 'none'; document.body.append(probe)
+  function rgbOf(token) {
+    probe.style.color = `var(${token})`
+    const c = getComputedStyle(probe).color
+    ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = c; ctx.fillRect(0, 0, 1, 1)
+    const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data
+    return [r, g, b, a / 255]
+  }
+  const hex = ([r, g, b]) => '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')
+  const lum = ([r, g, b]) => { const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4 }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b) }
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05) }
+
+  const swatchDefs = [
+    ['--ground', 'Ground', 'page background'], ['--surface', 'Surface', 'code, inputs, callouts'], ['--surface-2', 'Surface 2', 'inline code, hover'],
+    ['--rule', 'Rule', 'hairlines, borders'], ['--grid-far-line', 'Far grid', 'scene, far plane'], ['--grid-near-line', 'Near grid', 'scene, near plane'], ['--horizon', 'Horizon', 'timeline axis, table head'],
+    ['--ink', 'Ink', 'headings, body', 4.5], ['--ink-2', 'Ink 2', 'secondary text', 4.5], ['--ink-3', 'Ink 3', 'meta, dates', 4.5],
+    ['--accent', 'Accent', 'active state, links', 3], ['--accent-alt', 'Other accent', 'code strings only', 4.5],
+  ]
+  const typeDefs = [
+    ['Display', '--text-display', 'var(--font-headline)', 900, 'John Jin', '-0.035em'],
+    ['3XL · page title', '--text-3xl', 'var(--font-headline)', 900, 'Building a dual-route blog', '-0.03em'],
+    ['2XL', '--text-2xl', 'var(--font-headline)', 900, 'Articles', '-0.02em'],
+    ['XL · section, list title', '--text-xl', 'var(--font-headline)', 700, 'Filtering by route', '-0.01em'],
+    ['LG · role, summary', '--text-lg', 'var(--font-headline)', 500, 'Software Developer · UW Allen School ’27', '0'],
+    ['Base · reading', '--text-base', 'var(--font-text)', 400, 'The site has two top-level routes, each with its own home, blog, photos, and tags. 两条路线，各有自己的主页。', '0'],
+    ['SM · tables', '--text-sm', 'var(--font-text)', 400, 'Tags are counted per route, while search stays global.', '0'],
+    ['UI · nav, controls', '--text-ui', 'var(--font-text)', 500, 'Home  Articles  Photos  Tags', '0'],
+    ['XS · meta', '--text-xs', 'var(--font-headline)', 500, 'JUN 25, 2026 · 2 MIN READ', '0.06em'],
+    ['Code', '--text-sm', 'var(--font-code)', 400, 'postsForRoute(allBlogs, route)', '0'],
+  ]
+  const spaceDefs = ['--space-1', '--space-2', '--space-3', '--space-4', '--space-6', '--space-8', '--space-12', '--space-16']
+
+  const swatchEl = document.getElementById('swatches'), typeEl = document.getElementById('type-rows'), spaceEl = document.getElementById('space-rows')
+  const chip = (t) => {
+    if (t === '--accent') return `<div class="chip" style="background:var(--accent);color:var(--accent-ink)">Aa</div>`
+    if (t.startsWith('--ink') || t === '--accent-alt') return `<div class="chip" style="background:var(--ground);color:var(${t})">Aa</div>`
+    return `<div class="chip" style="background:var(${t})"></div>`
+  }
+  swatchEl.innerHTML = swatchDefs.map(([t, n, use]) => `<div class="swatch">${chip(t)}<div class="meta"><b>${n}</b> <code>${t}</code><span data-hex="${t}"></span><span>${use}</span></div></div>`).join('')
+  typeEl.innerHTML = typeDefs.map(([name, size, fam, w, sample, track]) => `<div class="type-row"><div class="spec"><b>${name}</b><span data-size="${size}"></span></div><div style="font-family:${fam};font-size:var(${size});font-weight:${w};letter-spacing:${track};line-height:${size === '--text-display' ? 'var(--leading-tight)' : size.match(/base|sm|ui|xs/) ? 'var(--leading-body)' : 'var(--leading-heading)'}">${sample}</div></div>`).join('')
+  spaceEl.innerHTML = spaceDefs.map((t) => `<div class="space-row"><span>${t}</span><span data-space="${t}"></span><i style="width:var(${t})"></i></div>`).join('')
+
+  const sizeProbe = document.createElement('div'); sizeProbe.style.cssText = 'position:absolute;visibility:hidden'; document.body.append(sizeProbe)
+  function measure(token, prop = 'width') { sizeProbe.style[prop] = `var(${token})`; return parseFloat(getComputedStyle(sizeProbe)[prop]) }
+
+  const verdict = (r, min, label) => `<span class="${r >= min ? 'pass' : 'fail'}" style="display:inline">${r.toFixed(1)}:1 ${label}${r >= min ? '' : ' (below ' + min + ')'}</span>`
+  function renderMeasures() {
+    const ground = rgbOf('--ground')
+    for (const [t, , , min] of swatchDefs) {
+      const c = rgbOf(t), el = swatchEl.querySelector(`[data-hex="${t}"]`)
+      if (!min) { el.textContent = hex(c); continue }
+      let html = `${hex(c)} · ${verdict(ratio(c, ground), 4.5, 'on ground')}`
+      if (t === '--accent') html += ` · ${verdict(ratio(rgbOf('--accent-ink'), c), 4.5, 'ink on fill')}`
+      el.innerHTML = html
+    }
+    typeEl.querySelectorAll('[data-size]').forEach((el) => { el.textContent = `${measure(el.dataset.size, 'fontSize').toFixed(1)}px` })
+    spaceEl.querySelectorAll('[data-space]').forEach((el) => { el.textContent = `${measure(el.dataset.space)}px` })
+  }
+
+  apply()
+  document.fonts && document.fonts.ready.then(renderMeasures)
+  window.addEventListener('resize', () => requestAnimationFrame(renderMeasures))
+})()
+</script>
+</body>
+</html>

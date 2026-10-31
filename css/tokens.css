@@ -1,0 +1,142 @@
+/*
+  Design tokens — the single source for the site's look ("Horizon floor").
+
+  Edit the PRIMITIVES block to restyle the site; everything after it is derived.
+  To try values live, open design/index.html in a browser, adjust the knobs, and
+  paste the exported block over PRIMITIVES.
+
+  Tailwind utilities read the semantic tokens through `@theme inline` in
+  css/tailwind.css (e.g. `bg-ground`, `text-ink-2`, `border-rule`, `text-accent`).
+*/
+
+:root {
+  /* ---- PRIMITIVES (adjustable) ---------------------------------------- */
+
+  /* Ground: every neutral is tinted from this hue. Lightness sets how dark the site is. */
+  --ground-hue: 278;
+  --ground-chroma: 0.035;
+  --ground-lightness: 0.16;
+
+  /* One accent per route. */
+  --accent-official: oklch(0.78 0.13 235);
+  --accent-casual: oklch(0.82 0.16 72);
+
+  /* Type: reading size and the ratio between steps. */
+  --type-base: 1.125rem;
+  --type-ratio: 1.25;
+  --display-max: 7rem;
+  --measure: 68ch;
+
+  /* Space and shape. */
+  --space-unit: 0.5rem;
+  --radius: 2px;
+
+  /* Scene: two flat line-grid planes behind the front plane. The near plane has
+     larger cells and moves more (scroll, pointer, drift); the far plane moves less. */
+  --grid-near-cell: 128px;
+  --grid-far-cell: 32px;
+  --grid-near-opacity: 1;
+  --grid-far-opacity: 0.7;
+  --grid-parallax: 24px; /* max pointer offset of the near plane */
+  --grid-scroll-rate: 0.25; /* near-plane scroll speed relative to content */
+  --scene-drift: 40s; /* time for the near plane to drift one cell */
+
+  /* Motion: 1 = normal, 0 = off. Forced to 0 under prefers-reduced-motion. */
+  --motion-scale: 1;
+
+  /* ---- COLOR (derived) ------------------------------------------------- */
+
+  --ground: oklch(var(--ground-lightness) var(--ground-chroma) var(--ground-hue));
+  --surface: oklch(calc(var(--ground-lightness) + 0.035) var(--ground-chroma) var(--ground-hue));
+  --surface-2: oklch(calc(var(--ground-lightness) + 0.07) var(--ground-chroma) var(--ground-hue));
+  --rule: oklch(
+    calc(var(--ground-lightness) + 0.12) calc(var(--ground-chroma) * 1.1) var(--ground-hue)
+  );
+  --grid-far-line: oklch(
+    calc(var(--ground-lightness) + 0.055) calc(var(--ground-chroma) * 1.2) var(--ground-hue)
+  );
+  --grid-near-line: oklch(
+    calc(var(--ground-lightness) + 0.12) calc(var(--ground-chroma) * 1.3) var(--ground-hue)
+  );
+  --horizon: oklch(
+    calc(var(--ground-lightness) + 0.22) calc(var(--ground-chroma) * 1.2) var(--ground-hue)
+  );
+
+  --ink: oklch(0.96 0.012 var(--ground-hue));
+  --ink-2: oklch(0.8 0.03 var(--ground-hue));
+  --ink-3: oklch(0.66 0.04 var(--ground-hue));
+
+  /* ---- TYPE (derived) -------------------------------------------------- */
+
+  --font-headline:
+    var(--font-red-hat-display, 'Red Hat Display'), 'PingFang SC', 'Noto Sans SC',
+    'Microsoft YaHei', system-ui, sans-serif;
+  --font-text:
+    var(--font-red-hat-text, 'Red Hat Text'), 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei',
+    system-ui, sans-serif;
+  --font-code: var(--font-red-hat-mono, 'Red Hat Mono'), ui-monospace, monospace;
+
+  --text-xs: 0.8125rem; /* meta, dates, labels */
+  --text-ui: 0.9375rem; /* nav, controls */
+  --text-sm: calc(var(--type-base) / var(--type-ratio));
+  --text-base: var(--type-base);
+  --text-lg: calc(var(--text-base) * var(--type-ratio));
+  --text-xl: calc(var(--text-lg) * var(--type-ratio));
+  --text-2xl: calc(var(--text-xl) * var(--type-ratio));
+  --text-3xl: calc(var(--text-2xl) * var(--type-ratio));
+  --text-display: clamp(3.25rem, 1.25rem + 6.5vw, var(--display-max));
+
+  --leading-tight: 0.92;
+  --leading-heading: 1.15;
+  --leading-body: 1.65;
+
+  /* ---- SPACE (derived) ------------------------------------------------- */
+
+  --space-1: var(--space-unit);
+  --space-2: calc(var(--space-unit) * 2);
+  --space-3: calc(var(--space-unit) * 3);
+  --space-4: calc(var(--space-unit) * 4);
+  --space-6: calc(var(--space-unit) * 6);
+  --space-8: calc(var(--space-unit) * 8);
+  --space-12: calc(var(--space-unit) * 12);
+  --space-16: calc(var(--space-unit) * 16);
+
+  /* ---- MOTION (derived) ------------------------------------------------ */
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: calc(150ms * var(--motion-scale));
+  --dur-base: calc(300ms * var(--motion-scale));
+  --dur-slow: calc(700ms * var(--motion-scale));
+}
+
+/* Route accent. Declared on the route element so the derived values follow it. */
+:root,
+[data-route='official'] {
+  --accent: var(--accent-official);
+  --accent-alt: var(--accent-casual);
+}
+
+[data-route='casual'] {
+  --accent: var(--accent-casual);
+  --accent-alt: var(--accent-official);
+}
+
+:root,
+[data-route] {
+  --accent-ink: oklch(from var(--accent) 0.2 calc(c * 0.4) h);
+  --accent-soft: oklch(from var(--accent) l c h / 0.16);
+
+  /* Code: ink tints plus the two route accents; nothing else. */
+  --syntax-comment: var(--ink-3);
+  --syntax-keyword: var(--accent);
+  --syntax-string: var(--accent-alt);
+  --syntax-number: var(--ink);
+  --syntax-function: var(--ink);
+  --syntax-punctuation: var(--ink-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-scale: 0;
+  }
+}

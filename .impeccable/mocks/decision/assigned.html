@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Datasheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #121315; --raised: #1a1b1e; --rule: #2b2c30; --ink: #e7e5e0; --ink-2: #a3a29e; --ink-3: #6f6f6c;
+    --accent: #e0573c;
+    --sans: 'Archivo', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; background: var(--ground); color: var(--ink); font-family: var(--sans); }
+  .wrap { width: 1200px; margin: 0 auto; }
+  .label { font-family: var(--sans); font-stretch: 70%; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: 13px; color: var(--ink-3); }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  header { height: 64px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: baseline; gap: 14px; }
+  .logo b { font-stretch: 75%; font-weight: 750; font-size: 20px; letter-spacing: .04em; text-transform: uppercase; }
+  .logo span { font-size: 12px; color: var(--ink-3); }
+  nav { display: flex; align-items: center; gap: 28px; font-size: 15px; }
+  nav a { color: var(--ink-2); text-decoration: none; }
+  .seg { display: flex; border: 1px solid var(--rule); }
+  .seg span { padding: 6px 12px; font-stretch: 70%; font-weight: 600; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+  .seg .on { color: var(--ink); box-shadow: inset 0 -2px 0 var(--accent); }
+  .kbd { font-family: var(--mono); font-size: 12px; color: var(--ink-3); border: 1px solid var(--rule); padding: 3px 7px; }
+  .band { height: 6px; background: var(--accent); }
+  .mast { display: grid; grid-template-columns: 7fr 5fr; gap: 48px; padding: 56px 0 40px; border-bottom: 1px solid var(--rule); }
+  .partno { margin-bottom: 18px; }
+  h1 { font-size: 76px; line-height: 1; font-weight: 700; letter-spacing: -.02em; }
+  .desc { margin-top: 18px; font-size: 22px; color: var(--ink-2); font-weight: 400; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  caption { text-align: left; padding-bottom: 10px; }
+  th, td { text-align: left; padding: 10px 0; border-top: 1px solid var(--rule); vertical-align: top; }
+  th { width: 38%; font-weight: 500; color: var(--ink-3); font-stretch: 80%; text-transform: uppercase; letter-spacing: .05em; font-size: 12px; padding-top: 13px; }
+  tr:last-child td, tr:last-child th { border-bottom: 1px solid var(--rule); }
+  .cols { display: grid; grid-template-columns: 7fr 5fr; gap: 48px; padding-top: 36px; }
+  h2 { display: flex; gap: 16px; align-items: baseline; font-size: 15px; font-stretch: 75%; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; padding-bottom: 12px; border-bottom: 1px solid var(--ink); margin-bottom: 18px; }
+  h2 .n { font-family: var(--mono); font-weight: 500; color: var(--accent); letter-spacing: 0; }
+  p { font-size: 18px; line-height: 1.6; color: var(--ink); max-width: 62ch; }
+  .links a { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--rule); color: var(--ink); text-decoration: none; font-size: 16px; }
+  .links a span:last-child { color: var(--ink-3); font-family: var(--mono); font-size: 13px; }
+  .exp { margin-top: 36px; }
+  .row { display: grid; grid-template-columns: 160px 1fr 1fr; gap: 24px; padding: 14px 0; border-bottom: 1px solid var(--rule); font-size: 16px; }
+  .row .mono { color: var(--ink-3); font-size: 13px; padding-top: 3px; }
+  .row .org { color: var(--ink-2); }
+  .row .hl { color: var(--ink-2); font-size: 15px; }
+  footer { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; border-top: 1px solid var(--rule); }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; height: 100%; font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><b>John Jin</b><span class="mono">JJ-OFF-01</span></div>
+      <nav>
+        <a href="#">Articles</a><a href="#">Photos</a><a href="#">Tags</a>
+        <span class="kbd">⌘K</span><span class="kbd">中</span>
+        <div class="seg"><span class="on">Official</span><span>Casual</span></div>
+      </nav>
+    </header>
+  </div>
+  <div class="band"></div>
+  <div class="wrap">
+    <section class="mast">
+      <div>
+        <div class="label partno">Personal datasheet · Rev C · October 2026</div>
+        <h1>John Jin</h1>
+        <div class="desc">Software developer. Computer Science and Informatics at the University of Washington.</div>
+      </div>
+      <table>
+        <caption class="label">Device information</caption>
+        <tr><th>Role</th><td>Software Developer</td></tr>
+        <tr><th>Affiliation</th><td>UW Allen School ’27</td></tr>
+        <tr><th>Current</th><td>Software Engineer, Blaze Edu LLC</td></tr>
+        <tr><th>Stack</th><td class="mono" style="font-size:14px">TypeScript · C++ · C# · PostgreSQL</td></tr>
+      </table>
+    </section>
+    <div class="cols">
+      <section>
+        <h2><span class="n">1</span>Introduction</h2>
+        <p>Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</p>
+      </section>
+      <section class="links">
+        <h2><span class="n">2</span>Contact</h2>
+        <a href="#"><span>Email</span><span>jinhaomin874@gmail.com</span></a>
+        <a href="#"><span>GitHub</span><span>github.com/JohnJinHM ↗</span></a>
+        <a href="#"><span>LinkedIn</span><span>in/johnjinhm ↗</span></a>
+      </section>
+    </div>
+    <section class="exp">
+      <h2><span class="n">3</span>Experience</h2>
+      <div class="row" style="padding-top:0"><span class="mono">2026 —</span><span>Software Engineer <span class="org">· Blaze Edu LLC</span></span><span class="hl">Full-stack. TypeScript, PostgreSQL</span></div>
+      <div class="row"><span class="mono">2025 — 2026</span><span>Leadership Member <span class="org">· Interactive Intelligence @ UW</span></span><span class="hl">I2 Fellows TA, Research Room member</span></div>
+    </section>
+  </div>
+  <footer><div class="wrap"><span>JJ-OFF-01 — OFFICIAL — REVISED OCTOBER 2026</span><span>johnjinhm.github.io</span></div></footer>
+</body>
+</html>

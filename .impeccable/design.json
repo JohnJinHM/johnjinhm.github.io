@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-30T00:00:00Z",
+  "title": "Design System: John Jin",
+  "extensions": {
+    "colorMeta": {
+      "ground": { "role": "neutral", "displayName": "Night Indigo", "canonical": "oklch(0.16 0.035 278)", "tonalRamp": ["oklch(0.16 0.035 278)", "oklch(0.195 0.035 278)", "oklch(0.23 0.035 278)", "oklch(0.28 0.0385 278)", "oklch(0.38 0.042 278)", "oklch(0.66 0.04 278)", "oklch(0.8 0.03 278)", "oklch(0.96 0.012 278)"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "oklch(0.96 0.012 278)" },
+      "ink-2": { "role": "neutral", "displayName": "Ink Soft", "canonical": "oklch(0.8 0.03 278)" },
+      "ink-3": { "role": "neutral", "displayName": "Ink Dim", "canonical": "oklch(0.66 0.04 278)" },
+      "accent-official": { "role": "primary", "displayName": "Signal Cyan", "canonical": "oklch(0.78 0.13 235)", "tonalRamp": ["oklch(0.3 0.06 235)", "oklch(0.36 0.08 235)", "oklch(0.42 0.1 235)", "oklch(0.55 0.12 235)", "oklch(0.68 0.13 235)", "oklch(0.78 0.13 235)", "oklch(0.86 0.09 235)", "oklch(0.94 0.04 235)"] },
+      "accent-casual": { "role": "secondary", "displayName": "Lamp Amber", "canonical": "oklch(0.82 0.16 72)", "tonalRamp": ["oklch(0.3 0.06 72)", "oklch(0.36 0.08 72)", "oklch(0.42 0.1 72)", "oklch(0.58 0.13 72)", "oklch(0.72 0.15 72)", "oklch(0.82 0.16 72)", "oklch(0.89 0.1 72)", "oklch(0.95 0.05 72)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The home-page name only." },
+      "headline": { "displayName": "Headline", "purpose": "Page and post titles." },
+      "title": { "displayName": "Title", "purpose": "List titles and article H2." },
+      "body": { "displayName": "Body", "purpose": "Reading text at a 68ch measure." },
+      "label": { "displayName": "Label", "purpose": "Dates, counts, reading time, back links." },
+      "code": { "displayName": "Code", "purpose": "Code blocks and inline code only." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Every transition and the content enter fade." },
+      { "name": "dur-fast", "value": "150ms", "purpose": "Hover color changes." },
+      { "name": "dur-base", "value": "300ms", "purpose": "Link fill, menu and drawer." },
+      { "name": "dur-slow", "value": "700ms", "purpose": "Content enter fade, grid parallax easing, route pan, timeline grow-in." },
+      { "name": "scene-drift", "value": "40s per near cell", "purpose": "Constant slow pan of both grid planes." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Hairline button used for Tags and Load comments.",
+      "html": "<button class=\"ds-btn\">Load comments</button>",
+      "css": ".ds-btn { display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 16px; font-family:var(--font-headline); font-size:0.9375rem; font-weight:700; color:var(--ink); background:transparent; border:1px solid var(--rule); border-radius:var(--radius); cursor:pointer; transition:background-color 150ms cubic-bezier(0.16,1,0.3,1), border-color 150ms; } .ds-btn:hover { background:var(--surface); border-color:var(--ink-3); } .ds-btn:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }"
+    },
+    {
+      "name": "Link fill",
+      "kind": "custom",
+      "description": "Primary text link: accent bar that fills the word on hover.",
+      "html": "<a class=\"ds-link\" href=\"#\">GitHub</a>",
+      "css": ".ds-link { font-family:var(--font-headline); font-weight:700; color:var(--ink); text-decoration:none; background:linear-gradient(var(--accent),var(--accent)) 0 100% / 100% 2px no-repeat; padding-bottom:2px; transition:background-size 300ms cubic-bezier(0.16,1,0.3,1), color 150ms; } .ds-link:hover { background-size:100% 100%; color:var(--accent-ink); } .ds-link:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Tag chip with optional count; current tag gets an accent border and soft fill.",
+      "html": "<a class=\"ds-tag\" href=\"#\">nextjs <span>2</span></a> <a class=\"ds-tag ds-tag-current\" href=\"#\">project <span>1</span></a>",
+      "css": ".ds-tag { display:inline-flex; gap:6px; align-items:baseline; font-size:0.8125rem; color:var(--ink-2); text-decoration:none; border:1px solid var(--rule); border-radius:var(--radius); padding:2px 8px; transition:border-color 150ms, color 150ms; } .ds-tag span { color:var(--ink-3); } .ds-tag:hover { border-color:var(--accent); color:var(--ink); } .ds-tag-current { border-color:var(--accent); background:var(--accent-soft); color:var(--ink); }"
+    },
+    {
+      "name": "Search field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Surface field with an accent focus ring.",
+      "html": "<input class=\"ds-input\" type=\"search\" placeholder=\"Search articles and photos\">",
+      "css": ".ds-input { width:100%; height:44px; padding:0 16px; font-size:0.9375rem; color:var(--ink); background:var(--surface); border:1px solid var(--rule); border-radius:var(--radius); } .ds-input::placeholder { color:var(--ink-3); } .ds-input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }"
+    },
+    {
+      "name": "Nav",
+      "kind": "nav",
+      "description": "Header links; current page in ink with a 2px accent underline; current route in accent.",
+      "html": "<nav class=\"ds-nav\"><a aria-current=\"page\" href=\"#\">Home</a><a href=\"#\">Articles</a><a href=\"#\">Photos</a><a href=\"#\">Tags</a><span class=\"ds-route\"><a aria-current=\"true\" href=\"#\">Official</a><a href=\"#\">Casual</a></span></nav>",
+      "css": ".ds-nav { display:flex; gap:32px; align-items:center; font-size:0.9375rem; } .ds-nav > a { color:var(--ink-2); text-decoration:none; padding:4px 0; } .ds-nav > a:hover { color:var(--ink); } .ds-nav > a[aria-current='page'] { color:var(--ink); box-shadow:inset 0 -2px 0 var(--accent); } .ds-route { display:flex; gap:16px; font-family:var(--font-headline); font-weight:700; } .ds-route a { color:var(--ink-3); text-decoration:none; } .ds-route a[aria-current='true'] { color:var(--accent); }"
+    },
+    {
+      "name": "Code block",
+      "kind": "card",
+      "refersTo": "code-block",
+      "description": "Surface block, hairline border; syntax uses ink tints plus the two route accents.",
+      "html": "<pre class=\"ds-code\"><span class=\"k\">export function</span> postsForRoute(items, route) {\n  <span class=\"k\">return</span> items.filter((i) =&gt; i.route === <span class=\"s\">'shared'</span>)\n}</pre>",
+      "css": ".ds-code { font-family:var(--font-code); font-size:0.875rem; line-height:1.7; color:var(--ink); background:var(--surface); border:1px solid var(--rule); border-radius:var(--radius); padding:16px; overflow-x:auto; } .ds-code .k { color:var(--accent); } .ds-code .s { color:var(--accent-alt); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Horizon",
+    "overview": "Still, bright text on a front plane over a deep indigo field. Behind it, two flat line grids sit at different depths: the near plane has large, brighter cells and moves further with scroll and pointer; the far plane has small, dim cells and moves a third as much. Nothing else decorates the page. The site is a profile and a reading surface, so the grids are scenery: faint behind the text column, full strength only where nothing is being read.\n\nThe system is dark only and deliberately small: one ground hue, three ink levels, one accent per route. Official and Casual share every rule and differ only in accent and copy.",
+    "keyCharacteristics": [
+      "Deep indigo ground, never pure black or neutral grey.",
+      "Two moving grid planes as the only scenery; quiet on reading pages.",
+      "One accent per route, spent on state, not decoration.",
+      "Heavy Red Hat Display for names and titles; calm Red Hat Text for reading.",
+      "Square-ish corners (2px) and 1px rules; no cards, no shadows on content."
+    ],
+    "rules": [
+      { "name": "The One Hue Rule", "body": "Every neutral is the ground hue at a different lightness and chroma. A new grey is a defect; derive it from `--ground-*` instead.", "section": "colors" },
+      { "name": "The Spent Accent Rule", "body": "The accent marks state (current page, current route, current role, focus, link) and code keywords. It never fills a section, tints a background, or glows.", "section": "colors" },
+      { "name": "The Two Accents Rule", "body": "The palette is the ground scale plus two accents. The other route's accent appears only in code strings.", "section": "colors" },
+      { "name": "The Mono Is For Code Rule", "body": "Red Hat Mono appears in code blocks, inline code and the ⌘K key cap. Dates, labels and numbers use Display with tabular figures.", "section": "typography" },
+      { "name": "The Front Plane Rule", "body": "Text never moves with the scenery. Only the grids respond to scroll, pointer and route changes; content enters with one short fade.", "section": "elevation" },
+      { "name": "The Still Under Reduced Motion Rule", "body": "With `prefers-reduced-motion`, drift, parallax, the route pan and the timeline grow-in all stop; the grids stay as a static texture.", "section": "elevation" }
+    ],
+    "dos": [
+      "**Do** change the look by editing the PRIMITIVES block in `css/tokens.css` (or by exporting from `design/index.html`), not by editing components.",
+      "**Do** use the semantic utilities (`bg-ground`, `bg-surface`, `border-rule`, `text-ink`, `text-ink-2`, `text-ink-3`, `text-accent`) in new markup.",
+      "**Do** keep reading text at the 68ch measure, left-aligned.",
+      "**Do** use the shared `Arrow` SVG for arrows next to text."
+    ],
+    "donts": [
+      "**Don't** add a light theme or a theme toggle; the site is dark only.",
+      "**Don't** introduce a third accent, gradients, glows or colored panels.",
+      "**Don't** put cards, shadows or rounded containers around list items or content.",
+      "**Don't** let anything but the grid planes move in response to scroll or pointer.",
+      "**Don't** use the legacy `gray-*` / `primary-*` utilities in new code; they exist only so pliny's markup matches the system."
+    ]
+  }
+}

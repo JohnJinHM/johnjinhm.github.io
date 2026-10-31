@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Manual tab board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root { --board: #2f5bd3; --leaf: #18191c; --rule: #2c2e33; --ink: #ece8de; --dim: #8e8b84;
+    --serif: 'Source Serif 4', Georgia, serif; --sans: 'Archivo', system-ui, sans-serif; --mono: 'JetBrains Mono', monospace; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; background: var(--board); color: var(--ink); font-family: var(--serif); }
+  .leaf { position: absolute; left: 48px; top: 40px; right: 168px; bottom: 40px; background: var(--leaf); box-shadow: 4px 4px 0 rgba(0,0,0,.35); display: grid; grid-template-columns: 220px 1fr; }
+  .holes { position: absolute; left: 22px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-around; }
+  .holes i { width: 14px; height: 14px; border-radius: 50%; background: var(--board); display: block; }
+  .margin { padding: 56px 0 0 72px; font-family: var(--sans); }
+  .margin .div { font-stretch: 70%; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: 13px; color: var(--dim); }
+  .margin .big { font-size: 96px; font-weight: 800; font-stretch: 62%; line-height: .9; color: var(--board); margin-top: 6px; }
+  main { padding: 56px 72px 0 32px; }
+  h1 { font-family: var(--sans); font-weight: 700; font-size: 64px; line-height: 1; letter-spacing: -.01em; }
+  .sub { font-family: var(--sans); font-size: 20px; color: var(--dim); margin-top: 14px; }
+  p { font-size: 18px; line-height: 1.55; max-width: 60ch; margin-top: 32px; }
+  .links { display: flex; gap: 28px; margin-top: 24px; font-family: var(--mono); font-size: 14px; }
+  .links a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--board); padding-bottom: 2px; }
+  h2 { font-family: var(--sans); font-stretch: 75%; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--dim); margin-top: 44px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+  .row { display: grid; grid-template-columns: 140px 1fr; padding: 14px 0; border-bottom: 1px solid var(--rule); font-size: 17px; }
+  .row .d { font-family: var(--mono); font-size: 13px; color: var(--dim); padding-top: 3px; }
+  .row span span { color: var(--dim); }
+  .rail { position: absolute; right: 0; top: 40px; bottom: 40px; width: 168px; display: flex; flex-direction: column; gap: 6px; padding-left: 0; }
+  .tab { font-family: var(--sans); font-stretch: 70%; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: 13px; padding: 0 18px; display: flex; align-items: center; color: #111; }
+  .tab.cur { background: var(--leaf); color: var(--ink); width: 168px; margin-left: -1px; height: 140px; }
+  .tab.t2 { background: #4c74e0; height: 90px; width: 140px; }
+  .tab.t3 { background: #6a8be6; height: 70px; width: 130px; }
+  .tab.t4 { background: #8aa4ec; height: 50px; width: 120px; }
+  .tab.cas { background: #e2b928; height: 120px; width: 150px; margin-top: auto; }
+</style>
+</head>
+<body>
+  <div class="leaf">
+    <div class="holes"><i></i><i></i><i></i></div>
+    <div class="margin"><div class="div">Division</div><div class="big">01</div><div class="div" style="margin-top:10px">Official</div></div>
+    <main>
+      <h1>John Jin</h1>
+      <div class="sub">Software Developer · UW Allen School ’27</div>
+      <p>Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</p>
+      <div class="links"><a href="#">email</a><a href="#">github ↗</a><a href="#">linkedin ↗</a><span style="color:var(--dim)">⌘K · 中</span></div>
+      <h2>Experience</h2>
+      <div class="row"><span class="d">2026 —</span><span>Software Engineer <span>· Blaze Edu LLC — full-stack, TypeScript, PostgreSQL</span></span></div>
+      <div class="row"><span class="d">2025 — 2026</span><span>Leadership Member <span>· Interactive Intelligence @ UW</span></span></div>
+      <div class="row"><span class="d">2024 — 2025</span><span>Software Engineer <span>· Hedracam — C++, C#</span></span></div>
+    </main>
+  </div>
+  <div class="rail">
+    <div class="tab cur">Home</div><div class="tab t2">Articles</div><div class="tab t3">Photos</div><div class="tab t4">Tags</div>
+    <div class="tab cas">Casual →</div>
+  </div>
+</body>
+</html>

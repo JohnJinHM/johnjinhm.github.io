@@ -1,0 +1,128 @@
+/*
+  Scene: two flat line-grid planes behind the content. Reads tokens from
+  css/tokens.css.
+
+  <div class="scene">
+    <div class="scene-grid scene-grid-far" aria-hidden="true"></div>
+    <div class="scene-grid scene-grid-near" aria-hidden="true"></div>
+    …front-plane content…
+  </div>
+
+  Motion inputs, set on .scene by script (all optional; the grids sit still without them):
+    --scene-px, --scene-py   pointer position, -1 … 1 from the centre
+    --scene-scroll           page scroll in px (unitless)
+  The near plane moves by the full amount and the far plane by a third, which
+  is what reads as depth. Pointer offset eases on the plane; scroll offset is
+  applied to the lines, wrapped to one cell, so it never runs out of grid.
+*/
+
+.scene {
+  --scene-px: 0;
+  --scene-py: 0;
+  --scene-scroll: 0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.scene-grid {
+  --depth: 1;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  /* Faint behind the text column (left), full strength to the right, fading out at the bottom. */
+  mask-image:
+    linear-gradient(90deg, rgb(0 0 0 / 0.3) 0 55%, #000 85%),
+    linear-gradient(#000 55%, rgb(0 0 0 / 0.4));
+  mask-composite: intersect;
+  translate: calc(var(--scene-px) * var(--grid-parallax) * var(--depth) * -1)
+    calc(var(--scene-py) * var(--grid-parallax) * var(--depth) * -1);
+  transition: translate var(--dur-slow) var(--ease-out);
+}
+
+.scene-grid::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--cell) * -2);
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / var(--cell) var(--cell),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / var(--cell) var(--cell);
+  translate: 0
+    calc(mod(var(--scene-scroll) * var(--grid-scroll-rate) * var(--depth) * 1px, var(--cell)) * -1);
+  animation: scene-drift var(--scene-drift) linear infinite;
+}
+
+.scene-grid-far {
+  --depth: 0.33;
+  --cell: var(--grid-far-cell);
+  --line: var(--grid-far-line);
+  opacity: var(--grid-far-opacity);
+}
+
+.scene-grid-near {
+  --cell: var(--grid-near-cell);
+  --line: var(--grid-near-line);
+  opacity: var(--grid-near-opacity);
+}
+
+/* Site backdrop: one scene fixed behind every page. */
+.scene-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+
+/* Pages with a reading column keep the grids faint. */
+.scene-backdrop[data-calm] {
+  opacity: 0.35;
+}
+
+/* Small screens: text spans the width, so the whole field stays faint. */
+@media (max-width: 767px) {
+  .scene-grid {
+    mask-image: linear-gradient(rgb(0 0 0 / 0.45) 50%, rgb(0 0 0 / 0.15));
+  }
+}
+
+/* Route switch: both planes' lines pan two cells while the accent swaps. Whole
+   cells keep the last frame identical to the resting grid; two cells is the
+   overhang set by the inset above. The drift animation keeps running beneath. */
+.scene[data-warp] .scene-grid::before {
+  animation:
+    scene-warp calc(var(--dur-slow) * 0.9) var(--ease-out),
+    scene-drift var(--scene-drift) linear infinite;
+}
+
+@keyframes scene-warp {
+  from {
+    transform: translateX(calc(var(--cell) * 2));
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Drift pans one cell per period; the far plane's smaller cell makes it slower. */
+@keyframes scene-drift {
+  to {
+    background-position:
+      var(--cell) var(--cell),
+      var(--cell) var(--cell);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-grid {
+    translate: none;
+    transition: none;
+  }
+  .scene-grid::before,
+  .scene[data-warp] .scene-grid::before {
+    animation: none;
+    translate: none;
+  }
+}

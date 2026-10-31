@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Monochrome product page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root { --g0: #0a0a0a; --g1: #171717; --g2: #262626; --ink: #ededed; --dim: #a1a1a1; --accent: #7c5cff; --sans: 'Geist', system-ui, sans-serif; --mono: 'Geist Mono', monospace; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; background: var(--g0); color: var(--ink); font-family: var(--sans); }
+  body { background: radial-gradient(800px 400px at 70% 10%, #1b1730 0%, transparent 70%), var(--g0); }
+  .wrap { width: 1120px; margin: 0 auto; }
+  header { height: 64px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--g2); font-size: 14px; }
+  nav { display: flex; gap: 24px; color: var(--dim); align-items: center; }
+  nav .cur { color: var(--ink); }
+  .tg { border: 1px solid var(--g2); border-radius: 6px; display: flex; font-size: 13px; }
+  .tg span { padding: 4px 10px; } .tg .on { background: var(--g2); border-radius: 5px; color: var(--ink); }
+  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; padding-top: 96px; }
+  h1 { font-size: 64px; font-weight: 600; letter-spacing: -.035em; line-height: 1.02; }
+  h1 span { color: var(--dim); }
+  p { color: var(--dim); font-size: 18px; line-height: 1.6; margin-top: 24px; max-width: 46ch; }
+  .cta { display: flex; gap: 12px; margin-top: 32px; }
+  .btn { height: 40px; padding: 0 18px; display: inline-flex; align-items: center; border-radius: 6px; font-size: 14px; font-weight: 500; border: 1px solid var(--g2); }
+  .btn.p { background: var(--accent); border-color: var(--accent); }
+  .proof { background: var(--g1); border: 1px solid var(--g2); border-radius: 12px; padding: 24px; }
+  .proof .k { font-family: var(--mono); font-size: 12px; color: var(--dim); }
+  .proof .v { font-size: 20px; font-weight: 500; margin-top: 6px; }
+  .proof .s { color: var(--dim); font-size: 14px; margin-top: 4px; }
+  .proof hr { border: 0; border-top: 1px solid var(--g2); margin: 20px 0; }
+  .chips { display: flex; gap: 8px; margin-top: 10px; }
+  .chips span { font-family: var(--mono); font-size: 12px; border: 1px solid var(--g2); border-radius: 4px; padding: 3px 8px; }
+  h2 { font-size: 14px; color: var(--dim); font-weight: 500; margin-top: 96px; padding-bottom: 14px; border-bottom: 1px solid var(--g2); }
+  .r { display: grid; grid-template-columns: 1fr 1fr 160px; padding: 16px 0; border-bottom: 1px solid var(--g2); font-size: 15px; }
+  .r .d { color: var(--dim); text-align: right; font-family: var(--mono); font-size: 13px; }
+  .r .h { color: var(--dim); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header><b>John Jin</b><nav><span class="cur">Home</span><span>Articles</span><span>Photos</span><span>Tags</span><span>⌘K</span><span>中</span><div class="tg"><span class="on">Official</span><span>Casual</span></div></nav></header>
+    <div class="hero">
+      <div><h1>John Jin.<br><span>Software developer.</span></h1>
+        <p>Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</p>
+        <div class="cta"><span class="btn p">Email me</span><span class="btn">GitHub</span><span class="btn">LinkedIn</span></div></div>
+      <div class="proof"><div class="k">now</div><div class="v">Software Engineer, Blaze Edu LLC</div><div class="s">Full-stack developer</div>
+        <div class="chips"><span>TypeScript</span><span>PostgreSQL</span></div><hr>
+        <div class="k">studying</div><div class="v">UW Allen School ’27</div><div class="s">Computer Science and Informatics</div></div>
+    </div>
+    <h2>Experience</h2>
+    <div class="r"><span>Leadership Member · Interactive Intelligence @ UW</span><span class="h">I2 Fellows TA, Research Room member</span><span class="d">2025 — 2026</span></div>
+    <div class="r"><span>Software Engineer · Hedracam</span><span class="h">Cross-platform integration, graphics. C++, C#</span><span class="d">2024 — 2025</span></div>
+  </div>
+</body>
+</html>

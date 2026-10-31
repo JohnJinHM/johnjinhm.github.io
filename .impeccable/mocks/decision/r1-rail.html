@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Spectral rail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ground: #1c1d20; --ash: #26282c; --bone: #ece6d8; --dim: #9c978c; --sodium: #ffcc33; --ha: #ff5a4e; --hb: #5ad1e6; --rail: 520px; --sans: 'Hanken Grotesk', system-ui, sans-serif; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; color: var(--bone); font-family: var(--sans); font-variant-numeric: tabular-nums;
+    background: repeating-linear-gradient(180deg, #1c1d20 0 3px, #1e1f23 3px 5px, #1b1c1f 5px 9px); }
+  header { height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 64px; font-size: 15px; }
+  header b { font-weight: 800; letter-spacing: .02em; }
+  nav { display: flex; gap: 28px; align-items: center; color: var(--dim); }
+  nav .cur { color: var(--bone); }
+  .rt { display: flex; gap: 14px; letter-spacing: .12em; text-transform: uppercase; font-size: 12px; font-weight: 700; }
+  .rt .on { color: var(--sodium); }
+  .band { position: relative; height: 72px; margin: 0 64px; background: linear-gradient(90deg, #121316, #2a2b2f 30%, #2f3034 60%, #141518); }
+  .band i { position: absolute; top: 8px; bottom: 8px; width: 1px; }
+  .band .l1 { left: 4%; background: #8a5cff; } .band .l2 { left: 14%; background: #4f6bff; } .band .l3 { left: 30%; background: var(--hb); }
+  .band .l4 { left: 49%; background: #6fe06f; } .band .l6 { left: 77%; background: #ff8a3a; } .band .l7 { left: 92%; background: var(--ha); }
+  .band .l5 { left: 66%; top: 0; bottom: 0; width: 1px; background: var(--sodium); box-shadow: 4px 0 0 var(--sodium); }
+  .band span { position: absolute; left: calc(66% + 14px); bottom: 6px; font-size: 11px; letter-spacing: .1em; color: var(--sodium); text-transform: uppercase; font-weight: 700; }
+  .railline { position: absolute; left: var(--rail); top: 136px; bottom: 0; width: 1px; background: var(--bone); }
+  .row { display: grid; grid-template-columns: var(--rail) 1fr; }
+  .lbl { text-align: right; padding-right: 24px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--dim); position: relative; padding-top: 10px; }
+  .lbl::after { content: ''; position: absolute; right: -1px; top: 17px; width: 16px; height: 1px; background: var(--bone); }
+  .body { padding-left: 40px; padding-right: 120px; }
+  h1 { font-size: 88px; line-height: .95; font-weight: 800; letter-spacing: -.03em; margin-top: 48px; }
+  .role { font-size: 22px; color: var(--dim); margin-top: 12px; }
+  .plate { background: var(--ash); padding: 20px 24px; margin-top: 32px; max-width: 640px; font-size: 19px; line-height: 1.55; }
+  .links { display: flex; gap: 32px; margin-top: 24px; font-size: 16px; font-weight: 500; }
+  .links a { color: var(--bone); text-decoration: none; border-bottom: 1px solid var(--sodium); padding-bottom: 2px; }
+  .time { position: relative; height: 150px; margin-top: 40px; margin-right: 120px; }
+  .axis { position: absolute; left: 0; right: 0; bottom: 24px; height: 1px; background: var(--dim); }
+  .yr { position: absolute; bottom: 0; font-size: 12px; color: var(--dim); }
+  .seg { position: absolute; height: 1px; }
+  .seg em { position: absolute; left: 0; bottom: 8px; font-style: normal; font-size: 15px; white-space: nowrap; }
+  .seg em small { color: var(--dim); font-size: 13px; }
+  .now { background: var(--sodium); height: 2px; box-shadow: 0 4px 0 var(--sodium); }
+  .past { background: var(--bone); border-top: 1px dashed var(--bone); background: none; }
+</style>
+</head>
+<body>
+  <header><b>John Jin</b><nav><span class="cur">Home</span><span>Articles</span><span>Photos</span><span>Tags</span><span>⌘K</span><span>中</span>
+    <div class="rt"><span class="on">Official</span><span>Casual</span></div></nav></header>
+  <div class="band"><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><i class="l5"></i><i class="l6"></i><i class="l7"></i><span>Official · 589 nm</span></div>
+  <div class="railline"></div>
+  <div class="row"><div class="lbl" style="padding-top:72px">Profile</div>
+    <div class="body"><h1>John Jin</h1><div class="role">Software Developer · UW Allen School ’27</div>
+      <div class="plate">Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</div>
+      <div class="links"><a href="#">Email</a><a href="#">GitHub ↗</a><a href="#">LinkedIn ↗</a></div></div></div>
+  <div class="row"><div class="lbl" style="padding-top:60px">Experience</div>
+    <div class="body"><div class="time">
+      <div class="axis"></div>
+      <span class="yr" style="left:0">2024</span><span class="yr" style="left:33%">2025</span><span class="yr" style="left:66%">2026</span><span class="yr" style="right:0">2027</span>
+      <div class="seg past" style="left:0;width:40%;bottom:56px"><em>Software Engineer <small>· Hedracam</small></em></div>
+      <div class="seg past" style="left:40%;width:30%;bottom:96px"><em>Leadership Member <small>· Interactive Intelligence @ UW</small></em></div>
+      <div class="seg now" style="left:66%;width:34%;bottom:136px"><em>Software Engineer <small>· Blaze Edu LLC</small></em></div>
+    </div></div></div>
+</body>
+</html>

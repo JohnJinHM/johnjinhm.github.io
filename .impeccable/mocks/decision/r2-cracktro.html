@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Demoscene depth field</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&family=Red+Hat+Text:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --void: #050506; --d3: #3a3a3c; --d2: #8d8a84; --d1: #f3efe4; --amber: #ffb23e; --head: 'Red Hat Display', system-ui, sans-serif; --text: 'Red Hat Text', system-ui, sans-serif; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; background: var(--void); color: var(--d1); font-family: var(--text); }
+  .dust { position: absolute; inset: 0; }
+  .a { background-image: radial-gradient(#3a3a3c 1px, transparent 1.5px); background-size: 37px 41px; opacity: .6; }
+  .b { background-image: radial-gradient(#6a6864 1px, transparent 1.5px); background-size: 113px 97px; background-position: 20px 40px; }
+  .c { background-image: radial-gradient(#b8b4aa 1.2px, transparent 1.8px); background-size: 271px 233px; background-position: 90px 10px; }
+  .front { position: relative; padding: 0 96px; }
+  header { height: 80px; display: flex; align-items: center; justify-content: space-between; font-family: var(--head); font-size: 15px; letter-spacing: .02em; }
+  header nav { display: flex; gap: 32px; color: var(--d2); align-items: center; }
+  header .cur { color: var(--d1); }
+  .caret { display: inline-block; width: 9px; height: 18px; background: var(--amber); vertical-align: -3px; margin-left: 4px; }
+  h1 { font-family: var(--head); font-weight: 900; font-size: 120px; letter-spacing: -.035em; line-height: .9; margin-top: 96px; }
+  .role { font-family: var(--head); font-size: 22px; color: var(--d1); margin-top: 18px; letter-spacing: .01em; }
+  p { font-size: 19px; line-height: 1.6; max-width: 60ch; margin-top: 28px; color: var(--d1); }
+  .links { display: flex; gap: 32px; margin-top: 24px; font-family: var(--head); font-weight: 700; }
+  .back { margin-top: 72px; color: var(--d2); letter-spacing: .06em; }
+  .back div { display: grid; grid-template-columns: 150px 1fr; font-size: 16px; line-height: 2.1; }
+  .back .yr { color: var(--d3); }
+  .back b { color: var(--d1); font-weight: 500; letter-spacing: .01em; }
+</style>
+</head>
+<body>
+  <div class="dust a"></div><div class="dust b"></div><div class="dust c"></div>
+  <div class="front">
+    <header><span>JOHN JIN</span><nav><span class="cur">Home</span><span>Articles</span><span>Photos</span><span>Tags</span><span>⌘K</span><span>中</span><span style="color:var(--d1)">Official<span class="caret"></span></span><span>Casual</span></nav></header>
+    <h1>John Jin</h1>
+    <div class="role">Software Developer · UW Allen School ’27</div>
+    <p>Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</p>
+    <div class="links"><span>Email</span><span>GitHub ↗</span><span>LinkedIn ↗</span></div>
+    <div class="back">
+      <div><span class="yr">2026 —</span><span><b>Software Engineer · Blaze Edu LLC</b> &nbsp; full-stack, TypeScript, PostgreSQL</span></div>
+      <div><span class="yr">2025 — 2026</span><span>Leadership Member · Interactive Intelligence @ UW &nbsp; I2 Fellows TA</span></div>
+      <div><span class="yr">2024 — 2025</span><span>Software Engineer · Hedracam &nbsp; C++, C#, graphics</span></div>
+    </div>
+  </div>
+</body>
+</html>

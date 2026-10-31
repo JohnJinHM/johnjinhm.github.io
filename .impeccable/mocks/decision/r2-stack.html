@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Layered architecture stack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ground: #0e1116; --plane: rgba(42,51,66,.55); --edge: #3b4659; --ink: #e9edf3; --ink-2: #93a0b4; --accent: #ff6b4a; --sans: 'Schibsted Grotesk', system-ui, sans-serif; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; background: var(--ground); color: var(--ink); font-family: var(--sans); }
+  body { background: linear-gradient(rgba(147,160,180,.05) 1px, transparent 1px) 0 0 / 40px 40px, linear-gradient(90deg, rgba(147,160,180,.05) 1px, transparent 1px) 0 0 / 40px 40px, var(--ground); }
+  header { height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 80px; font-size: 15px; }
+  header b { font-weight: 800; font-size: 17px; }
+  nav { display: flex; gap: 28px; color: var(--ink-2); align-items: center; }
+  nav .cur { color: var(--ink); }
+  .rt { border: 1px solid var(--edge); border-radius: 999px; display: flex; font-size: 13px; padding: 2px; }
+  .rt span { padding: 4px 12px; border-radius: 999px; } .rt .on { background: var(--accent); color: #1a0a05; font-weight: 700; }
+  .left { position: absolute; left: 80px; top: 200px; width: 560px; }
+  h1 { font-size: 84px; line-height: .95; font-weight: 800; letter-spacing: -.04em; }
+  .role { font-size: 21px; color: var(--ink-2); margin-top: 16px; }
+  p { font-size: 18px; line-height: 1.6; margin-top: 28px; }
+  .links { display: flex; gap: 24px; margin-top: 28px; font-weight: 500; }
+  .links span { border-bottom: 1px solid var(--accent); padding-bottom: 2px; }
+  .stage { position: absolute; left: 760px; top: 140px; width: 560px; height: 680px; perspective: 2000px; }
+  .pl { position: absolute; left: 80px; width: 380px; height: 380px; background: var(--plane); border: 1px solid var(--edge); transform: rotateX(58deg) rotateZ(-45deg); box-shadow: 0 30px 60px rgba(0,0,0,.4); }
+  .pl.on { border-color: var(--accent); background: rgba(255,107,74,.16); }
+  .p1 { top: 330px; } .p2 { top: 230px; } .p3 { top: 130px; } .p4 { top: 30px; }
+  .lbl { position: absolute; left: 470px; font-size: 14px; white-space: nowrap; }
+  .lbl::before { content: ''; position: absolute; right: calc(100% + 10px); top: 9px; width: 70px; height: 1px; background: var(--ink-2); }
+  .lbl b { display: block; font-weight: 700; } .lbl span { color: var(--ink-2); font-size: 13px; }
+  .lbl.on b { color: var(--accent); } .lbl.on::before { background: var(--accent); }
+</style>
+</head>
+<body>
+  <header><b>John Jin</b><nav><span class="cur">Home</span><span>Articles</span><span>Photos</span><span>Tags</span><span>⌘K</span><span>中</span><div class="rt"><span class="on">Official</span><span>Casual</span></div></nav></header>
+  <div class="left">
+    <h1>John Jin</h1>
+    <div class="role">Software Developer · UW Allen School ’27</div>
+    <p>Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</p>
+    <div class="links"><span>Email</span><span>GitHub ↗</span><span>LinkedIn ↗</span></div>
+  </div>
+  <div class="stage">
+    <div class="pl p1"></div><div class="pl p2"></div><div class="pl on p3"></div><div class="pl p4"></div>
+    <div class="lbl" style="top:520px"><b>Education</b><span>UW Allen School · CS + Informatics</span></div>
+    <div class="lbl" style="top:420px"><b>Engineering</b><span>Hedracam · 2024 — 2025 · C++, C#</span></div>
+    <div class="lbl on" style="top:320px"><b>Now</b><span>Blaze Edu LLC · 2026 — · TypeScript</span></div>
+    <div class="lbl" style="top:220px"><b>Leadership</b><span>Interactive Intelligence @ UW</span></div>
+  </div>
+</body>
+</html>

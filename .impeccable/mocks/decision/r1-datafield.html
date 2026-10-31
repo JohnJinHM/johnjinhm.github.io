@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Data field</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<style>
+  :root { --k: #000; --w: #fff; --accent: #3d5afe; --u: 8px; --sans: 'Archivo', system-ui, sans-serif; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; background: var(--k); color: var(--w); font-family: var(--sans); font-variant-numeric: tabular-nums; }
+  .pad { padding: 0 calc(var(--u) * 8); }
+  header { height: 72px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--w); }
+  .id { font-weight: 800; font-stretch: 75%; font-size: 18px; letter-spacing: .02em; text-transform: uppercase; }
+  nav { display: flex; gap: 32px; align-items: center; font-size: 15px; font-weight: 500; }
+  nav .cur { border-bottom: 2px solid var(--w); padding-bottom: 3px; }
+  .seg { display: flex; border: 1px solid var(--w); font-size: 12px; font-weight: 700; font-stretch: 75%; letter-spacing: .1em; text-transform: uppercase; }
+  .seg span { padding: 6px 12px; }
+  .seg .on { background: var(--accent); }
+  .field { position: relative; height: 296px; border-bottom: 1px solid var(--w);
+    background:
+      repeating-linear-gradient(90deg, var(--w) 0 2px, transparent 2px 7px),
+      repeating-linear-gradient(90deg, transparent 0 13px, var(--w) 13px 17px, transparent 17px 31px),
+      repeating-linear-gradient(90deg, var(--k) 0 23px, transparent 23px 41px),
+      repeating-linear-gradient(90deg, transparent 0 3px, var(--w) 3px 4px, transparent 4px 11px);
+  }
+  .field::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 97px, var(--k) 97px 137px, transparent 137px 211px); }
+  .sample { position: absolute; left: 1032px; top: 0; bottom: 0; width: 48px; background: var(--accent); z-index: 2; }
+  .sample-num { position: absolute; left: 1088px; top: 24px; z-index: 3; background: var(--k); padding: 8px 12px; font-size: 12px; line-height: 1.6; font-weight: 500; }
+  .sample-num b { display: block; font-size: 11px; font-stretch: 75%; letter-spacing: .1em; text-transform: uppercase; }
+  .leader { position: absolute; left: 1056px; top: 40px; width: 32px; height: 1px; background: var(--w); z-index: 3; }
+  svg { position: absolute; inset: 0; z-index: 2; }
+  .plate { position: absolute; left: 64px; bottom: 0; z-index: 3; background: var(--k); padding: 32px 40px 24px 0; }
+  h1 { font-size: 136px; line-height: .82; font-weight: 900; font-stretch: 85%; letter-spacing: -.035em; text-transform: uppercase; }
+  .role { margin-top: 16px; font-size: 20px; font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 5fr 3fr 6fr; gap: 48px; padding-top: 40px; }
+  h2 { font-size: 12px; font-weight: 700; font-stretch: 75%; letter-spacing: .12em; text-transform: uppercase; padding-bottom: 12px; border-bottom: 1px solid var(--w); margin-bottom: 16px; }
+  p { font-size: 20px; line-height: 1.5; font-weight: 400; }
+  .links a { display: flex; justify-content: space-between; color: var(--w); text-decoration: none; font-size: 17px; padding: 8px 0; border-bottom: 1px solid #fff3; }
+  .r { display: grid; grid-template-columns: 112px 1fr; padding: 8px 0 12px; border-bottom: 1px solid #fff3; font-size: 16px; }
+  .r .d { font-size: 13px; font-weight: 600; padding-top: 3px; }
+  .r b { font-weight: 700; }
+  .r span span { display: block; font-size: 14px; opacity: .7; margin-top: 2px; }
+</style>
+</head>
+<body>
+  <header class="pad">
+    <span class="id">John Jin</span>
+    <nav><span class="cur">Home</span><span>Articles</span><span>Photos</span><span>Tags</span><span>Search ⌘K</span><span>中</span>
+      <div class="seg"><span class="on">Official</span><span>Casual</span></div></nav>
+  </header>
+  <div class="field">
+    <svg width="1440" height="296" viewBox="0 0 1440 296" fill="none"><path d="M0 150 C 120 60, 240 60, 360 150 S 600 240, 720 150 S 960 60, 1080 150 S 1320 240, 1440 150" stroke="#fff" stroke-width="2"/></svg>
+    <div class="sample"></div><div class="leader"></div>
+    <div class="sample-num"><b>Sampled</b>2024 — 2026<br>3 roles · 4 languages</div>
+    <div class="plate"><h1>John<br>Jin</h1><div class="role">Software Developer — UW Allen School ’27</div></div>
+  </div>
+  <div class="pad grid">
+    <section><h2>Introduction</h2><p>Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</p></section>
+    <section class="links"><h2>Contact</h2>
+      <a href="#"><span>Email</span><span>→</span></a><a href="#"><span>GitHub</span><span>↗</span></a><a href="#"><span>LinkedIn</span><span>↗</span></a></section>
+    <section><h2>Experience</h2>
+      <div class="r"><span class="d">2026 —</span><span><b>Software Engineer</b> · Blaze Edu LLC<span>Full-stack. TypeScript, PostgreSQL</span></span></div>
+      <div class="r"><span class="d">2025 — 26</span><span><b>Leadership Member</b> · Interactive Intelligence @ UW<span>I2 Fellows TA, Research Room member</span></span></div>
+      <div class="r"><span class="d">2024 — 25</span><span><b>Software Engineer</b> · Hedracam<span>Cross-platform integration, graphics. C++, C#</span></span></div>
+    </section>
+  </div>
+</body>
+</html>

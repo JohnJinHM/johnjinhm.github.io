@@ -1,0 +1,57 @@
+{
+  "title": "Depth field: choose a variant",
+  "question": "You picked the Demoscene depth field. Here it is beside three close variants that change what carries the depth. Pick one, or steer.",
+  "options": [
+    {
+      "id": "r3-void",
+      "kind": "challenger",
+      "catalogId": "operate-c-cracktro-scroller-queue",
+      "label": "Depth field (original)",
+      "lineage": "Cracktro title screens",
+      "thesis": "Sparse star layers drift behind a still, bright front plane; rank is brightness and depth; nothing is boxed.",
+      "palette": ["#050506", "#3a3a3c", "#8d8a84", "#f3efe4", "#ffb23e", "#59c3ff"],
+      "materials": ["three sparse star layers", "baseline-only layout"],
+      "viewport": "Name and intro on the front plane; experience one depth back, dimmer and wider-spaced.",
+      "risk": "Near-black void; the darkest of the four.",
+      "html": ".impeccable/mocks/decision/r3-void.html"
+    },
+    {
+      "id": "r3-floor",
+      "kind": "grounded",
+      "label": "Horizon floor",
+      "lineage": "80s vector demos: a perspective grid floor running to a horizon",
+      "thesis": "A receding grid floor gives the page a horizon; the experience timeline runs along that horizon like a scroller, frozen still.",
+      "palette": ["#0b0c16", "#1a1c2e", "#7a7d96", "#f1f0f7", "#ffb23e", "#59c3ff"],
+      "materials": ["perspective grid floor", "one sparse star layer", "horizon timeline"],
+      "viewport": "Name and intro high on the front plane; at the horizon, a timeline of roles with year ticks; the grid floor fades out below it.",
+      "risk": "The floor grid reads synthwave if it glows or gets neon; it must stay hairline and dim.",
+      "html": ".impeccable/mocks/decision/r3-floor.html"
+    },
+    {
+      "id": "r3-planes",
+      "kind": "grounded",
+      "label": "Grid planes",
+      "lineage": "Demoscene parallax, with grids in place of stars",
+      "thesis": "Three grid planes at different scales and brightness stack behind the text and shift at different speeds as you scroll; the finest grid is nearest.",
+      "palette": ["#0e1422", "#1b2336", "#8792a8", "#eef1f6", "#ffb23e", "#59c3ff"],
+      "materials": ["three layered grids", "parallax on scroll", "timeline bars on the nearest grid"],
+      "viewport": "Name and intro snapped to the nearest grid; experience as bars on a year axis drawn in that grid's cells.",
+      "risk": "Three grids can become busy; only the nearest may carry content.",
+      "html": ".impeccable/mocks/decision/r3-planes.html"
+    },
+    {
+      "id": "r3-focus",
+      "kind": "grounded",
+      "label": "Focus pull",
+      "lineage": "Demoscene depth, with blur as distance",
+      "thesis": "Depth is focus: secondary content sits slightly back and softened, and hovering or tabbing to it pulls it forward into sharp focus.",
+      "palette": ["#101826", "#16203a", "#8d97b0", "#f2f4f8", "#ffb23e", "#59c3ff"],
+      "materials": ["depth-of-field layers", "soft vertical ground gradient", "focus-pull interaction"],
+      "viewport": "Front plane sharp: name, intro, links. Behind it, a timeline of roles slightly softened; the current role already in focus.",
+      "risk": "Blurred text must stay readable at rest; the blur is small and always clears on focus.",
+      "html": ".impeccable/mocks/decision/r3-focus.html"
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "steer": true
+}

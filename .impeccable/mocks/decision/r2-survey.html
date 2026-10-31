@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Survey sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ground: #0f1f1c; --plate: rgba(12,26,23,.94); --plate-hi: #132a25; --contour: #2f5a4e; --ink: #eef2ea; --ink-2: #a9bdb3; --ink-3: #6f8a7f; --accent: #ff7a3d; --alt: #7cc4ff;
+    --sans: 'Public Sans', system-ui, sans-serif; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; color: var(--ink); font-family: var(--sans); font-variant-numeric: tabular-nums; background: var(--ground); }
+  .grid { position: absolute; inset: 0;
+    background:
+      linear-gradient(rgba(190,230,210,.09) 1px, transparent 1px) 0 0 / 160px 160px,
+      linear-gradient(90deg, rgba(190,230,210,.09) 1px, transparent 1px) 0 0 / 160px 160px,
+      linear-gradient(rgba(190,230,210,.035) 1px, transparent 1px) 0 0 / 32px 32px,
+      linear-gradient(90deg, rgba(190,230,210,.035) 1px, transparent 1px) 0 0 / 32px 32px; }
+  .ticks { position: absolute; font-size: 10px; color: var(--ink-3); letter-spacing: .04em; }
+  .contours { position: absolute; inset: 0; }
+  .plate { position: absolute; background: var(--plate); border: 1px solid rgba(238,242,234,.07); border-radius: 4px; }
+  .z1 { box-shadow: 0 6px 14px rgba(0,0,0,.25); }
+  .z2 { box-shadow: 0 14px 30px rgba(0,0,0,.32); }
+  .z3 { box-shadow: 0 28px 64px rgba(0,0,0,.45); background: var(--plate-hi); }
+  .nav { left: 32px; right: 32px; top: 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; font-size: 15px; }
+  .nav b { font-weight: 800; letter-spacing: -.01em; font-size: 17px; }
+  .nav nav { display: flex; gap: 28px; align-items: center; color: var(--ink-2); }
+  .nav .cur { color: var(--ink); box-shadow: inset 0 -2px 0 var(--accent); padding-bottom: 4px; }
+  .rt { display: flex; gap: 2px; background: rgba(0,0,0,.3); border-radius: 4px; padding: 3px; font-size: 13px; font-weight: 600; }
+  .rt span { padding: 4px 10px; border-radius: 3px; color: var(--ink-3); }
+  .rt .on { background: var(--accent); color: #1a0d05; }
+  .profile { left: 64px; top: 128px; width: 704px; height: 360px; padding: 40px 44px; }
+  h1 { font-size: 76px; line-height: 1; font-weight: 800; letter-spacing: -.035em; }
+  .role { font-size: 20px; color: var(--ink-2); margin-top: 12px; font-weight: 500; }
+  .profile p { font-size: 18px; line-height: 1.6; margin-top: 22px; max-width: 58ch; }
+  .legend { display: flex; gap: 28px; margin-top: 26px; font-size: 15px; font-weight: 600; }
+  .legend a { color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 9px; }
+  .legend i { width: 9px; height: 9px; border: 2px solid var(--accent); border-radius: 50%; display: inline-block; }
+  .sheet { left: 832px; top: 128px; width: 544px; height: 168px; padding: 24px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; font-size: 14px; }
+  .sheet dt { color: var(--ink-3); font-size: 12px; font-weight: 600; }
+  .sheet dd { margin-top: 3px; }
+  .profileviz { left: 64px; right: 64px; top: 536px; height: 300px; padding: 24px 28px; }
+  .profileviz h2 { font-size: 15px; font-weight: 700; display: flex; justify-content: space-between; }
+  .profileviz h2 span { color: var(--ink-3); font-weight: 500; font-size: 13px; }
+  svg text { font-family: var(--sans); }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <span class="ticks" style="left:164px;top:6px">122°20′W</span><span class="ticks" style="left:484px;top:6px">122°18′W</span><span class="ticks" style="left:804px;top:6px">122°16′W</span><span class="ticks" style="left:1124px;top:6px">122°14′W</span>
+  <span class="ticks" style="left:6px;top:324px;writing-mode:vertical-rl">47°40′N</span><span class="ticks" style="left:6px;top:644px;writing-mode:vertical-rl">47°38′N</span>
+  <svg class="contours" width="1440" height="900" viewBox="0 0 1440 900" fill="none" stroke="#2f5a4e" stroke-width="1">
+    <path d="M760 520 C 900 380, 1180 360, 1320 470 S 1460 700, 1240 760 S 860 720, 760 520Z"/>
+    <path d="M820 520 C 930 420, 1150 410, 1260 490 S 1350 660, 1210 700 S 900 680, 820 520Z"/>
+    <path d="M880 525 C 960 460, 1110 455, 1200 510 S 1260 630, 1170 650 S 940 640, 880 525Z" stroke-width="1.8"/>
+    <path d="M950 530 C 1000 495, 1090 495, 1140 530 S 1170 600, 1120 610 S 990 600, 950 530Z"/>
+    <path d="M-40 760 C 120 700, 300 720, 420 820 S 520 940, 300 960"/>
+    <path d="M-40 820 C 100 770, 250 790, 340 870"/>
+    <path d="M820 60 C 960 20, 1180 40, 1300 100 S 1480 120, 1500 80"/>
+  </svg>
+
+  <div class="plate z2 nav"><b>John Jin</b>
+    <nav><span class="cur">Home</span><span>Articles</span><span>Photos</span><span>Tags</span><span>Search ⌘K</span><span>中</span>
+      <div class="rt"><span class="on">Official</span><span>Casual</span></div></nav></div>
+
+  <div class="plate z3 profile">
+    <h1>John Jin</h1>
+    <div class="role">Software Developer · UW Allen School ’27</div>
+    <p>Undergraduate at UW Seattle, majoring in Computer Science and Informatics, with experience across software engineering and design.</p>
+    <div class="legend"><a href="#"><i></i>Email</a><a href="#"><i></i>GitHub ↗</a><a href="#"><i></i>LinkedIn ↗</a></div>
+  </div>
+
+  <dl class="plate z1 sheet">
+    <div><dt>Based in</dt><dd>Seattle, WA</dd></div><div><dt>Studying</dt><dd>CS + Informatics</dd></div>
+    <div><dt>Now</dt><dd>Software Engineer, Blaze Edu</dd></div><div><dt>Stack</dt><dd>TypeScript · C++ · C#</dd></div>
+  </dl>
+
+  <div class="plate z2 profileviz">
+    <h2>Experience <span>2024 — present</span></h2>
+    <svg width="1256" height="230" viewBox="0 0 1256 230" fill="none">
+      <line x1="0" y1="196" x2="1256" y2="196" stroke="#6f8a7f"/>
+      <g fill="#6f8a7f" font-size="12"><text x="0" y="218">2024</text><text x="400" y="218">2025</text><text x="800" y="218">2026</text><text x="1210" y="218">2027</text></g>
+      <path d="M0 196 C 120 180, 220 130, 300 120 S 460 150, 520 140 S 680 90, 760 84 S 920 30, 1000 26 S 1180 60, 1256 70 L1256 196 L0 196Z" fill="rgba(255,122,61,.08)"/>
+      <path d="M0 196 C 120 180, 220 130, 300 120 S 460 150, 520 140 S 680 90, 760 84" stroke="#a9bdb3" stroke-width="1.5" stroke-dasharray="4 4" opacity=".7"/>
+      <path d="M760 84 S 920 30, 1000 26 S 1180 60, 1256 70" stroke="#ff7a3d" stroke-width="2.5"/>
+      <circle cx="300" cy="120" r="5" fill="#0f1f1c" stroke="#a9bdb3" stroke-width="2"/>
+      <circle cx="640" cy="104" r="5" fill="#0f1f1c" stroke="#a9bdb3" stroke-width="2"/>
+      <circle cx="1000" cy="26" r="7" fill="#ff7a3d"/>
+      <line x1="300" y1="113" x2="300" y2="64" stroke="#6f8a7f"/><line x1="640" y1="97" x2="640" y2="40" stroke="#6f8a7f"/><line x1="1000" y1="18" x2="1000" y2="4" stroke="#ff7a3d"/>
+      <g font-size="14"><text x="308" y="62" fill="#eef2ea" font-weight="600">Software Engineer · Hedracam</text><text x="308" y="80" fill="#a9bdb3" font-size="12">2024 — 2025 · C++, C#, graphics interface</text>
+        <text x="648" y="38" fill="#eef2ea" font-weight="600">Leadership Member · I2 @ UW</text><text x="648" y="56" fill="#a9bdb3" font-size="12">2025 — 2026 · Fellows TA</text>
+        <text x="1016" y="12" fill="#eef2ea" font-weight="700">Software Engineer · Blaze Edu</text><text x="1016" y="30" fill="#a9bdb3" font-size="12">2026 — · TypeScript, PostgreSQL</text></g>
+    </svg>
+  </div>
+</body>
+</html>
