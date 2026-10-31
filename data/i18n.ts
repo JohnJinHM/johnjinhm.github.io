@@ -26,7 +26,7 @@ export const dateLocale: Record<Locale, string> = {
   zh: 'zh-CN',
 }
 
-type NavKey = 'home' | 'blog' | 'photos'
+type NavKey = 'home' | 'blog' | 'photos' | 'tags'
 
 export type UIStrings = {
   nav: Record<NavKey, string>
@@ -36,26 +36,41 @@ export type UIStrings = {
   noPosts: string
   publishedOn: string
   localeSwitchLabel: string
+  search: string
+  openMenu: string
+  closeMenu: string
+  experience: string
+  present: string
 }
 
 export const ui: Record<Locale, UIStrings> = {
   en: {
-    nav: { home: 'Home', blog: 'Blog', photos: 'Photos' },
+    nav: { home: 'Home', blog: 'Blog', photos: 'Photos', tags: 'Tags' },
     switchTo: (label) => `Switch to ${label}`,
     readMore: 'Read more',
     allOf: (title) => `All ${title}`,
     noPosts: 'No posts found.',
     publishedOn: 'Published on',
     localeSwitchLabel: 'Switch language',
+    search: 'Search',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    experience: 'Experience',
+    present: 'now',
   },
   zh: {
-    nav: { home: '主页', blog: '博客', photos: '相册' },
+    nav: { home: '主页', blog: '博客', photos: '相册', tags: '标签' },
     switchTo: (label) => `切换到${label}`,
     readMore: '阅读全文',
     allOf: (title) => `全部${title}`,
     noPosts: '暂无文章。',
     publishedOn: '发布于',
     localeSwitchLabel: '切换语言',
+    search: '搜索',
+    openMenu: '打开菜单',
+    closeMenu: '关闭菜单',
+    experience: '经历',
+    present: '至今',
   },
 }
 
@@ -111,18 +126,23 @@ export const localizedExperiences: Record<Locale, Record<Route, Experience[]>> =
         role: '软件工程师',
         org: 'Blaze Edu LLC',
         period: '2026 - ',
+        start: '2026',
         highlights: ['全栈开发', 'TypeScript、PostgreSQL'],
       },
       {
         role: '软件工程师',
         org: 'Hedracam',
         period: '2024 — 2025',
+        start: '2024',
+        end: '2025',
         highlights: ['跨平台集成与图形界面开发', 'C++、C#'],
       },
       {
         role: '核心成员',
         org: 'Interactive Intelligence @ UW',
         period: '2025 — 2026',
+        start: '2025',
+        end: '2026',
         highlights: ['I2 Fellows 助教，Research Room 成员'],
       },
     ],
@@ -131,12 +151,15 @@ export const localizedExperiences: Record<Locale, Record<Route, Experience[]>> =
         role: '占位side project',
         org: '个人',
         period: '2025',
+        start: '2025',
+        end: '2025',
         highlights: ['替换为你的爱好、side project 或任何折腾的东西。'],
       },
       {
         role: '占位兴趣',
         org: '业余时间',
         period: '进行中',
+        start: '2025',
         highlights: ['替换为你工作之外喜欢做的事情。'],
       },
     ],

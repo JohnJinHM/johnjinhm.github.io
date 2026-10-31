@@ -1,176 +1,66 @@
 'use client'
 
-import { CoreContent } from 'pliny/utils/contentlayer'
-import type { Blog, Photo } from 'contentlayer/generated'
-import { formatDate } from 'pliny/utils/formatDate'
 import { routeMeta, Route } from '@/data/routes'
-import { dateLocale, localizedExperiences, routeText, ui } from '@/data/i18n'
-import Link from '@/components/Link'
-import Image from '@/components/Image'
-import Tag from '@/components/Tag'
-import SocialIcon from '@/components/social-icons'
+import { localizedExperiences, routeText, ui } from '@/data/i18n'
+import type { SocialIconKind } from '@/components/social-icons'
 import { useLocale } from '@/components/LocaleProvider'
+import Timeline from './Timeline'
 
-const MAX_POSTS = 5
-const MAX_PHOTOS = 4
-
-interface Props {
-  route: Route
-  posts: CoreContent<Blog>[]
-  photos: CoreContent<Photo>[]
+const socialLabels: Record<SocialIconKind, string> = {
+  mail: 'Email',
+  github: 'GitHub',
+  linkedin: 'LinkedIn',
+  instagram: 'Instagram',
+  bluesky: 'Bluesky',
+  x: 'X',
+  twitter: 'Twitter',
+  facebook: 'Facebook',
+  youtube: 'YouTube',
+  mastodon: 'Mastodon',
+  threads: 'Threads',
+  medium: 'Medium',
 }
 
-export default function HomeLayout({ route, posts, photos }: Props) {
+export default function HomeLayout({ route }: { route: Route }) {
   const { locale } = useLocale()
   const t = ui[locale]
-  const meta = routeMeta[route]
   const text = routeText[locale][route]
-  const experiences = localizedExperiences[locale][route]
-  const { occupation, company } = text
-  const { socials } = meta
+  const { socials } = routeMeta[route]
+  const role = [text.occupation, text.company].filter(Boolean).join(' · ')
 
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
-      <div className="items-start space-y-8 py-8 xl:grid xl:grid-cols-3 xl:space-y-0 xl:gap-x-8">
-        <div className="flex flex-col items-center text-center xl:col-span-1">
-          {meta.avatar && (
-            <Image
-              src={meta.avatar}
-              alt="avatar"
-              width={192}
-              height={192}
-              className="h-40 w-40 rounded-full"
-            />
-          )}
-          <h1 className="pt-4 pb-1 text-2xl leading-8 font-bold tracking-tight text-gray-900 dark:text-gray-100">
-            {text.name}
-          </h1>
-          {occupation && <div className="text-gray-500 dark:text-gray-400">{occupation}</div>}
-          {company && <div className="text-gray-500 dark:text-gray-400">{company}</div>}
-          <div className="flex space-x-3 pt-4">
-            {socials.map((social) => (
-              <SocialIcon
-                key={`${social.kind}-${social.href}`}
-                kind={social.kind}
-                href={social.href}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="xl:col-span-2">
-          <h2 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-gray-100">
-            {text.label}
-          </h2>
-          <p className="mt-4 text-lg leading-7 text-gray-500 dark:text-gray-400">
-            {text.homeIntro}
-          </p>
-          <ul className="mt-8 space-y-6">
-            {experiences.map((exp) => (
-              <li key={`${exp.role}-${exp.org}-${exp.period}`}>
-                <div className="flex flex-wrap items-baseline justify-between gap-x-2">
-                  <h3 className="text-lg leading-7 font-bold tracking-tight text-gray-900 dark:text-gray-100">
-                    {exp.role}
-                    <span className="font-normal text-gray-500 dark:text-gray-400">
-                      {' '}
-                      · {exp.org}
-                    </span>
-                  </h3>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">{exp.period}</span>
-                </div>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-gray-500 dark:text-gray-400">
-                  {exp.highlights.map((highlight) => (
-                    <li key={highlight}>{highlight}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div className="py-8">
-        <h2 className="text-2xl leading-8 font-bold tracking-tight text-gray-900 dark:text-gray-100">
-          {text.blogTitle}
-        </h2>
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {!posts.length && t.noPosts}
-          {posts.slice(0, MAX_POSTS).map((post) => {
-            const { slug, date, title, summary, tags } = post
-            return (
-              <li key={slug} className="py-6">
-                <article className="space-y-3">
-                  <dl>
-                    <dt className="sr-only">{t.publishedOn}</dt>
-                    <dd className="text-sm leading-6 font-medium text-gray-500 dark:text-gray-400">
-                      <time dateTime={date}>{formatDate(date, dateLocale[locale])}</time>
-                    </dd>
-                  </dl>
-                  <h3 className="text-xl leading-8 font-bold tracking-tight">
-                    <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
-                      {title}
-                    </Link>
-                  </h3>
-                  <div className="flex flex-wrap">
-                    {tags.map((tag) => (
-                      <Tag key={tag} text={tag} route={route} />
-                    ))}
-                  </div>
-                  <div className="prose max-w-none text-gray-500 dark:text-gray-400">{summary}</div>
-                  <div className="text-base leading-6 font-medium">
-                    <Link
-                      href={`/blog/${slug}`}
-                      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                      aria-label={`${t.readMore}: "${title}"`}
-                    >
-                      {t.readMore} &rarr;
-                    </Link>
-                  </div>
-                </article>
-              </li>
-            )
-          })}
-        </ul>
-        {posts.length > MAX_POSTS && (
-          <div className="flex justify-end text-base leading-6 font-medium">
-            <Link
-              href={`/${route}/blog`}
-              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-              aria-label={t.allOf(text.blogTitle)}
-            >
-              {t.allOf(text.blogTitle)} &rarr;
-            </Link>
-          </div>
+    <div className="flex min-h-[min(calc(100svh-5rem),48rem)] flex-col">
+      <div className="pt-10 md:pt-16">
+        <h1 className="font-display text-[length:var(--text-display)] leading-[var(--leading-tight)] font-black tracking-[-0.035em]">
+          {text.name}
+        </h1>
+        {role && (
+          <p className="font-display mt-4 text-[length:var(--text-lg)] font-medium">{role}</p>
         )}
+        <p className="mt-6 max-w-[var(--measure)]">{text.homeIntro}</p>
+        <ul className="font-display mt-6 flex flex-wrap gap-x-8 gap-y-3 font-bold">
+          {socials.map((social) => (
+            <li key={`${social.kind}-${social.href}`}>
+              <a
+                href={social.href}
+                className="link-fill"
+                {...(social.href.startsWith('http')
+                  ? { target: '_blank', rel: 'noopener noreferrer' }
+                  : {})}
+              >
+                {socialLabels[social.kind]}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-
-      {photos.length > 0 && (
-        <div className="py-8">
-          <div className="flex items-baseline justify-between">
-            <h2 className="text-2xl leading-8 font-bold tracking-tight text-gray-900 dark:text-gray-100">
-              {text.photosTitle}
-            </h2>
-            <Link
-              href={`/${route}/photos`}
-              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 text-base font-medium"
-            >
-              {t.allOf(text.photosTitle)} &rarr;
-            </Link>
-          </div>
-          <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {photos.slice(0, MAX_PHOTOS).map((photo) => (
-              <Link key={photo.slug} href={`/photos/${photo.slug}`} aria-label={photo.title}>
-                <Image
-                  src={photo.image}
-                  alt={photo.title}
-                  width={400}
-                  height={400}
-                  className="aspect-square rounded-md object-cover"
-                />
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
+      <div className="mt-auto pt-16 pb-4">
+        <Timeline
+          experiences={localizedExperiences[locale][route]}
+          label={t.experience}
+          presentLabel={t.present}
+        />
+      </div>
     </div>
   )
 }

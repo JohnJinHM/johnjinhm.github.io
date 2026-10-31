@@ -1,172 +1,125 @@
 import { ReactNode } from 'react'
+import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog, Authors } from 'contentlayer/generated'
+import Arrow from '@/components/Arrow'
 import Comments from '@/components/Comments'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
-import SectionContainer from '@/components/SectionContainer'
-import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
-import { Route, defaultRoute, isRoute } from '@/data/routes'
+import { Route, defaultRoute, isRoute, routeMeta } from '@/data/routes'
 
-const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-const discussUrl = (path) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
+const editUrl = (path: string) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 
-const postDateTemplate: Intl.DateTimeFormatOptions = {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
+type Neighbor = { path: string; title: string }
+
+export function postRoute(content: { route?: string }): Route {
+  return content.route && content.route !== 'shared' && isRoute(content.route)
+    ? content.route
+    : defaultRoute
+}
+
+export function PostHeader({ content, route }: { content: CoreContent<Blog>; route: Route }) {
+  const { date, title, summary, tags, readingTime } = content
+  return (
+    <header className="border-rule border-b pt-10 pb-8 md:pt-16">
+      <Link
+        href={`/${route}/blog`}
+        className="meta hover:text-ink transition-colors"
+        aria-label={`Back to ${routeMeta[route].blogTitle}`}
+      >
+        <Arrow direction="left" /> {routeMeta[route].blogTitle}
+      </Link>
+      <p className="meta mt-6">
+        <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+        {readingTime?.text && <> · {readingTime.text}</>}
+      </p>
+      <div className="mt-3">
+        <PageTitle>{title}</PageTitle>
+      </div>
+      {summary && (
+        <p className="text-ink-2 mt-4 text-[length:var(--text-lg)] leading-[1.45]">{summary}</p>
+      )}
+      {tags && tags.length > 0 && (
+        <div className="mt-6 flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <Tag key={tag} text={tag} route={route} />
+          ))}
+        </div>
+      )}
+    </header>
+  )
+}
+
+export function PostNav({ prev, next }: { prev?: Neighbor; next?: Neighbor }) {
+  if (!prev?.path && !next?.path) return null
+  return (
+    <nav
+      aria-label="More articles"
+      className="border-rule mt-12 grid gap-6 border-t pt-6 sm:grid-cols-2"
+    >
+      {prev?.path ? (
+        <Link href={`/${prev.path}`} className="group">
+          <span className="meta">
+            <Arrow direction="left" /> Previous
+          </span>
+          <span className="font-display mt-1 block font-bold decoration-[var(--accent)] decoration-2 underline-offset-4 group-hover:underline">
+            {prev.title}
+          </span>
+        </Link>
+      ) : (
+        <span />
+      )}
+      {next?.path && (
+        <Link href={`/${next.path}`} className="group sm:text-right">
+          <span className="meta">
+            Next <Arrow direction="right" />
+          </span>
+          <span className="font-display mt-1 block font-bold decoration-[var(--accent)] decoration-2 underline-offset-4 group-hover:underline">
+            {next.title}
+          </span>
+        </Link>
+      )}
+    </nav>
+  )
+}
+
+export function PostComments({ slug }: { slug: string }) {
+  if (!siteMetadata.comments) return null
+  return (
+    <div className="mt-12" id="comment">
+      <Comments slug={slug} />
+    </div>
+  )
 }
 
 interface LayoutProps {
   content: CoreContent<Blog>
   authorDetails: CoreContent<Authors>[]
-  next?: { path: string; title: string }
-  prev?: { path: string; title: string }
+  next?: Neighbor
+  prev?: Neighbor
   children: ReactNode
 }
 
-export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
-  const { filePath, path, slug, date, title, tags } = content
-  const route: Route =
-    content.route && content.route !== 'shared' && isRoute(content.route)
-      ? content.route
-      : defaultRoute
+export default function PostLayout({ content, next, prev, children }: LayoutProps) {
+  const route = postRoute(content)
 
   return (
-    <SectionContainer>
+    <>
       <ScrollTopAndComment />
-      <article data-route={route} className={`route-${route}`}>
-        <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
-          <header className="pt-6 xl:pb-6">
-            <div className="space-y-1 text-center">
-              <dl className="space-y-10">
-                <div>
-                  <dt className="sr-only">Published on</dt>
-                  <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
-                    </time>
-                  </dd>
-                </div>
-              </dl>
-              <div>
-                <PageTitle>{title}</PageTitle>
-              </div>
-            </div>
-          </header>
-          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0 dark:divide-gray-700">
-            <dl className="pt-6 pb-10 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
-              <dt className="sr-only">Authors</dt>
-              <dd>
-                <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-y-8 xl:space-x-0">
-                  {authorDetails.map((author) => (
-                    <li className="flex items-center space-x-2" key={author.name}>
-                      {author.avatar && (
-                        <Image
-                          src={author.avatar}
-                          width={38}
-                          height={38}
-                          alt="avatar"
-                          className="h-10 w-10 rounded-full"
-                        />
-                      )}
-                      <dl className="text-sm leading-5 font-medium whitespace-nowrap">
-                        <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        <dt className="sr-only">Twitter</dt>
-                        <dd>
-                          {author.twitter && (
-                            <Link
-                              href={author.twitter}
-                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                            >
-                              {author.twitter
-                                .replace('https://twitter.com/', '@')
-                                .replace('https://x.com/', '@')}
-                            </Link>
-                          )}
-                        </dd>
-                      </dl>
-                    </li>
-                  ))}
-                </ul>
-              </dd>
-            </dl>
-            <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
-              <div className="prose dark:prose-invert max-w-none pt-10 pb-8">{children}</div>
-              <div className="pt-6 pb-6 text-sm text-gray-700 dark:text-gray-300">
-                <Link href={discussUrl(path)} rel="nofollow">
-                  Discuss on Twitter
-                </Link>
-                {` • `}
-                <Link href={editUrl(filePath)}>View on GitHub</Link>
-              </div>
-              {siteMetadata.comments && (
-                <div
-                  className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300"
-                  id="comment"
-                >
-                  <Comments slug={slug} />
-                </div>
-              )}
-            </div>
-            <footer>
-              <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
-                {tags && (
-                  <div className="py-4 xl:py-8">
-                    <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                      Tags
-                    </h2>
-                    <div className="flex flex-wrap">
-                      {tags.map((tag) => (
-                        <Tag key={tag} text={tag} route={route} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {(next || prev) && (
-                  <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
-                    {prev && prev.path && (
-                      <div>
-                        <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                          Previous Article
-                        </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/${prev.path}`}>{prev.title}</Link>
-                        </div>
-                      </div>
-                    )}
-                    {next && next.path && (
-                      <div>
-                        <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                          Next Article
-                        </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/${next.path}`}>{next.title}</Link>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className="pt-4 xl:pt-8">
-                <Link
-                  href={`/${route}/blog`}
-                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                  aria-label="Back to the blog"
-                >
-                  &larr; Back to the blog
-                </Link>
-              </div>
-            </footer>
-          </div>
-        </div>
+      <article data-route={route} className="enter max-w-[var(--measure)]">
+        <PostHeader content={content} route={route} />
+        <div className="prose pt-8">{children}</div>
+        <p className="meta mt-12">
+          <Link href={editUrl(content.filePath)} className="hover:text-ink transition-colors">
+            View source on GitHub <Arrow direction="external" />
+          </Link>
+        </p>
+        <PostNav prev={prev} next={next} />
+        <PostComments slug={content.slug} />
       </article>
-    </SectionContainer>
+    </>
   )
 }

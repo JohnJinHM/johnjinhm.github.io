@@ -1,127 +1,81 @@
 'use client'
 
-import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
-import { Fragment, useState, useEffect, useRef } from 'react'
-import { usePathname } from 'next/navigation'
+import { Dialog, DialogPanel } from '@headlessui/react'
+import { useState } from 'react'
+import { ui } from '@/data/i18n'
 import Link from './Link'
-import RouteSwitchLink from './RouteSwitchLink'
-import navLinks from '@/data/headerNavLinks'
-import { otherRoute, routeFromPathname } from '@/data/routes'
-import { routeText, ui } from '@/data/i18n'
+import RouteSwitch from './RouteSwitch'
+import { useNavItems } from './Header'
 import { useLocale } from './LocaleProvider'
 
 const MobileNav = () => {
-  const pathname = usePathname()
-  const route = routeFromPathname(pathname)
-  const next = otherRoute(route)
+  const [open, setOpen] = useState(false)
   const { locale } = useLocale()
   const t = ui[locale]
-  const [navShow, setNavShow] = useState(false)
-  const [mounted, setMounted] = useState(false)
-  const navRef = useRef(null)
-
-  const onToggleNav = () => {
-    setNavShow((status) => {
-      if (status) {
-        enableBodyScroll(navRef.current)
-      } else {
-        // Prevent scrolling
-        disableBodyScroll(navRef.current)
-      }
-      return !status
-    })
-  }
-
-  useEffect(() => {
-    setMounted(true)
-    return clearAllBodyScrollLocks
-  })
+  const items = useNavItems()
+  const close = () => setOpen(false)
 
   return (
     <>
-      <button aria-label="Toggle Menu" onClick={onToggleNav} className="sm:hidden">
+      <button
+        type="button"
+        aria-label={t.openMenu}
+        onClick={() => setOpen(true)}
+        className="text-ink-2 hover:text-ink -mr-1 p-1 md:hidden"
+      >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="hover:text-primary-500 dark:hover:text-primary-400 h-8 w-8 text-gray-900 dark:text-gray-100"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          className="h-6 w-6"
+          aria-hidden="true"
         >
-          <path
-            fillRule="evenodd"
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            clipRule="evenodd"
-          />
+          <path d="M4 7h16M4 12h16M4 17h16" />
         </svg>
       </button>
-      {mounted && (
-        <Transition appear show={navShow} as={Fragment} unmount={false}>
-          <Dialog as="div" onClose={onToggleNav} unmount={false}>
-            <TransitionChild
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-              unmount={false}
+      <Dialog open={open} onClose={close} className="relative z-60 md:hidden">
+        <DialogPanel
+          transition
+          className="bg-ground fixed inset-0 flex flex-col px-4 transition duration-[var(--dur-base)] ease-[var(--ease-out)] data-closed:translate-y-2 data-closed:opacity-0 sm:px-8"
+        >
+          <div className="flex h-20 items-center justify-end">
+            <button
+              type="button"
+              aria-label={t.closeMenu}
+              onClick={close}
+              className="text-ink-2 hover:text-ink -mr-1 p-1"
             >
-              <div className="fixed inset-0 z-60 bg-black/25" />
-            </TransitionChild>
-
-            <TransitionChild
-              as={Fragment}
-              enter="transition ease-in-out duration-300 transform"
-              enterFrom="translate-x-full opacity-0"
-              enterTo="translate-x-0 opacity-95"
-              leave="transition ease-in duration-200 transform"
-              leaveFrom="translate-x-0 opacity-95"
-              leaveTo="translate-x-full opacity-0"
-              unmount={false}
-            >
-              <DialogPanel className="fixed top-0 left-0 z-70 h-full w-full bg-white/95 duration-300 dark:bg-gray-950/98">
-                <nav
-                  ref={navRef}
-                  className="mt-8 flex h-full basis-0 flex-col items-start overflow-y-auto pt-2 pl-12 text-left"
-                >
-                  {navLinks(route).map((link) => (
-                    <Link
-                      key={link.key}
-                      href={link.href}
-                      className="hover:text-primary-500 dark:hover:text-primary-400 mb-4 py-2 pr-4 text-2xl font-bold tracking-widest text-gray-900 outline outline-0 dark:text-gray-100"
-                      onClick={onToggleNav}
-                    >
-                      {t.nav[link.key]}
-                    </Link>
-                  ))}
-                  <RouteSwitchLink
-                    href={`/${next}`}
-                    className="hover:text-primary-500 dark:hover:text-primary-400 mb-4 py-2 pr-4 text-2xl font-bold tracking-widest text-gray-900 outline outline-0 dark:text-gray-100"
-                    onClick={onToggleNav}
-                  >
-                    {t.switchTo(routeText[locale][next].label)}
-                  </RouteSwitchLink>
-                </nav>
-
-                <button
-                  className="hover:text-primary-500 dark:hover:text-primary-400 fixed top-7 right-4 z-80 h-16 w-16 p-4 text-gray-900 dark:text-gray-100"
-                  aria-label="Toggle Menu"
-                  onClick={onToggleNav}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </DialogPanel>
-            </TransitionChild>
-          </Dialog>
-        </Transition>
-      )}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                className="h-6 w-6"
+                aria-hidden="true"
+              >
+                <path d="M6 6l12 12M18 6 6 18" />
+              </svg>
+            </button>
+          </div>
+          <nav aria-label="Main" className="mt-4 flex flex-col">
+            {items.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                onClick={close}
+                aria-current={item.current ? 'page' : undefined}
+                className="font-display border-rule text-ink-2 aria-[current=page]:text-ink border-b py-4 text-[length:var(--text-xl)] font-bold aria-[current=page]:underline aria-[current=page]:decoration-[var(--accent)] aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-8"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <RouteSwitch onNavigate={close} className="mt-8 flex text-[length:var(--text-lg)]" />
+        </DialogPanel>
+      </Dialog>
     </>
   )
 }

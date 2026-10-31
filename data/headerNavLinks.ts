@@ -5,6 +5,7 @@ export function navLinks(route: Route) {
     { href: `/${route}`, key: 'home' as const },
     { href: `/${route}/blog`, key: 'blog' as const },
     { href: `/${route}/photos`, key: 'photos' as const },
+    { href: `/${route}/tags`, key: 'tags' as const },
   ]
 }
 

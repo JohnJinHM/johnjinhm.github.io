@@ -68,11 +68,13 @@ export default async function TagPage(props: { params: Promise<{ route: string; 
         title={title}
       />
       {filteredPhotos.length > 0 && (
-        <div className="pt-10">
-          <h2 className="pb-6 text-2xl leading-8 font-bold tracking-tight text-gray-900 dark:text-gray-100">
+        <div className="pt-16">
+          <h2 className="font-display border-rule border-b pb-4 text-[length:var(--text-xl)] font-bold">
             Photos
           </h2>
-          <PhotoGrid photos={filteredPhotos} route={route as Route} />
+          <div className="pt-6">
+            <PhotoGrid photos={filteredPhotos} />
+          </div>
         </div>
       )}
     </div>

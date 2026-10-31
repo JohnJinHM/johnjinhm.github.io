@@ -1,37 +1,36 @@
 import Link from './Link'
 import siteMetadata from '@/data/siteMetadata'
-import SocialIcon from '@/components/social-icons'
+
+const basePath = process.env.BASE_PATH || ''
 
 export default function Footer() {
+  const links = [
+    { label: 'Email', href: `mailto:${siteMetadata.email}` },
+    { label: 'GitHub', href: siteMetadata.github },
+    { label: 'LinkedIn', href: siteMetadata.linkedin },
+    { label: 'RSS', href: `${basePath}/feed.xml` },
+  ].filter((link) => link.href)
+
   return (
-    <footer>
-      <div className="mt-16 flex flex-col items-center">
-        <div className="mb-3 flex space-x-4">
-          <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
-          <SocialIcon kind="github" href={siteMetadata.github} size={6} />
-          <SocialIcon kind="facebook" href={siteMetadata.facebook} size={6} />
-          <SocialIcon kind="youtube" href={siteMetadata.youtube} size={6} />
-          <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
-          <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
-          <SocialIcon kind="bluesky" href={siteMetadata.bluesky} size={6} />
-          <SocialIcon kind="x" href={siteMetadata.x} size={6} />
-          <SocialIcon kind="instagram" href={siteMetadata.instagram} size={6} />
-          <SocialIcon kind="threads" href={siteMetadata.threads} size={6} />
-          <SocialIcon kind="medium" href={siteMetadata.medium} size={6} />
-        </div>
-        <div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
-          <div>{siteMetadata.author}</div>
-          <div>{` • `}</div>
-          <div>{`© ${new Date().getFullYear()}`}</div>
-          <div>{` • `}</div>
-          <Link href="/">{siteMetadata.title}</Link>
-        </div>
-        <div className="mb-8 text-sm text-gray-500 dark:text-gray-400">
-          <Link href="https://github.com/timlrx/tailwind-nextjs-starter-blog">
-            Tailwind Nextjs Theme
-          </Link>
-        </div>
-      </div>
+    <footer className="border-rule mt-24 flex flex-col gap-4 border-t py-8 text-[length:var(--text-xs)] sm:flex-row sm:items-center sm:justify-between">
+      <p className="meta">
+        © {new Date().getFullYear()} {siteMetadata.author} · Built on{' '}
+        <Link
+          href="https://github.com/timlrx/tailwind-nextjs-starter-blog"
+          className="hover:text-ink underline decoration-[var(--rule)] underline-offset-4"
+        >
+          tailwind-nextjs-starter-blog
+        </Link>
+      </p>
+      <ul className="font-display flex gap-6 font-bold">
+        {links.map((link) => (
+          <li key={link.label}>
+            <a href={link.href} className="text-ink-2 hover:text-ink transition-colors">
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
     </footer>
   )
 }

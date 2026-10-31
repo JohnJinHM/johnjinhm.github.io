@@ -2,13 +2,12 @@
 
 import { usePathname } from 'next/navigation'
 import { routeFromPathname } from '@/data/routes'
-import { useRouteTransition } from '@/components/RouteTransitionProvider'
 
+// Re-mounts the page on a route switch so the content fades in while the grids pan.
 export default function RouteTransition({ children }: { children: React.ReactNode }) {
   const route = routeFromPathname(usePathname())
-  const { leavingFrom } = useRouteTransition()
   return (
-    <div key={route} className={leavingFrom === route ? 'route-leave' : 'route-enter'}>
+    <div key={route} className="enter">
       {children}
     </div>
   )

@@ -1,19 +1,16 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import TagSidebar from '@/components/TagSidebar'
+import Pagination, { PaginationProps } from '@/components/Pagination'
+import PageTitle from '@/components/PageTitle'
 import siteMetadata from '@/data/siteMetadata'
 import { Route } from '@/data/routes'
 
-interface PaginationProps {
-  totalPages: number
-  currentPage: number
-}
 interface ListLayoutProps {
   posts: CoreContent<Blog>[]
   title: string
@@ -22,46 +19,51 @@ interface ListLayoutProps {
   pagination?: PaginationProps
 }
 
-function Pagination({ totalPages, currentPage }: PaginationProps) {
-  const pathname = usePathname()
-  const basePath = pathname
-    .replace(/^\//, '') // Remove leading slash
-    .replace(/\/page\/\d+\/?$/, '') // Remove any trailing /page
-    .replace(/\/$/, '') // Remove trailing slash
-  const prevPage = currentPage - 1 > 0
-  const nextPage = currentPage + 1 <= totalPages
-
+export function ListHeader({ title, route }: { title: string; route: Route }) {
   return (
-    <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-      <nav className="flex justify-between">
-        {!prevPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
-            Previous
-          </button>
-        )}
-        {prevPage && (
-          <Link
-            href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
-            rel="prev"
-          >
-            Previous
-          </Link>
-        )}
-        <span>
-          {currentPage} of {totalPages}
-        </span>
-        {!nextPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
-            Next
-          </button>
-        )}
-        {nextPage && (
-          <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
-            Next
-          </Link>
-        )}
-      </nav>
+    <div className="flex items-end justify-between gap-4 pt-10 pb-8 md:pt-16">
+      <PageTitle>{title}</PageTitle>
+      <TagSidebar route={route} />
     </div>
+  )
+}
+
+export function PostList({ posts, route }: { posts: CoreContent<Blog>[]; route: Route }) {
+  if (posts.length === 0) return <p className="text-ink-2">No posts found.</p>
+  return (
+    <ul>
+      {posts.map((post) => {
+        const { path, date, title, summary, tags } = post
+        return (
+          <li
+            key={path}
+            className="border-rule grid gap-1 border-t py-6 md:grid-cols-[9rem_minmax(0,1fr)] md:gap-6"
+          >
+            <time dateTime={date} className="meta md:pt-1.5" suppressHydrationWarning>
+              {formatDate(date, siteMetadata.locale)}
+            </time>
+            <article>
+              <h2 className="font-display text-[length:var(--text-xl)] leading-[1.2] font-bold tracking-[-0.01em]">
+                <Link
+                  href={`/${path}`}
+                  className="decoration-[var(--accent)] decoration-2 underline-offset-4 hover:underline"
+                >
+                  {title}
+                </Link>
+              </h2>
+              {summary && <p className="text-ink-2 mt-2 max-w-[var(--measure)]">{summary}</p>}
+              {tags && tags.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <Tag key={tag} text={tag} route={route} />
+                  ))}
+                </div>
+              )}
+            </article>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
 
@@ -75,58 +77,12 @@ export default function ListLayoutWithTags({
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
 
   return (
-    <>
-      <div>
-        <div className="flex items-center justify-between pt-6 pb-6">
-          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:hidden sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
-            {title}
-          </h1>
-          <TagSidebar route={route} />
-        </div>
-        <div>
-          <div>
-            <ul>
-              {displayPosts.map((post) => {
-                const { path, date, title, summary, tags } = post
-                return (
-                  <li key={path} className="py-5">
-                    <article className="flex flex-col space-y-2 xl:space-y-0">
-                      <dl>
-                        <dt className="sr-only">Published on</dt>
-                        <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                          <time dateTime={date} suppressHydrationWarning>
-                            {formatDate(date, siteMetadata.locale)}
-                          </time>
-                        </dd>
-                      </dl>
-                      <div className="space-y-3">
-                        <div>
-                          <h2 className="text-2xl leading-8 font-bold tracking-tight">
-                            <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
-                              {title}
-                            </Link>
-                          </h2>
-                          <div className="flex flex-wrap">
-                            {tags?.map((tag) => (
-                              <Tag key={tag} text={tag} route={route} />
-                            ))}
-                          </div>
-                        </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                          {summary}
-                        </div>
-                      </div>
-                    </article>
-                  </li>
-                )
-              })}
-            </ul>
-            {pagination && pagination.totalPages > 1 && (
-              <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
-            )}
-          </div>
-        </div>
-      </div>
-    </>
+    <div className="enter">
+      <ListHeader title={title} route={route} />
+      <PostList posts={displayPosts} route={route} />
+      {pagination && pagination.totalPages > 1 && (
+        <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+      )}
+    </div>
   )
 }

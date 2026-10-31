@@ -1,5 +1,6 @@
 'use client'
 
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { slug } from 'github-slugger'
@@ -12,23 +13,22 @@ const TagSidebar = ({ route }: { route: Route }) => {
   const [open, setOpen] = useState(false)
   const tagCounts = (tagData as Record<string, Record<string, number>>)[route] || {}
   const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a])
-  const activeTag = decodeURI(pathname.split('/tags/')[1] || '')
+  const activeTag = decodeURI(pathname.split('/tags/')[1] || '').replace(/\/.*$/, '')
+  const close = () => setOpen(false)
+  const rowClass =
+    'flex items-baseline justify-between py-2 text-ink-2 hover:text-ink aria-[current=page]:text-accent transition-colors'
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Open tags"
-        className="hover:text-primary-500 dark:hover:text-primary-500 flex items-center gap-2 rounded-sm px-3 py-2 text-sm font-medium text-gray-500 uppercase dark:text-gray-300"
-      >
+      <button type="button" onClick={() => setOpen(true)} className="btn">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth={1.5}
+          strokeWidth={1.75}
           stroke="currentColor"
-          className="h-5 w-5"
+          className="h-4 w-4"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -40,71 +40,63 @@ const TagSidebar = ({ route }: { route: Route }) => {
         Tags
       </button>
 
-      {open && (
-        <div className="fixed inset-0 z-50" role="dialog" aria-modal="true">
-          <div
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setOpen(false)}
-            aria-hidden="true"
-          />
-          <div className="absolute top-0 right-0 h-full max-h-screen w-[280px] overflow-auto bg-gray-50 shadow-md dark:bg-gray-900">
-            <div className="flex justify-end px-4 pt-4">
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label="Close tags"
-                className="hover:text-primary-500 dark:hover:text-primary-500 text-gray-500 dark:text-gray-300"
+      <Dialog open={open} onClose={close} className="relative z-50">
+        <div className="fixed inset-0 bg-[oklch(0_0_0/0.5)]" aria-hidden="true" />
+        <DialogPanel
+          transition
+          className="bg-ground border-rule fixed top-0 right-0 flex h-full w-[min(320px,85vw)] flex-col overflow-auto border-l px-6 pb-8 transition duration-[var(--dur-base)] ease-[var(--ease-out)] data-closed:translate-x-4 data-closed:opacity-0"
+        >
+          <div className="flex h-20 items-center justify-between">
+            <DialogTitle className="font-display text-[length:var(--text-lg)] font-bold">
+              Tags
+            </DialogTitle>
+            <button
+              type="button"
+              onClick={close}
+              aria-label="Close tags"
+              className="text-ink-2 hover:text-ink -mr-1 p-1"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                className="h-5 w-5"
+                aria-hidden="true"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="px-6 py-4">
-              {pathname === `/${route}/blog` ? (
-                <h3 className="text-primary-500 font-bold uppercase">All Posts</h3>
-              ) : (
-                <Link
-                  href={`/${route}/blog`}
-                  onClick={() => setOpen(false)}
-                  className="hover:text-primary-500 dark:hover:text-primary-500 font-bold text-gray-700 uppercase dark:text-gray-300"
-                >
-                  All Posts
-                </Link>
-              )}
-              <ul>
-                {sortedTags.map((t) => {
-                  return (
-                    <li key={t} className="my-3">
-                      {activeTag === slug(t) ? (
-                        <h3 className="text-primary-500 inline px-3 py-2 text-sm font-bold uppercase">
-                          {`${t} (${tagCounts[t]})`}
-                        </h3>
-                      ) : (
-                        <Link
-                          href={`/${route}/tags/${slug(t)}`}
-                          onClick={() => setOpen(false)}
-                          className="hover:text-primary-500 dark:hover:text-primary-500 px-3 py-2 text-sm font-medium text-gray-500 uppercase dark:text-gray-300"
-                          aria-label={`View posts tagged ${t}`}
-                        >
-                          {`${t} (${tagCounts[t]})`}
-                        </Link>
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
+                <path d="M6 6l12 12M18 6 6 18" />
+              </svg>
+            </button>
           </div>
-        </div>
-      )}
+          <ul className="divide-rule font-display divide-y text-[length:var(--text-ui)]">
+            <li>
+              <Link
+                href={`/${route}/blog`}
+                onClick={close}
+                aria-current={pathname.replace(/\/$/, '') === `/${route}/blog` ? 'page' : undefined}
+                className={`${rowClass} font-bold`}
+              >
+                All posts
+              </Link>
+            </li>
+            {sortedTags.map((t) => (
+              <li key={t}>
+                <Link
+                  href={`/${route}/tags/${slug(t)}`}
+                  onClick={close}
+                  aria-current={activeTag === slug(t) ? 'page' : undefined}
+                  aria-label={`View posts tagged ${t}`}
+                  className={rowClass}
+                >
+                  <span>{t}</span>
+                  <span className="meta">{tagCounts[t]}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </DialogPanel>
+      </Dialog>
     </>
   )
 }

@@ -49,7 +49,7 @@ export default function PhotoImage({
 
   return (
     <span
-      className="relative block overflow-hidden bg-gray-100 dark:bg-gray-800"
+      className="bg-surface relative block overflow-hidden rounded-[var(--radius)]"
       style={{
         aspectRatio: width && height ? `${width} / ${height}` : undefined,
         backgroundImage: blur && !loaded ? `url(${blur})` : undefined,

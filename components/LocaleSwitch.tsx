@@ -9,9 +9,10 @@ const LocaleSwitch = () => {
 
   return (
     <button
+      type="button"
       aria-label={ui[locale].localeSwitchLabel}
       onClick={() => setLocale(next)}
-      className="hover:text-primary-500 dark:hover:text-primary-400 flex h-6 min-w-6 items-center justify-center text-sm font-semibold text-gray-900 dark:text-gray-100"
+      className="text-ink-2 hover:text-ink font-display flex h-7 min-w-7 items-center justify-center font-bold transition-colors duration-[var(--dur-fast)]"
     >
       {next === 'zh' ? '中' : 'EN'}
     </button>
