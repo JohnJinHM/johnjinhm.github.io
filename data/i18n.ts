@@ -26,7 +26,7 @@ export const dateLocale: Record<Locale, string> = {
   zh: 'zh-CN',
 }
 
-type NavKey = 'home' | 'blog' | 'photos' | 'tags'
+type NavKey = 'home' | 'experience' | 'blog' | 'photos' | 'tags'
 
 export type UIStrings = {
   nav: Record<NavKey, string>
@@ -45,7 +45,7 @@ export type UIStrings = {
 
 export const ui: Record<Locale, UIStrings> = {
   en: {
-    nav: { home: 'Home', blog: 'Blog', photos: 'Photos', tags: 'Tags' },
+    nav: { home: 'Home', experience: 'Experience', blog: 'Blog', photos: 'Photos', tags: 'Tags' },
     switchTo: (label) => `Switch to ${label}`,
     readMore: 'Read more',
     allOf: (title) => `All ${title}`,
@@ -59,7 +59,7 @@ export const ui: Record<Locale, UIStrings> = {
     present: 'now',
   },
   zh: {
-    nav: { home: '主页', blog: '博客', photos: '相册', tags: '标签' },
+    nav: { home: '主页', experience: '经历', blog: '博客', photos: '相册', tags: '标签' },
     switchTo: (label) => `切换到${label}`,
     readMore: '阅读全文',
     allOf: (title) => `全部${title}`,
@@ -100,10 +100,9 @@ export const routeText: Record<Locale, Record<Route, RouteText>> = {
       label: '官方',
       blogTitle: '文章',
       photosTitle: '摄影',
-      homeIntro:
-        '华盛顿大学（西雅图）本科在读，主修计算机科学与信息学，拥有丰富的软件工程与设计经验。',
-      occupation: '软件开发工程师',
-      company: "华盛顿大学 Allen School '27",
+      homeIntro: '华盛顿大学计算机科学本科在读，辅修信息学，关注软件工程、全栈开发与 AI 应用。',
+      occupation: '计算机科学本科生',
+      company: '华盛顿大学 · 预计 2027 年 3 月毕业',
     },
     casual: {
       name: 'Starfall',
@@ -113,7 +112,7 @@ export const routeText: Record<Locale, Record<Route, RouteText>> = {
       homeIntro:
         '工作之外，这里存放着我未成形的想法、随手拍下的照片和各种小项目——用更轻松的视角记录我平时的乐趣。',
       occupation: '内容创作者',
-      company: '占位公司',
+      company: '',
     },
   },
 }
@@ -123,45 +122,50 @@ export const localizedExperiences: Record<Locale, Record<Route, Experience[]>> =
   zh: {
     official: [
       {
-        role: '软件工程师',
-        org: 'Blaze Edu LLC',
-        period: '2026 - ',
-        start: '2026',
-        highlights: ['全栈开发', 'TypeScript、PostgreSQL'],
+        id: 'i2-program',
+        role: 'Research Room 项目联合负责人',
+        org: 'UW Interactive Intelligence（I2）',
+        period: '2026 年 9 月 — 至今',
+        start: '2026-09',
+        highlights: [],
       },
       {
-        role: '软件工程师',
-        org: 'Hedracam',
-        period: '2024 — 2025',
-        start: '2024',
-        end: '2025',
-        highlights: ['跨平台集成与图形界面开发', 'C++、C#'],
+        id: 'ignite',
+        role: '软件工程实习生',
+        org: 'Ignite Robotics',
+        period: '2026 年 6 月 — 9 月',
+        start: '2026-06',
+        end: '2026-09',
+        highlights: [],
       },
       {
-        role: '核心成员',
-        org: 'Interactive Intelligence @ UW',
-        period: '2025 — 2026',
-        start: '2025',
-        end: '2026',
-        highlights: ['I2 Fellows 助教，Research Room 成员'],
+        id: 'i2-fellows',
+        role: 'Fellows 助教',
+        org: 'UW Interactive Intelligence（I2）',
+        period: '2026 年 1 月 — 5 月',
+        start: '2026-01',
+        end: '2026-05',
+        highlights: [],
+      },
+      {
+        id: 'i2-team',
+        role: 'Research Room 小组负责人',
+        org: 'UW Interactive Intelligence（I2）',
+        period: '2025 年 1 月 — 3 月',
+        start: '2025-01',
+        end: '2025-03',
+        highlights: [],
+      },
+      {
+        id: 'trustrobot',
+        role: '软件工程实习生',
+        org: 'Trustrobot Co., Ltd.',
+        period: '2024 年 6 月 — 2025 年 9 月',
+        start: '2024-06',
+        end: '2025-09',
+        highlights: [],
       },
     ],
-    casual: [
-      {
-        role: '占位side project',
-        org: '个人',
-        period: '2025',
-        start: '2025',
-        end: '2025',
-        highlights: ['替换为你的爱好、side project 或任何折腾的东西。'],
-      },
-      {
-        role: '占位兴趣',
-        org: '业余时间',
-        period: '进行中',
-        start: '2025',
-        highlights: ['替换为你工作之外喜欢做的事情。'],
-      },
-    ],
+    casual: [],
   },
 }

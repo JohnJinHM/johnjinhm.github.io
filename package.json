@@ -9,6 +9,7 @@
     "new:post": "node ./scripts/new-post.mjs --type=blog",
     "new:photo": "node ./scripts/new-post.mjs --type=photo",
     "images:process": "node ./scripts/process-images.mjs",
+    "images:avatars": "node ./scripts/process-avatars.mjs",
     "build": "contentlayer2 build && next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postbuild.mjs",
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true next build",

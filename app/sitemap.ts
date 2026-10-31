@@ -17,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const lastModified = new Date().toISOString().split('T')[0]
   const routePages = routes.flatMap((route) =>
-    ['', 'blog', 'photos', 'tags'].map((page) => ({
+    ['', 'experience', 'blog', 'photos', 'tags'].map((page) => ({
       url: `${siteUrl}/${route}${page ? `/${page}` : ''}`,
       lastModified,
     }))

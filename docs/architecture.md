@@ -11,6 +11,7 @@ Production output is a static export (see
 ```text
 /                          → client redirect to /official/ (honors BASE_PATH)
 /[route]                   → route home
+/[route]/experience        → shared professional record (EN / ZH)
 /[route]/blog              → article list      (+ /page/[n])
 /[route]/photos            → photo-post grid   (+ /page/[n])
 /[route]/tags              → tag index for the route
@@ -29,7 +30,7 @@ reachable from either route. Lists are sorted newest first.
 | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | `data/routes.ts`                              | The set of routes, the default route, and per-route profile data (`routeMeta`: name, avatar, occupation, company, intro, socials, list titles)       | `routes`, `Route`, `defaultRoute`, `isRoute`, `otherRoute`, `routeFromPathname`, `postsForRoute`, `routeMeta` |
 | `data/experiences.ts`                         | Per-route experiences list on the home pages                                                                                                         | `experiences[route]`                                                                                          |
-| `data/i18n.ts`                                | Locales, UI string dictionaries, Chinese home text and experiences                                                                                   | Exports consumed by home and nav components                                                                   |
+| `data/i18n.ts`                                | Locales, UI string dictionaries, Chinese home text and role titles/dates                                                                             | Exports consumed by home and nav components                                                                   |
 | `data/siteMetadata.js`                        | Site-wide settings: title, author, URLs, analytics, comments, newsletter, search                                                                     | Default export                                                                                                |
 | `data/headerNavLinks.ts`                      | Header and mobile nav entries                                                                                                                        | `navLinks(route)`                                                                                             |
 | `data/blog/`, `data/photos/`, `data/authors/` | MDX content                                                                                                                                          | Frontmatter schema in `contentlayer.config.ts`                                                                |
@@ -40,6 +41,23 @@ reachable from either route. Lists are sorted newest first.
 | `components/home/`                            | Shared home-page layout for both routes, the experience timeline, and the route enter fade                                                           | `HomeLayout`, `Timeline`, `RouteTransition`                                                                   |
 | `css/`                                        | Design tokens (`tokens.css`), grid scene (`scene.css`), Tailwind entry mapping tokens to utilities (`tailwind.css`), code highlighting (`prism.css`) | Custom properties and utilities (`bg-ground`, `text-ink-2`, `text-accent`, …)                                 |
 | `scripts/`                                    | Authoring CLI, image processing, postbuild RSS                                                                                                       | `yarn` scripts in `package.json`                                                                              |
+
+## Experience content
+
+`data/experiencePage.ts` owns bilingual education, role details, and project copy.
+`components/ExperiencePage.tsx` uses the existing locale provider and looks up role
+names and dates by stable ID in `localizedExperiences[locale].official`. Both route
+variants render this same confirmed record; casual home placeholders are omitted.
+The route page validates async params and generates metadata and static params.
+The sitemap explicitly includes both Experience URLs.
+
+Home timeline entries are ordered newest first in the DOM, on mobile, and in the
+desktop lanes (one per role, so overlapping spans never share a line; after
+measuring, `Timeline` raises each lane beside earlier ones whose label and span
+leave it horizontal room, so lanes share height but never content), with
+wrapping titles and separate organization/date lines; the horizontal axis starts
+at 1024px. End months are inclusive. Header links and
+the route toggle use the full menu below 1024px to leave room for Experience.
 
 ## Content model
 

@@ -163,12 +163,12 @@
 
 /*
   Experience timeline (components/home/Timeline.tsx). Each <li> carries
-  --start, --end (percent of the axis) and --row (label step).
-  Small screens: vertical list, newest first. md and up: horizontal axis.
+  --start, --end and --anchor (percent of the axis).
+  Small screens: vertical list, newest first. lg and up: one lane per role.
 */
 .timeline ol {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: var(--space-3);
   margin: 0;
   padding: 0 0 0 var(--space-3);
@@ -214,26 +214,29 @@
   display: none;
 }
 
-@media (min-width: 768px) {
-  .timeline {
-    padding-top: calc(var(--rows) * 56px);
-  }
+@media (min-width: 1024px) {
+  /* One lane per role, closed by the axis at the bottom. */
   .timeline ol {
-    display: block;
     position: relative;
-    height: 1px;
-    padding: 0;
+    box-sizing: content-box;
+    gap: var(--space-1);
+    padding: 0 0 var(--space-2);
     border: 0;
-    background: var(--horizon);
+    border-bottom: 1px solid var(--horizon);
   }
   .timeline li {
+    padding-bottom: 12px;
+  }
+  /* Rows placed by Timeline's packing, sharing height where they don't meet. */
+  .timeline ol[data-packed] li {
     position: absolute;
-    inset: 0;
+    left: 0;
+    right: 0;
   }
   .tl-span {
     display: block;
     position: absolute;
-    top: -1px;
+    bottom: 0;
     height: 3px;
     left: var(--start);
     width: calc(var(--end) - var(--start));
@@ -247,55 +250,29 @@
   }
   .tl-point {
     left: var(--start);
-    top: -5px;
+    top: auto;
+    bottom: -4px;
     margin-left: -5px;
     width: 11px;
     height: 11px;
   }
   .timeline li[data-current] .tl-point {
-    top: -7px;
+    bottom: -6px;
     margin-left: -7px;
     width: 15px;
     height: 15px;
   }
+  /* The label sits above its span, starting at the point. */
   .tl-label {
-    position: absolute;
-    left: var(--start);
-    bottom: calc(14px + var(--row) * 56px);
-    padding-left: 12px;
-    border-left: 1px solid var(--rule);
-    white-space: nowrap;
-    max-width: min(28rem, 60vw);
-    overflow: hidden;
-    text-overflow: ellipsis;
+    width: max-content;
+    max-width: min(30rem, 48vw);
+    margin-left: var(--start);
   }
-  /* Leader from the label down to the axis. */
-  .tl-label::before {
-    content: '';
-    position: absolute;
-    left: -1px;
-    bottom: calc(-14px - var(--row) * 56px);
-    height: calc(14px + var(--row) * 56px);
-    border-left: 1px solid var(--rule);
-  }
-  /* Roles in the right half hang their label to the left of the point. */
+  /* Roles in the right half end their label where the span ends. */
   .timeline li[data-flip] .tl-label {
-    left: auto;
-    right: calc(100% - var(--start));
-    padding: 0 12px 0 0;
-    border-left: 0;
-    border-right: 1px solid var(--rule);
+    margin-left: auto;
+    margin-right: calc(100% - var(--anchor));
     text-align: right;
-  }
-  .timeline li[data-flip] .tl-label::before {
-    left: auto;
-    right: -1px;
-    border-left: 0;
-    border-right: 1px solid var(--rule);
-  }
-  .timeline li[data-current] .tl-label,
-  .timeline li[data-current] .tl-label::before {
-    border-color: var(--accent);
   }
   .tl-years {
     display: block;

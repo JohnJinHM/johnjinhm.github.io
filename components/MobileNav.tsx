@@ -4,7 +4,7 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 import { useState } from 'react'
 import { ui } from '@/data/i18n'
 import Link from './Link'
-import RouteSwitch from './RouteSwitch'
+// import RouteSwitch from './RouteSwitch' // temporarily hidden
 import { useNavItems } from './Header'
 import { useLocale } from './LocaleProvider'
 
@@ -21,7 +21,7 @@ const MobileNav = () => {
         type="button"
         aria-label={t.openMenu}
         onClick={() => setOpen(true)}
-        className="text-ink-2 hover:text-ink -mr-1 p-1 md:hidden"
+        className="text-ink-2 hover:text-ink -mr-1 p-1 lg:hidden"
       >
         <svg
           viewBox="0 0 24 24"
@@ -35,10 +35,10 @@ const MobileNav = () => {
           <path d="M4 7h16M4 12h16M4 17h16" />
         </svg>
       </button>
-      <Dialog open={open} onClose={close} className="relative z-60 md:hidden">
+      <Dialog open={open} onClose={close} className="relative z-60 lg:hidden">
         <DialogPanel
           transition
-          className="bg-ground fixed inset-0 flex flex-col px-4 transition duration-[var(--dur-base)] ease-[var(--ease-out)] data-closed:translate-y-2 data-closed:opacity-0 sm:px-8"
+          className="bg-ground fixed inset-0 flex flex-col overflow-y-auto px-4 pb-8 transition duration-[var(--dur-base)] ease-[var(--ease-out)] data-closed:translate-y-2 data-closed:opacity-0 sm:px-8"
         >
           <div className="flex h-20 items-center justify-end">
             <button
@@ -73,7 +73,8 @@ const MobileNav = () => {
               </Link>
             ))}
           </nav>
-          <RouteSwitch onNavigate={close} className="mt-8 flex text-[length:var(--text-lg)]" />
+          {/* Route switch temporarily hidden (see Header). */}
+          {/* <RouteSwitch onNavigate={close} className="mt-8 flex text-[length:var(--text-lg)]" /> */}
         </DialogPanel>
       </Dialog>
     </>

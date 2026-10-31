@@ -33,6 +33,8 @@ export const routeMeta: Record<
     photosTitle: string
     homeIntro: string
     avatar: string
+    /** Face position in the avatar, as a CSS position; the small phone crop zooms in on it. */
+    avatarFocus: string
     occupation: string
     company: string
     socials: SocialLink[]
@@ -44,10 +46,11 @@ export const routeMeta: Record<
     blogTitle: 'Articles',
     photosTitle: 'Photos',
     homeIntro:
-      'Undergraduate in UW-Seattle. Abundant experience in Software Engineering and Designs. Major in Computer Science and Informatics.',
-    avatar: '/static/images/avatar-official.jpg',
-    occupation: 'Software Developer',
-    company: 'UW Allen School \'27',
+      'Computer Science undergraduate at the University of Washington with a minor in Informatics, focused on software engineering, full-stack development, and AI applications.',
+    avatar: '/static/images/avatar-official-square.jpg',
+    avatarFocus: '48% 30%',
+    occupation: 'Computer Science Undergraduate',
+    company: 'UW · Expected March 2027',
     socials: [
       { kind: 'mail', href: 'mailto:jinhaomin874@gmail.com' },
       { kind: 'github', href: 'https://github.com/JohnJinHM/Blog' },
@@ -61,9 +64,10 @@ export const routeMeta: Record<
     photosTitle: 'Snapshots',
     homeIntro:
       'Off the clock, this is where I keep the half-formed notes, snapshots, and side projects. A more relaxed look at what I get up to for fun.',
-    avatar: '/static/images/avatar.png',
+    avatar: '/static/images/avatar-casual-square.jpg',
+    avatarFocus: '60% 48%',
     occupation: 'Content Creator',
-    company: 'Placeholder Company',
+    company: '',
     socials: [
       { kind: 'mail', href: 'mailto:jinhaomin874@gmail.com' },
       { kind: 'instagram', href: 'https://instagram.com/' },

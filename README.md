@@ -88,6 +88,11 @@ After adding a photo image by hand, or to backfill existing posts, run:
 yarn images:process   # safe to re-run
 ```
 
+The home-page portraits are square crops of `public/static/images/avatar-official.jpg` and
+`avatar.png`. After replacing either source, adjust the crop box in `scripts/process-avatars.mjs` if
+needed, run `yarn images:avatars`, commit the `avatar-*-square.jpg` outputs, and update
+`avatarFocus` in `data/routes.ts` to the face position.
+
 HEIC input may not be supported by the prebuilt `sharp` binary; convert to JPEG/PNG first.
 
 ## Configuration
@@ -99,6 +104,8 @@ HEIC input may not be supported by the prebuilt `sharp` binary; convert to JPEG/
   each role on the timeline; leave `end` out for a current role)
 - Look and feel: edit the PRIMITIVES block in `css/tokens.css`; open `design/index.html` in a
   browser to try values with live knobs and copy them back
+- Experience page details (English and Chinese): `data/experiencePage.ts`; role titles and
+  dates reuse the home timeline data by stable ID. Both routes show the same confirmed record.
 - Chinese UI text for the nav bar and home pages: `data/i18n.ts`
 - Environment variables for comments and newsletter providers: `.env.example`
 

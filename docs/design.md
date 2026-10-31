@@ -190,8 +190,14 @@ multiples of one 8px unit (`--space-*`), with more space above a heading than
 below it.
 
 The home page is the name, role, intro and links at the top and the experience
-timeline at the bottom of a block that fills the viewport up to 48rem. Below
-768px the header collapses to search, language and a menu; the timeline becomes
+timeline at the bottom of a block that fills the viewport up to 48rem. The
+square portrait (2px corners, hairline border, no circle crop) sits in a
+reserved 20rem right-hand column from 1280px up. Its top meets the name's cap
+height and its bottom the link row; its size follows the text block's height,
+so it stays square and aligned in any locale (about 280–320px). Below 1280px it
+is a 96px (128px from 640px) square above the name, zoomed on the face via
+`routeMeta.avatarFocus`. Below 1024px
+the timeline becomes
 a vertical list, current role first; list rows stack their date above the
 title.
 
@@ -253,19 +259,24 @@ color. Points on the timeline are the only circles.
 
 ### Navigation
 
-- **Desktop:** name left in Display 900 caps; Home / Articles / Photos / Tags
-  in ink-soft, current page in ink with a 2px accent underline; search with a
-  ⌘K key cap; 中/EN; both routes side by side with the current one in accent.
-- **Mobile:** a full-screen menu with large Display links separated by
-  hairlines, then the route switch.
+- **Desktop:** name left in Display 900 caps; nav links in ink-soft, current
+  page in ink with a 2px accent underline; search with a ⌘K key cap; 中/EN;
+  both routes side by side with the current one in accent.
+- **Mobile and tablet (below 1024px):** a full-screen menu with large Display
+  links separated by hairlines, then the route switch.
+- **Temporarily:** only Home and Experience are linked (Articles, Photos and
+  Tags are commented out in `data/headerNavLinks.ts`) and the route switch is
+  commented out in `Header.tsx` and `MobileNav.tsx`. With two or fewer links the
+  header shows them inline at every width and drops the menu button.
 
 ### Experience timeline (signature)
 
-A horizontal axis in the horizon color with year ticks below. Each role is a
-span along the axis with a point at its start and a label stepped above it on a
-leader line; labels in the right half hang to the left of their point. Past
-roles are dim; the current role is accent (point, span, leader) and its span
-grows to today's date in the browser.
+A horizontal axis in the horizon color with year ticks below. Each role gets its
+own lane above the axis, newest on top: a span with a point at its start and the
+label directly above it. Labels start at the point; in the right half of the
+axis they end at the span's end instead (the axis end for the current role).
+Past roles are dim; the current role is accent (point, span) and its span grows
+to today's date in the browser.
 
 ### Grid scene (signature)
 
