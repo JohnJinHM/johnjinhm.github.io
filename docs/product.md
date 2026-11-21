@@ -10,9 +10,8 @@ hosts written articles and photo posts, split into two audiences:
 - **Casual** (`/casual`): informal notes, snapshots, and a separate personal
   profile.
 
-Readers switch between the two with a toggle in the header (temporarily hidden;
-see Header below). The author adds
-content as MDX files, mostly through the `yarn new` CLI.
+The visible site focuses on Projects and Experience. The author adds archive content as MDX
+files, mostly through the `yarn new` CLI. Hidden archive routes are retained for later restoration.
 
 ## Current capabilities
 
@@ -22,25 +21,23 @@ content as MDX files, mostly through the `yarn new` CLI.
   alerts, and inline images.
 - **Photo posts**: one hero image shown at its native aspect ratio, with a
   caption (`summary`) and optional MDX body. Listed in a masonry grid.
-- **Home pages**: per-route portrait, name, role, intro, social links, and the
-  official experiences drawn as a timeline. The casual home omits placeholder
-  experiences. Both homes link to Experience. No post or photo lists.
-- **Header**: temporarily links only Home and Experience and hides the
-  Official/Casual switch. Articles, Photos, Tags and `/casual` are still built
-  and reachable by URL.
-- **Experience** (`/[route]/experience`): the same confirmed education, work,
-  research/teaching roles, and selected projects in both routes, with each route’s
-  accent. I2 roles have separate dates and scopes; planned work stays identified
-  as planned.
+- **Home pages**: per-route portrait and introduction, then a searchable project directory with
+  a selected-project inspector, workflow, details, and repository link.
+- **Header**: Projects, Experience, and language only. WORK & LIFE, Journal, Photos, and
+  Personal are temporarily omitted. Articles, Photos, Tags, and `/casual` still work by URL.
+- **Experience** (`/[route]/experience`): a searchable directory of the five professional roles,
+  showing dates, detailed responsibilities, education, and planned-work qualifications.
+- **Reading shortlist**: up to three projects or roles, retained while navigating within the
+  mounted site. Supports remove, undo, capacity feedback, and opening an entry across views.
+  Reloading starts a fresh shortlist. Search, topic, and selected entry are independent per view.
 - **Tags**: counted and listed per route.
 - **Search**: `Cmd/Ctrl-K` searches articles and photo posts across both routes.
 - **RSS**: a site feed plus one feed per tag.
 - **Comments**: Giscus is selected in `data/siteMetadata.js` (see Known gaps).
-- **Look**: dark only. One design system for both routes; each route has one
-  accent (Official cyan, Casual amber). Two line-grid planes sit behind the
-  content and move with scroll and pointer. Tokens and a preview page are in
-  `css/tokens.css` and `design/index.html`.
-- **UI language**: English or Chinese (`中`/`EN` toggle). This currently covers
+- **Look**: Broken Arrow-inspired neutral charcoal surfaces, yellow selection and primary
+  actions, and a restrained grayscale landscape. Rectangular directory/inspector layout becomes
+  stacked on mobile, with an explicit jump-to-detail control. No moving grid scene.
+- **UI language**: English or Chinese (`中文`/`EN` toggle). This currently covers
   the nav bar, both home pages, and Experience; posts, tags, and list pages are
   English only.
 - **Authoring tooling**: `yarn new` scaffolds posts and compresses images;

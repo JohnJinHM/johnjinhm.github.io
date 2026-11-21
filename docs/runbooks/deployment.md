@@ -48,8 +48,9 @@ to `out/` instead of `public/`. To test a project-page base path, also set
 
 - The workflow run shows both `build` and `deploy` succeeded; the `deploy` job
   links the published URL.
-- On the published site, `/` redirects to `/official/`, the route toggle reaches
-  `/casual/`, and a photo post shows its image.
+- On the published site, `/` redirects to `/official/`, Projects and Experience
+  navigation works, and `/casual/` and photo posts remain reachable directly by URL.
+- Check both languages, mobile directory/detail access, and shortlist state across client navigation.
 
 ## Recovery
 

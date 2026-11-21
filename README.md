@@ -4,8 +4,9 @@ A personal blog built on Next.js (App Router) + Contentlayer + Tailwind, adapted
 [tailwind-nextjs-starter-blog](https://github.com/timlrx/tailwind-nextjs-starter-blog) template
 and deployed to GitHub Pages as a static export.
 
-The site has **two switchable top-level routes**, each with its own home, articles, photos, and
-tags:
+The visible portfolio uses the Broken Arrow design: Projects, Experience, and an English/Chinese
+language switch. Journal, Photos, Personal, and the WORK & LIFE subtitle are temporarily hidden.
+The two original route trees remain available by URL, including their articles, photos, and tags:
 
 - **`official`** (default) — longer-form writing and project notes.
 - **`casual`** — short notes and snapshots.
@@ -102,8 +103,9 @@ HEIC input may not be supported by the prebuilt `sharp` binary; convert to JPEG/
   `data/routes.ts`
 - Home-page experiences: `data/experiences.ts` (`start` / `end` as `'YYYY'` or `'YYYY-MM'` place
   each role on the timeline; leave `end` out for a current role)
-- Look and feel: edit the PRIMITIVES block in `css/tokens.css`; open `design/index.html` in a
-  browser to try values with live knobs and copy them back
+- Look and feel: `css/portfolio.css` owns the current charcoal/yellow portfolio theme.
+  `css/tokens.css` retains the base scales and archive compatibility tokens. `design/index.html`
+  is the earlier design experiment, not a preview of the current UI.
 - Experience page details (English and Chinese): `data/experiencePage.ts`; role titles and
   dates reuse the home timeline data by stable ID. Both routes show the same confirmed record.
 - Chinese UI text for the nav bar and home pages: `data/i18n.ts`

@@ -1,38 +1,16 @@
 import 'css/tailwind.css'
+import 'css/portfolio.css'
+import { PortfolioShell } from '@/components/Portfolio'
 import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
 
-import { Red_Hat_Display, Red_Hat_Mono, Red_Hat_Text } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
-import Header from '@/components/Header'
-import SectionContainer from '@/components/SectionContainer'
-import Footer from '@/components/Footer'
 import RouteAccent from '@/components/RouteAccent'
-import Scene from '@/components/Scene'
 import { LocaleProvider } from '@/components/LocaleProvider'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
-
-const redHatDisplay = Red_Hat_Display({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['500', '700', '900'],
-  variable: '--font-red-hat-display',
-})
-
-const redHatText = Red_Hat_Text({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-red-hat-text',
-})
-
-const redHatMono = Red_Hat_Mono({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-red-hat-mono',
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.siteUrl),
@@ -78,11 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const basePath = process.env.BASE_PATH || ''
 
   return (
-    <html
-      lang={siteMetadata.language}
-      className={`${redHatDisplay.variable} ${redHatText.variable} ${redHatMono.variable} dark scroll-smooth`}
-      suppressHydrationWarning
-    >
+    <html lang={siteMetadata.language} className="dark" suppressHydrationWarning>
       <link
         rel="apple-touch-icon"
         sizes="76x76"
@@ -106,26 +80,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         href={`${basePath}/static/favicons/safari-pinned-tab.svg`}
         color="#5bbad5"
       />
-      <meta name="msapplication-TileColor" content="#0a0b1c" />
-      <meta name="theme-color" content="#0a0b1c" />
+      <meta name="msapplication-TileColor" content="#101214" />
+      <meta name="theme-color" content="#101214" />
       <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
       <body className="bg-ground text-ink antialiased">
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <RouteAccent>
             <LocaleProvider>
-              <Scene />
-              <div className="relative flex min-h-screen flex-col">
-                <SectionContainer className="flex-1">
-                  <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-                    <Header />
-                    <main>{children}</main>
-                  </SearchProvider>
-                </SectionContainer>
-                <SectionContainer>
-                  <Footer />
-                </SectionContainer>
-              </div>
+              <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+                <PortfolioShell>{children}</PortfolioShell>
+              </SearchProvider>
             </LocaleProvider>
           </RouteAccent>
         </ThemeProviders>

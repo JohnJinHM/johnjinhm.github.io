@@ -26,38 +26,39 @@ reachable from either route. Lists are sorted newest first.
 
 ## Modules
 
-| Area                                          | Responsibility and owned state                                                                                                                       | Public contract                                                                                               |
-| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `data/routes.ts`                              | The set of routes, the default route, and per-route profile data (`routeMeta`: name, avatar, occupation, company, intro, socials, list titles)       | `routes`, `Route`, `defaultRoute`, `isRoute`, `otherRoute`, `routeFromPathname`, `postsForRoute`, `routeMeta` |
-| `data/experiences.ts`                         | Per-route experiences list on the home pages                                                                                                         | `experiences[route]`                                                                                          |
-| `data/i18n.ts`                                | Locales, UI string dictionaries, Chinese home text and role titles/dates                                                                             | Exports consumed by home and nav components                                                                   |
-| `data/siteMetadata.js`                        | Site-wide settings: title, author, URLs, analytics, comments, newsletter, search                                                                     | Default export                                                                                                |
-| `data/headerNavLinks.ts`                      | Header and mobile nav entries                                                                                                                        | `navLinks(route)`                                                                                             |
-| `data/blog/`, `data/photos/`, `data/authors/` | MDX content                                                                                                                                          | Frontmatter schema in `contentlayer.config.ts`                                                                |
-| `contentlayer.config.ts`                      | Document types (`Blog`, `Photo`, `Authors`), MDX plugin pipeline, computed fields; writes the tag counts and search index                            | Generated `contentlayer/generated` types and data                                                             |
-| `app/`                                        | Pages, layouts, `sitemap.ts`, `robots.ts`, SEO helpers                                                                                               | Next.js routing                                                                                               |
-| `layouts/`                                    | List and post layouts (`ListLayoutWithTags`, `ListLayoutPhotos`, `PostLayout`, `PostSimple`, `PostBanner`, `PhotoLayout`, `AuthorLayout`)            | Props per layout                                                                                              |
-| `components/`                                 | Shared UI: header/footer, route switch, grid scene, tag UI, pagination, locale, search, comments, `PhotoImage`, MDX component map                    | Component props                                                                                               |
-| `components/home/`                            | Shared home-page layout for both routes, the experience timeline, and the route enter fade                                                           | `HomeLayout`, `Timeline`, `RouteTransition`                                                                   |
-| `css/`                                        | Design tokens (`tokens.css`), grid scene (`scene.css`), Tailwind entry mapping tokens to utilities (`tailwind.css`), code highlighting (`prism.css`) | Custom properties and utilities (`bg-ground`, `text-ink-2`, `text-accent`, …)                                 |
-| `scripts/`                                    | Authoring CLI, image processing, postbuild RSS                                                                                                       | `yarn` scripts in `package.json`                                                                              |
+| Area                                          | Responsibility and owned state                                                                                                                 | Public contract                                                                                               |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `data/routes.ts`                              | The set of routes, the default route, and per-route profile data (`routeMeta`: name, avatar, occupation, company, intro, socials, list titles) | `routes`, `Route`, `defaultRoute`, `isRoute`, `otherRoute`, `routeFromPathname`, `postsForRoute`, `routeMeta` |
+| `data/experiences.ts`                         | Canonical role titles, dates and IDs reused by localized records                                                                               | `experiences[route]`                                                                                          |
+| `data/i18n.ts`                                | Locales, UI string dictionaries, Chinese home text and role titles/dates                                                                       | Exports consumed by home and nav components                                                                   |
+| `data/siteMetadata.js`                        | Site-wide settings: title, author, URLs, analytics, comments, newsletter, search                                                               | Default export                                                                                                |
+| `data/headerNavLinks.ts`                      | Header and mobile nav entries                                                                                                                  | `navLinks(route)`                                                                                             |
+| `data/blog/`, `data/photos/`, `data/authors/` | MDX content                                                                                                                                    | Frontmatter schema in `contentlayer.config.ts`                                                                |
+| `contentlayer.config.ts`                      | Document types (`Blog`, `Photo`, `Authors`), MDX plugin pipeline, computed fields; writes the tag counts and search index                      | Generated `contentlayer/generated` types and data                                                             |
+| `app/`                                        | Pages, layouts, `sitemap.ts`, `robots.ts`, SEO helpers                                                                                         | Next.js routing                                                                                               |
+| `layouts/`                                    | List and post layouts (`ListLayoutWithTags`, `ListLayoutPhotos`, `PostLayout`, `PostSimple`, `PostBanner`, `PhotoLayout`, `AuthorLayout`)      | Props per layout                                                                                              |
+| `components/`                                 | Portfolio shell/workspace and state; locale, search, archive UI and MDX rendering                                                              | `PortfolioShell`, `PortfolioWorkspace`, component props                                                       |
+| `components/home/`                            | Retained earlier home layout/timeline, currently unmounted                                                                                     | Legacy component props                                                                                        |
+| `css/`                                        | Current portfolio stylesheet, base/legacy tokens and Tailwind utilities                                                                        | `portfolio.css`, semantic custom properties                                                                   |
+| `scripts/`                                    | Authoring CLI, image processing, postbuild RSS                                                                                                 | `yarn` scripts in `package.json`                                                                              |
 
-## Experience content
+## Portfolio content and state
 
-`data/experiencePage.ts` owns bilingual education, role details, and project copy.
-`components/ExperiencePage.tsx` uses the existing locale provider and looks up role
-names and dates by stable ID in `localizedExperiences[locale].official`. Both route
-variants render this same confirmed record; casual home placeholders are omitted.
-The route page validates async params and generates metadata and static params.
-The sitemap explicitly includes both Experience URLs.
+`data/experiencePage.ts` owns bilingual education, role descriptions, and project copy.
+`components/Portfolio.tsx` maps projects and `localizedExperiences[locale].official` into
+stable entries, using repository names and existing role IDs. The route home renders
+`PortfolioWorkspace` in project mode; `/experience` renders it in experience mode.
 
-Home timeline entries are ordered newest first in the DOM, on mobile, and in the
-desktop lanes (one per role, so overlapping spans never share a line; after
-measuring, `Timeline` raises each lane beside earlier ones whose label and span
-leave it horizontal room, so lanes share height but never content), with
-wrapping titles and separate organization/date lines; the horizontal axis starts
-at 1024px. End months are inclusive. Header links and
-the route toggle use the full menu below 1024px to leave room for Experience.
+`PortfolioShell` is mounted in the root layout, under `LocaleProvider` and `SearchProvider`.
+It owns the selected entry, search and tag per view, plus the three-entry reading shortlist,
+last removed entry, and capacity notice. Navigation preserves this state; a full reload resets
+it. Shortlist titles are resolved from current locale data rather than storing translated text.
+Opening a saved entry navigates and focuses the matching inspector. Selecting directory entries
+does not force scroll; mobile has an explicit detail button. Existing route validation and
+static generation remain in the route layouts.
+
+The earlier Header, Footer, Scene, HomeLayout, ExperiencePage, Timeline, and RouteTransition
+components remain in source for reference but are not mounted by the new portfolio routes.
 
 ## Content model
 
@@ -85,42 +86,23 @@ source of truth. Fields most relevant to routing and layout:
 
 ### Design system and route styling
 
-- `css/tokens.css` is the single source of the look. Its PRIMITIVES block
-  (ground hue/lightness, the two route accents, type base and ratio, spacing
-  unit, radius, grid and motion settings) is the only part meant to be edited;
-  every color, size and duration derives from it. `design/index.html` previews
-  the tokens with live knobs and exports a PRIMITIVES block (open it from the
-  repo in a browser; it is not part of the build).
-- `css/tailwind.css` exposes the tokens as utilities through `@theme inline`
-  and maps the legacy `gray-*` / `primary-*` palettes onto them for markup the
-  site does not own (pliny's search modal and code copy button).
-- The site is dark only: `app/theme-providers.tsx` forces the `dark` class.
-- `components/RouteAccent.tsx` wraps the UI and sets `data-route` from the
-  pathname; `tokens.css` picks `--accent` from it. Post and photo layouts set
-  `data-route` from the post's own route.
-- `components/Scene.tsx` renders the two grid planes behind every page
-  (`css/scene.css`), feeds them pointer and scroll position as CSS variables,
-  pans them quickly when the route changes, and dims them on post and photo
-  pages. Motion is off under `prefers-reduced-motion`.
-- `components/RouteSwitch.tsx` links to both route homes, marking the current
-  one. `components/home/RouteTransition.tsx` (mounted in
-  `app/[route]/layout.tsx`) re-mounts the page on a route change so it fades in.
-
-### Home pages
-
-`app/[route]/page.tsx` renders `components/home/HomeLayout.tsx` for the route:
-name, role, intro and social links (from `routeMeta[route]` or the Chinese
-text in `data/i18n.ts`), then `components/home/Timeline.tsx`, which places the
-experiences on a year axis from their `start` / `end` fields. The home page
-does not list posts or photos and does not read `data/authors/default.mdx`.
+- `css/portfolio.css` owns the current Broken Arrow layout and charcoal/yellow theme. Portfolio
+  styles are scoped under `.ba-site`; legacy semantic color tokens are overridden for archived pages.
+- `css/tokens.css` and `css/tailwind.css` retain utility scales and archive compatibility. The old
+  `design/index.html` token playground and grid CSS are reference artifacts, not the live design.
+- `PortfolioShell` supplies the header, portrait/intro, landscape, main region and footer. Header
+  links come from `navLinks(route)` and display Projects / Experience. No Personal switch or subtitle.
+- `RouteAccent` still supplies route context, but both routes now use the yellow accent.
+- The site remains dark only. Typography uses system Segoe UI / Arial / Microsoft YaHei; the
+  root no longer downloads the previous Red Hat web fonts.
+- The landscape uses the existing image with `BASE_PATH` in its URL. Portraits use the existing
+  image wrapper. Internal links use Next Link so configured base paths remain supported.
 
 ### UI language
 
-`components/LocaleProvider.tsx` holds the locale (`en` or `zh`). It defaults to
-the browser language and persists in `localStorage.locale`;
-`components/LocaleSwitch.tsx` toggles it. Only the nav bar and the home pages
-read it. English home text comes from `data/routes.ts` and
-`data/experiences.ts`; Chinese text lives in `data/i18n.ts`.
+`LocaleProvider` owns English/Chinese preference and persists it in `localStorage.locale`.
+The portfolio header toggles it; `PortfolioShell` also updates the HTML language. Profile, roles,
+project details and shortlist titles follow the locale. Article content remains in its source language.
 
 ### Tags and search
 
@@ -143,10 +125,9 @@ kbar provider over `public/search.json` and is not route-filtered.
 
 ## Invariants
 
-- The route list in `data/routes.ts` is the only source of valid route values;
-  `contentlayer.config.ts`'s tag counter and `css/tokens.css` (one accent per
-  route) also name the two routes and must stay in sync with it.
-- A `shared` post appears in both routes' lists, tag counts, and homes.
+- The route list in `data/routes.ts` is the source of valid route values. The Contentlayer
+  tag counter must stay in sync with it.
+- A `shared` post appears in both routes' archive lists and tag counts; portfolio homes do not list posts.
 - Generated files (tag data, search index, feeds, photo image metadata and
   derivatives) are produced by the build or scripts, not edited by hand.
 - Links and asset paths must work under a non-empty `BASE_PATH`.

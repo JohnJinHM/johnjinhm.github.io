@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { genPageMetadata } from 'app/seo'
 import { isRoute, routeMeta, routes } from '@/data/routes'
-import ExperiencePage from '@/components/ExperiencePage'
+import { PortfolioWorkspace } from '@/components/Portfolio'
 
 export const generateStaticParams = async () => routes.map((route) => ({ route }))
 
@@ -18,5 +18,5 @@ export async function generateMetadata(props: { params: Promise<{ route: string 
 export default async function Page(props: { params: Promise<{ route: string }> }) {
   const { route } = await props.params
   if (!isRoute(route)) return notFound()
-  return <ExperiencePage />
+  return <PortfolioWorkspace view="experience" />
 }

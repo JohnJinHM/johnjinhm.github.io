@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { isRoute, Route } from '@/data/routes'
-import HomeLayout from '@/components/home/HomeLayout'
+import { PortfolioWorkspace } from '@/components/Portfolio'
 
 export default async function Page(props: { params: Promise<{ route: string }> }) {
   const { route } = await props.params
@@ -8,5 +8,5 @@ export default async function Page(props: { params: Promise<{ route: string }> }
     return notFound()
   }
 
-  return <HomeLayout route={route as Route} />
+  return <PortfolioWorkspace view="projects" />
 }
