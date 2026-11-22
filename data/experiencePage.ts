@@ -10,6 +10,7 @@ type RoleDetail = {
 type Project = {
   name: string
   href: string
+  downloadHref?: string
   period?: string
   stack: string
   bullets: string[]
@@ -100,6 +101,19 @@ export const experiencePage: Record<Locale, ExperiencePageText> = {
         note: 'One toolchain spanning BA-DeckEditor, BA-ReCard, and BA-Units. Game data and assets belong to their respective creators.',
       },
       {
+        name: 'BAX — Broken Arrow Match Companion',
+        href: 'https://github.com/JohnJinHM/BAX',
+        downloadHref: 'https://github.com/JohnJinHM/BAX/releases/latest',
+        stack: 'Rust · Tauri 2 · Vue 3 · TypeScript · SQLite · C++ · ONNX Runtime',
+        bullets: [
+          'Built a Windows desktop companion that tracks matches from local game logs, retrieves player profiles from BATrace, and displays ratings, match timers, and reminders in a click-through overlay.',
+          'Implemented persistent player profiles, ELO history, encounter records, and personal notes in SQLite. Archived match reports power team comparisons, net deployment-value charts, deployment timelines, and unit composition analysis.',
+          'Added local pre-match player recognition using a native C++ / ONNX Runtime worker with bundled OCR models. Candidate identities are reconciled with confirmed player IDs when game logs arrive.',
+          'Released v0.2.1 with Full and Lite editions, Windows installers, portable packages, and signed GitHub updates for installed builds. Full includes pre-match OCR; Lite uses game logs for the roster.',
+        ],
+        note: 'Reimplemented from the MIT-licensed BA-ELO-Overlay prototype with the original author’s permission. BAX is MIT-licensed; game assets remain the property of their respective owners.',
+      },
+      {
         name: 'VLoid — Local Voice AI Desktop Application',
         href: 'https://github.com/JohnJinHM/VLoid',
         period: 'November 2025 — Present',
@@ -174,6 +188,19 @@ export const experiencePage: Record<Locale, ExperiencePageText> = {
           '实现基于 WebCrypto 的 deck 文件导入导出，以及数据一致性和序列化往返自动检查，包括用于界面验证的 Playwright 工作流。',
         ],
         note: 'BA-DeckEditor、BA-ReCard 与 BA-Units 合并为一项工具链。游戏数据与资产归各自创作者所有。',
+      },
+      {
+        name: 'BAX — 断箭对局辅助工具',
+        href: 'https://github.com/JohnJinHM/BAX',
+        downloadHref: 'https://github.com/JohnJinHM/BAX/releases/latest',
+        stack: 'Rust · Tauri 2 · Vue 3 · TypeScript · SQLite · C++ · ONNX Runtime',
+        bullets: [
+          '开发 Windows 桌面对局辅助工具，从本机游戏日志跟踪比赛，接入 BATrace 玩家资料，在支持鼠标穿透的悬浮窗中展示玩家评分、对局计时与定时提醒。',
+          '使用 SQLite 长期保存玩家档案、ELO 变化、同场记录与个人备注；归档战报，提供双方对比、净出兵价值曲线、出兵时间线和兵种构成分析。',
+          '通过原生 C++ / ONNX Runtime 工作进程与随包提供的 OCR 模型，实现本地赛前玩家识别；正式游戏日志到达后，以确认的玩家 ID 更新候选身份。',
+          '已发布 v0.2.1，提供 Full／Lite 两个版本、Windows 安装包与便携版，并为安装版实现 GitHub 签名更新。Full 包含赛前 OCR，Lite 从游戏日志获取名单。',
+        ],
+        note: '基于 MIT 许可的 BA-ELO-Overlay 原型重新实现，已取得原作者同意。BAX 采用 MIT 许可；游戏资产归各自权利人所有。',
       },
       {
         name: 'VLoid — 本地语音 AI 桌面应用',

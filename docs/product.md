@@ -22,7 +22,8 @@ files, mostly through the `yarn new` CLI. Hidden archive routes are retained for
 - **Photo posts**: one hero image shown at its native aspect ratio, with a
   caption (`summary`) and optional MDX body. Listed in a masonry grid.
 - **Home pages**: per-route portrait and introduction, then a searchable project directory with
-  a selected-project inspector, workflow, details, and repository link.
+  a selected-project inspector, workflow, details, repository link, and optional download link.
+  Projects include the Broken Arrow web toolchain, BAX desktop match companion, and VLoid.
 - **Header**: Projects, Experience, and language only. WORK & LIFE, Journal, Photos, and
   Personal are temporarily omitted. Articles, Photos, Tags, and `/casual` still work by URL.
 - **Experience** (`/[route]/experience`): a searchable directory of the five professional roles,

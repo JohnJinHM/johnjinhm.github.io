@@ -22,6 +22,7 @@ type Entry = {
   paragraphs: string[]
   note?: string
   href?: string
+  downloadHref?: string
   flow?: string[]
   metric?: string
   metricLabel?: string
@@ -38,31 +39,41 @@ function entriesFor(locale: Locale): Entry[] {
   const projects: Entry[] = text.projects.map((project) => {
     const id = project.href.split('/').pop()!
     const voice = id === 'VLoid'
+    const bax = id === 'BAX'
     return {
       id,
       view: 'projects',
       title: project.name,
       category: voice ? (zh ? '语音 AI' : 'Voice AI') : zh ? '游戏工具' : 'Game tools',
-      tags: voice ? ['AI', 'Desktop'] : ['Web', 'Data'],
+      tags: voice ? ['AI', 'Desktop'] : bax ? ['Desktop', 'Data', 'OCR'] : ['Web', 'Data'],
       subtitle: project.stack,
       paragraphs: project.bullets,
       note: project.note,
       href: project.href,
+      downloadHref: project.downloadHref,
       flow: voice
         ? zh
           ? ['语音输入', '本地推理', '语音输出']
           : ['Voice input', 'Local inference', 'Speech output']
-        : zh
-          ? ['提取数据', '规则验证', '构建卡组']
-          : ['Extract data', 'Validate rules', 'Build a deck'],
-      metric: voice ? 'Local' : '16,687',
+        : bax
+          ? zh
+            ? ['识别对局', '实时辅助', '战后分析']
+            : ['Track matches', 'Live overlay', 'Review reports']
+          : zh
+            ? ['提取数据', '规则验证', '构建卡组']
+            : ['Extract data', 'Validate rules', 'Build a deck'],
+      metric: voice ? 'Local' : bax ? 'Full / Lite' : '16,687',
       metricLabel: voice
         ? zh
           ? '语音与推理'
           : 'VOICE & INFERENCE'
-        : zh
-          ? '条数据记录'
-          : 'DATA RECORDS',
+        : bax
+          ? zh
+            ? 'WINDOWS 版本'
+            : 'WINDOWS EDITIONS'
+          : zh
+            ? '条数据记录'
+            : 'DATA RECORDS',
     }
   })
   const roles: Entry[] = localizedExperiences[locale].official.map((role) => {
@@ -505,6 +516,16 @@ export function PortfolioWorkspace({ view }: { view: View }) {
             {current.href ? t('Open repository', '打开代码仓库') : t('Get in touch', '联系我')}{' '}
             <span aria-hidden="true">↗</span>
           </a>
+          {current.downloadHref && (
+            <a
+              className="secondary"
+              href={current.downloadHref}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('Download for Windows', '下载 Windows 版')} <span aria-hidden="true">↗</span>
+            </a>
+          )}
           <button
             type="button"
             className="secondary"
